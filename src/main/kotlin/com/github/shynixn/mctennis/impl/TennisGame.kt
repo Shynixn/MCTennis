@@ -5,17 +5,32 @@ import com.github.shynixn.mctennis.MCTennisPlugin
 import com.github.shynixn.mctennis.entity.PlayerData
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.JoinResult
+import com.github.shynixn.mctennis.enumeration.LeaveResult
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mcutils.toLocation
 import kotlinx.coroutines.delay
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
+import java.util.Random
 
 class TennisGame(private val arena: TennisArena) {
+    companion object {
+        private val random = Random()
+    }
+
     private val teamRedPlayers = ArrayList<Player>()
     private val teamBluePlayers = ArrayList<Player>()
     private val cachedData = HashMap<Player, PlayerData>()
+    private var redTeamCounter = 0
+    private var blueTeamCounter = 0
+    private var servingTeam = Team.RED
+
+    init {
+        if (random.nextInt(100) < 50) {
+            servingTeam = Team.BLUE
+        }
+    }
 
     /**
      * Dependency.
@@ -28,9 +43,13 @@ class TennisGame(private val arena: TennisArena) {
     var isDisposed = false
 
     /**
-     * Lets the given player
+     * Joins the given player.
      */
     fun join(player: Player, team: Team? = null): JoinResult {
+        if (cachedData.containsKey(player)) {
+            return JoinResult.ALREADY_JOINED
+        }
+
         // Make sure a team is selected.
         var targetTeam = Team.RED
 
@@ -58,11 +77,11 @@ class TennisGame(private val arena: TennisArena) {
         // Join team
         val joinResult = if (targetTeam == Team.RED) {
             teamRedPlayers.add(player)
-            player.teleport(arena.redTeamLobbySpawnpoint.toLocation())
+            player.teleport(arena.redTeamMeta.lobbySpawnpoint.toLocation())
             JoinResult.SUCCESS_RED
         } else {
             teamBluePlayers.add(player)
-            player.teleport(arena.blueTeamLobbySpawnpoint.toLocation())
+            player.teleport(arena.blueTeamMeta.lobbySpawnpoint.toLocation())
             JoinResult.SUCCESS_BLUE
         }
 
@@ -77,6 +96,64 @@ class TennisGame(private val arena: TennisArena) {
         }
 
         return joinResult
+    }
+
+    /**
+     * Leaves the given player.
+     */
+    fun leave(player: Player): LeaveResult {
+        if (!cachedData.containsKey(player)) {
+            return LeaveResult.NOT_IN_MATCH
+        }
+
+        // Restore armor contents
+        val playerData = cachedData[player]!!
+        if (playerData.inventoryContents != null) {
+            player.inventory.contents =
+                playerData.inventoryContents!!.clone().map { d -> d as ItemStack? }.toTypedArray()
+            player.inventory.setArmorContents(playerData.armorContents!!.clone().map { d -> d as ItemStack? }
+                .toTypedArray())
+            player.updateInventory()
+        }
+
+        // Then teleport
+        val spawnpoint = arena.leaveSpawnpoint.toLocation()
+        player.teleport(spawnpoint)
+
+        cachedData.remove(player)
+        if (teamRedPlayers.contains(player)) {
+            teamRedPlayers.remove(player)
+        }
+        if (teamBluePlayers.contains(player)) {
+            teamBluePlayers.remove(player)
+        }
+
+        return LeaveResult.SUCCESS
+    }
+
+    /**
+     * Lets the given player score for the given team.
+     */
+    suspend fun score(player: Player, team: Team) {
+        if (team == Team.RED) {
+            redTeamCounter++
+        } else {
+            blueTeamCounter++
+        }
+
+        sendMessageToPlayers("Player ${player.name} has scored for team ${team.name}.")
+        delay(3000)
+
+        for (i in 0 until teamRedPlayers.size) {
+            val player = teamRedPlayers[i]
+            val spawnpoint = arena.redTeamMeta.spawnpoints[i]
+            player.teleport(spawnpoint.toLocation())
+        }
+        for (i in 0 until teamBluePlayers.size) {
+            val player = teamBluePlayers[i]
+            val spawnpoint = arena.blueTeamMeta.spawnpoints[i]
+            player.teleport(spawnpoint.toLocation())
+        }
     }
 
     /**
@@ -105,12 +182,12 @@ class TennisGame(private val arena: TennisArena) {
         // Move to arena.
         for (i in 0 until teamRedPlayers.size) {
             val player = teamRedPlayers[i]
-            val spawnpoint = arena.redPlayerSpawnpoints[i]
+            val spawnpoint = arena.redTeamMeta.spawnpoints[i]
             player.teleport(spawnpoint.toLocation())
         }
         for (i in 0 until teamBluePlayers.size) {
             val player = teamBluePlayers[i]
-            val spawnpoint = arena.bluePlayerSpawnpoints[i]
+            val spawnpoint = arena.blueTeamMeta.spawnpoints[i]
             player.teleport(spawnpoint.toLocation())
         }
 
@@ -120,15 +197,75 @@ class TennisGame(private val arena: TennisArena) {
             val cacheData = cachedData[player]!!
             cacheData.armorContents = player.inventory.armorContents.clone() as Array<Any?>
             cacheData.inventoryContents = player.inventory.contents.clone() as Array<Any?>
+
+            val teamMeta = if (teamBluePlayers.contains(player)) {
+                arena.blueTeamMeta
+            } else {
+                arena.redTeamMeta
+            }
+
             player.inventory.contents =
-                arena.redTeamInventoryContents.clone().map { d -> d as ItemStack? }.toTypedArray()
-            player.inventory.setArmorContents(arena.redTeamInventoryContents.clone().map { d -> d as ItemStack? }
-                .toTypedArray())
+                teamMeta.inventoryContents.clone()
+            player.inventory.setArmorContents(teamMeta.armorInventoryContents.clone())
         }
 
-
+        runGame()
     }
 
+    /**
+     * Runs the game.
+     */
+    private suspend fun runGame() {
+        for (i in 0 until arena.gameTime) {
+            val remaining = arena.gameTime - i
+
+            if (remaining == 30) {
+                sendMessageToPlayers(MCTennisPlugin.prefix + "30 seconds remaining.")
+            }
+
+            if (remaining <= 10) {
+                sendMessageToPlayers(MCTennisPlugin.prefix + "$remaining second(s) remaining.")
+            }
+
+            if (!arena.isEnabled) {
+                sendMessageToPlayers(MCTennisPlugin.prefix + "Game was cancelled!")
+                dispose()
+                return
+            }
+
+            if (teamBluePlayers.size == 0) {
+                winTeam(Team.RED)
+                return
+            }
+
+            if (teamRedPlayers.size == 0) {
+                winTeam(Team.BLUE)
+                return
+            }
+
+            delay(1000L)
+        }
+    }
+
+    /**
+     * Gets called when a team has won the game.
+     */
+    private suspend fun winTeam(team: Team? = null) {
+        when (team) {
+            null -> {
+                sendMessageToPlayers("Game has ended in a draw.")
+            }
+            Team.RED -> {
+                sendMessageToPlayers("Team red has won the match.")
+            }
+            else -> {
+                sendMessageToPlayers("Team blue has won the match.")
+            }
+        }
+
+        delay(5000)
+        dispose()
+    }
 
     /**
      * Closes this resource, relinquishing any underlying resources.
@@ -138,25 +275,9 @@ class TennisGame(private val arena: TennisArena) {
      * to make their `close` methods idempotent.
 
      */
-    suspend fun dispose() {
-        // Restore armor contents
-        for (player in cachedData.keys) {
-            val playerData = cachedData[player]!!
-
-            if (playerData.inventoryContents != null) {
-                player.inventory.contents =
-                    playerData.inventoryContents!!.clone().map { d -> d as ItemStack? }.toTypedArray()
-                player.inventory.setArmorContents(playerData.armorContents!!.clone().map { d -> d as ItemStack? }
-                    .toTypedArray())
-                player.updateInventory()
-            }
-        }
-
-        // Then teleport
-        delay(1000L)
-        val spawnpoint = arena.leaveSpawnpoint.toLocation()
-        for (player in cachedData.keys) {
-            player.teleport(spawnpoint)
+    fun dispose() {
+        for (player in cachedData.keys.toTypedArray()) {
+            leave(player)
         }
 
         teamRedPlayers.clear()
@@ -171,10 +292,51 @@ class TennisGame(private val arena: TennisArena) {
         }
 
         for (player in teamRedPlayers) {
-            player.sendMessage(message)
+            player.sendMessage(MCTennisPlugin.prefix + message)
         }
         for (player in teamBluePlayers) {
-            player.sendMessage(message)
+            player.sendMessage(MCTennisPlugin.prefix + message)
         }
+    }
+
+    /**
+     * Gets the tennis score for correct cases.
+     */
+    private fun getFullScoreText(): String {
+        if (redTeamCounter == 3 && blueTeamCounter == 3) {
+            return "Deuce"
+        }
+        if (redTeamCounter >= 3 && blueTeamCounter >= 3) {
+            return if (servingTeam == Team.RED && redTeamCounter > blueTeamCounter) {
+                "Ad-In"
+            } else if (servingTeam == Team.BLUE && blueTeamCounter > redTeamCounter) {
+                "Ad-In"
+            } else {
+                "Ad-Out"
+            }
+        }
+
+        val redScore = getScore(redTeamCounter)
+        val blueScore = getScore(blueTeamCounter)
+        return "$redScore - $blueScore"
+    }
+
+    private fun getScore(points: Int): String {
+        when (points) {
+            0 -> {
+                return "0"
+            }
+            1 -> {
+                return "15"
+            }
+            2 -> {
+                return "30"
+            }
+            3 -> {
+                return "40"
+            }
+            else -> throw RuntimeException("Score $redTeamCounter $blueTeamCounter cannot be converted!")
+        }
+
     }
 }

@@ -2,7 +2,6 @@ package com.github.shynixn.mctennis.entity
 
 import com.github.shynixn.mcutils.Vector3d
 import com.github.shynixn.mcutils.arena.api.Arena
-import org.bukkit.inventory.ItemStack
 
 class TennisArena : Arena {
     /**
@@ -36,14 +35,9 @@ class TennisArena : Arena {
     var timeToStart: Int = 10
 
     /**
-     * All red player spawnpoints.
+     * Game time.
      */
-    var redPlayerSpawnpoints = ArrayList<Vector3d>()
-
-    /**
-     * All blue player spawnpoints.
-     */
-    var bluePlayerSpawnpoints = ArrayList<Vector3d>()
+    var gameTime : Int = 300
 
     /**
      * Leave spawnpoint.
@@ -51,17 +45,12 @@ class TennisArena : Arena {
     var leaveSpawnpoint: Vector3d = Vector3d()
 
     /**
-     * Red team spawnpoint.
+     * Gets the redteam meta.
      */
-    var redTeamLobbySpawnpoint: Vector3d = Vector3d()
+    var redTeamMeta : TeamMetadata = TeamMetadata()
 
     /**
-     * Blue team spawnpoint.
+     * BlueTeam.
      */
-    var blueTeamLobbySpawnpoint: Vector3d = Vector3d()
-
-
-    var redTeamInventoryContents: Array<ItemStack?> = emptyArray()
-
-    var blueTeamInventoryContents: Array<ItemStack?> = emptyArray()
+    var blueTeamMeta : TeamMetadata = TeamMetadata()
 }
