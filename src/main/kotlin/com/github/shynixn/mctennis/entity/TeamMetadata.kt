@@ -5,6 +5,11 @@ import org.bukkit.inventory.ItemStack
 
 class TeamMetadata {
     /**
+     * Team displayName.
+     */
+    var name: String = ""
+
+    /**
      * All  player spawnpoints.
      */
     var spawnpoints = ArrayList<Vector3d>()

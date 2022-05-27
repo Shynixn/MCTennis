@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
 import java.util.Random
 
-class TennisGame(private val arena: TennisArena) {
+class TennisGame(val arena: TennisArena) {
     companion object {
         private val random = Random()
     }
@@ -46,10 +46,6 @@ class TennisGame(private val arena: TennisArena) {
      * Joins the given player.
      */
     fun join(player: Player, team: Team? = null): JoinResult {
-        if (cachedData.containsKey(player)) {
-            return JoinResult.ALREADY_JOINED
-        }
-
         // Make sure a team is selected.
         var targetTeam = Team.RED
 
@@ -286,6 +282,16 @@ class TennisGame(private val arena: TennisArena) {
         isDisposed = true
     }
 
+    /**
+     * Gets all players.
+     */
+    fun getPlayers(): List<Player> {
+        val players = ArrayList<Player>()
+        players.addAll(teamBluePlayers)
+        players.addAll(teamRedPlayers)
+        return players
+    }
+
     private fun sendMessageToPlayers(message: String) {
         if (message.isEmpty()) {
             return
@@ -337,6 +343,5 @@ class TennisGame(private val arena: TennisArena) {
             }
             else -> throw RuntimeException("Score $redTeamCounter $blueTeamCounter cannot be converted!")
         }
-
     }
 }

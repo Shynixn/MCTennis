@@ -37,7 +37,7 @@ class TennisArena : Arena {
     /**
      * Game time.
      */
-    var gameTime : Int = 300
+    var gameTime: Int = 300
 
     /**
      * Leave spawnpoint.
@@ -47,10 +47,14 @@ class TennisArena : Arena {
     /**
      * Gets the redteam meta.
      */
-    var redTeamMeta : TeamMetadata = TeamMetadata()
+    var redTeamMeta: TeamMetadata = TeamMetadata().also {
+        this.name = "red"
+    }
 
     /**
      * BlueTeam.
      */
-    var blueTeamMeta : TeamMetadata = TeamMetadata()
+    var blueTeamMeta: TeamMetadata = TeamMetadata().also {
+        this.name = "blue"
+    }
 }

@@ -1,4 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.*
+import java.io.*
+import java.nio.*
 
 plugins {
     kotlin("jvm") version "1.6.21"
@@ -39,7 +42,12 @@ tasks.test {
     failFast = true
 
     testLogging {
-        events(org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED, org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED, org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED, org.gradle.api.tasks.testing.logging.TestLogEvent.STARTED)
+        events(
+            org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.STARTED
+        )
         displayGranularity = 0
         showExceptions = true
         showCauses = true
@@ -48,7 +56,33 @@ tasks.test {
     }
 }
 
-
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.register("languageFile", Exec::class.java) {
+    val kotlinSrcFolder = project.sourceSets.toList()[0].allJava.srcDirs.first { e -> e.endsWith("kotlin") }
+    val languageKotlinFile = kotlinSrcFolder.resolve("com/github/shynixn/mctennis/MCTennisLanguage.kt")
+    val resourceFile = kotlinSrcFolder.parentFile.resolve("resources").resolve("lang").resolve("en_us.properties")
+    val bundle = FileInputStream(resourceFile).use { stream ->
+        PropertyResourceBundle(stream)
+    }
+
+    val contents = ArrayList<String>()
+    contents.add("package com.github.shynixn.mctennis")
+    contents.add("")
+    contents.add("object MCTennisLanguage {")
+    for (key in bundle.keys) {
+        val value = bundle.getString(key)
+        contents.add("  val ${key} : String = \"$value\"")
+        contents.add("")
+    }
+    contents.removeLast()
+    contents.add("}")
+
+    languageKotlinFile.printWriter().use { out ->
+        for (line in contents) {
+            out.println(line)
+        }
+    }
 }
