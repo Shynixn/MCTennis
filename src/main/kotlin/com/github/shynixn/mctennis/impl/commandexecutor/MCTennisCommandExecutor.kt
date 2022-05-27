@@ -2,6 +2,7 @@ package com.github.shynixn.mctennis.impl.commandexecutor
 
 import com.github.shynixn.mccoroutine.bukkit.SuspendingCommandExecutor
 import com.github.shynixn.mccoroutine.bukkit.SuspendingTabCompleter
+import com.github.shynixn.mctennis.MCTennisLanguage
 import com.github.shynixn.mctennis.MCTennisPlugin
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.entity.TennisArena
@@ -9,6 +10,7 @@ import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.google.inject.Inject
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -132,7 +134,7 @@ class MCTennisCommandExecutor @Inject constructor(
         val game = gameService.getAll().firstOrNull { e -> e.arena.name.equals(name, true) }
 
         if (game == null) {
-            player.sendMessage(MCTennisPlugin.prefix + ChatColor.RED + "Game '$name' does not exist.")
+            player.sendMessage(MCTennisLanguage.gameDoesNotExistMessage.format(name))
             return
         }
 
@@ -147,7 +149,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (joinResult == JoinResult.GAME_FULL) {
-            player.sendMessage(MCTennisPlugin.prefix + ChatColor.RED + "Game is already full.")
+            player.sendMessage(MCTennisLanguage.gameIsFullMessage)
             return
         }
 
@@ -207,14 +209,14 @@ class MCTennisCommandExecutor @Inject constructor(
     private suspend fun reloadArena(sender: CommandSender, name: String?) {
         if (name == null) {
             gameService.reload()
-            sender.sendMessage(MCTennisPlugin.prefix + ChatColor.GREEN + "Reloaded all games.")
+            sender.sendMessage(MCTennisLanguage.reloadedAllGamesMessage)
             return
         }
 
         val arena = arenaRepository.getAll().firstOrNull { e -> e.name.equals(name, true) }
 
         if (arena == null) {
-            sender.sendMessage(MCTennisPlugin.prefix + ChatColor.RED + "Game '$name' does not exist.")
+            sender.sendMessage(MCTennisLanguage.gameDoesNotExistMessage.format(name))
             return
         }
 
