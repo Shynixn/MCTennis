@@ -1,7 +1,7 @@
 package com.github.shynixn.mctennis.impl
 
 import com.github.shynixn.mccoroutine.bukkit.launch
-import com.github.shynixn.mctennis.MCTennisPlugin
+import com.github.shynixn.mctennis.MCTennisLanguage
 import com.github.shynixn.mctennis.entity.PlayerData
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.JoinResult
@@ -12,7 +12,7 @@ import kotlinx.coroutines.delay
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
-import java.util.Random
+import java.util.*
 
 class TennisGame(val arena: TennisArena) {
     companion object {
@@ -137,7 +137,7 @@ class TennisGame(val arena: TennisArena) {
             blueTeamCounter++
         }
 
-        sendMessageToPlayers("Player ${player.name} has scored for team ${team.name}.")
+        sendMessageToPlayers(MCTennisLanguage.playerScoredMessage.format(player.name, team.name))
         delay(3000)
 
         for (i in 0 until teamRedPlayers.size) {
@@ -159,17 +159,17 @@ class TennisGame(val arena: TennisArena) {
         // Wait in lobby.
         for (i in 0 until arena.timeToStart) {
             val remaining = arena.timeToStart - i
-            sendMessageToPlayers(MCTennisPlugin.prefix + "Game is starting in $remaining seconds.")
+            sendMessageToPlayers(MCTennisLanguage.gameStartingMessage.format(remaining))
             delay(1000L)
 
             if (!arena.isEnabled) {
-                sendMessageToPlayers(MCTennisPlugin.prefix + "Game start was cancelled!")
+                sendMessageToPlayers(MCTennisLanguage.gameStartCancelledMessage)
                 dispose()
                 return
             }
 
             if (teamBluePlayers.size <= arena.minPlayersPerTeam || teamRedPlayers.size <= arena.minPlayersPerTeam) {
-                sendMessageToPlayers(MCTennisPlugin.prefix + "Not enough players! Game start was cancelled.")
+                sendMessageToPlayers("Not enough players! Game start was cancelled.")
                 dispose()
                 return
             }
@@ -216,15 +216,15 @@ class TennisGame(val arena: TennisArena) {
             val remaining = arena.gameTime - i
 
             if (remaining == 30) {
-                sendMessageToPlayers(MCTennisPlugin.prefix + "30 seconds remaining.")
+                sendMessageToPlayers("30 seconds remaining.")
             }
 
             if (remaining <= 10) {
-                sendMessageToPlayers(MCTennisPlugin.prefix + "$remaining second(s) remaining.")
+                sendMessageToPlayers("$remaining second(s) remaining.")
             }
 
             if (!arena.isEnabled) {
-                sendMessageToPlayers(MCTennisPlugin.prefix + "Game was cancelled!")
+                sendMessageToPlayers("Game was cancelled!")
                 dispose()
                 return
             }
@@ -298,10 +298,10 @@ class TennisGame(val arena: TennisArena) {
         }
 
         for (player in teamRedPlayers) {
-            player.sendMessage(MCTennisPlugin.prefix + message)
+            player.sendMessage(message)
         }
         for (player in teamBluePlayers) {
-            player.sendMessage(MCTennisPlugin.prefix + message)
+            player.sendMessage(message)
         }
     }
 

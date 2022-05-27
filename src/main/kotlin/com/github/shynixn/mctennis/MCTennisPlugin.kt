@@ -4,6 +4,7 @@ import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
 import com.github.shynixn.mctennis.impl.TennisGame
 import com.github.shynixn.mcutils.ConfigurationService
 import com.github.shynixn.mcutils.Version
+import com.github.shynixn.mcutils.reloadTranslation
 import com.google.inject.Guice
 import com.google.inject.Injector
 import org.bukkit.Bukkit
@@ -11,7 +12,7 @@ import org.bukkit.ChatColor
 
 class MCTennisPlugin : SuspendingJavaPlugin() {
     companion object {
-        val prefix: String = ChatColor.BLUE.toString() + "[LobbyBalls] "+ ChatColor.WHITE
+        private val prefix: String = ChatColor.BLUE.toString() + "[LobbyBalls] " + ChatColor.WHITE
     }
 
     private var injector: Injector? = null
@@ -42,38 +43,33 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         val configurationService = resolve(ConfigurationService::class.java)
 
         // Register Listeners
-       // Bukkit.getPluginManager().registerEvents(resolve(BallListener::class.java), this)
-     //   Bukkit.getPluginManager().registerEvents(resolve(PlayerDataListener::class.java), this)
+        // Bukkit.getPluginManager().registerEvents(resolve(BallListener::class.java), this)
+        //   Bukkit.getPluginManager().registerEvents(resolve(PlayerDataListener::class.java), this)
 
         // Register CommandExecutor
-      //  getCommand("lobbyballsreload")!!.setSuspendingExecutor(resolve(ReloadCommandExecutor::class.java))
+        //  getCommand("lobbyballsreload")!!.setSuspendingExecutor(resolve(ReloadCommandExecutor::class.java))
 
-     /*   val playerDataCommandExecutor = resolve(PlayerBallCommandExecutor::class.java)
-        val lobbyBallsCommand = this.getCommand("lobbyballs")!!
-        lobbyBallsCommand.aliases = configurationService.findValue("commands.lobbyballs.aliases")
-        lobbyBallsCommand.usage = configurationService.findValue("commands.lobbyballs.usage")
-        lobbyBallsCommand.description = configurationService.findValue("commands.lobbyballs.description")
-        lobbyBallsCommand.permissionMessage = configurationService.findValue("commands.lobbyballs.permission-message")
-        lobbyBallsCommand.setSuspendingExecutor(playerDataCommandExecutor)
-        lobbyBallsCommand.setSuspendingTabCompleter(playerDataCommandExecutor)*/
+        /*   val playerDataCommandExecutor = resolve(PlayerBallCommandExecutor::class.java)
+           val lobbyBallsCommand = this.getCommand("lobbyballs")!!
+           lobbyBallsCommand.aliases = configurationService.findValue("commands.lobbyballs.aliases")
+           lobbyBallsCommand.usage = configurationService.findValue("commands.lobbyballs.usage")
+           lobbyBallsCommand.description = configurationService.findValue("commands.lobbyballs.description")
+           lobbyBallsCommand.permissionMessage = configurationService.findValue("commands.lobbyballs.permission-message")
+           lobbyBallsCommand.setSuspendingExecutor(playerDataCommandExecutor)
+           lobbyBallsCommand.setSuspendingTabCompleter(playerDataCommandExecutor)*/
 
         // Register Dependencies.
-       /* val dependencyService = resolve(DependencyService::class.java)
-        dependencyService.checkForInstalledDependencies()
+        /* val dependencyService = resolve(DependencyService::class.java)
+         dependencyService.checkForInstalledDependencies()
 
-        if (dependencyService.isInstalled(PluginDependency.PLACEHOLDERAPI)) {
-            val placeHolderService = resolve(DependencyPlaceholderApiService::class.java)
-            placeHolderService.registerListener()
-        }*/
+         if (dependencyService.isInstalled(PluginDependency.PLACEHOLDERAPI)) {
+             val placeHolderService = resolve(DependencyPlaceholderApiService::class.java)
+             placeHolderService.registerListener()
+         }*/
 
 
-        val game = TennisGame()
-        game.
 
-        resolve(BallTemplateRepository::class.java).getAllBallTemplates()
-        resolve(BallSpawnpointRepository::class.java).getAllBallSpawnpoints()
-        resolve(BallService::class.java).respawnAllHubBalls()
-
+        this.reloadTranslation("en_us", MCTennisLanguage::class.java, "en_us", "de_de")
         Bukkit.getServer()
             .consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled MCTennis " + this.description.version + " by Shynixn")
     }

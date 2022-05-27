@@ -74,6 +74,7 @@ tasks.register("languageFile", Exec::class.java) {
     contents.add("object MCTennisLanguage {")
     for (key in bundle.keys) {
         val value = bundle.getString(key)
+        contents.add("  /** $value **/")
         contents.add("  val ${key} : String = \"$value\"")
         contents.add("")
     }
