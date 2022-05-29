@@ -13,6 +13,7 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
 }
 
 dependencies {
@@ -23,8 +24,11 @@ dependencies {
     implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.2.0")
     implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.2.0")
     implementation("com.google.inject:guice:5.0.1")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.2.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
     implementation("com.google.code.gson:gson:2.8.6")
+    compileOnly("me.clip:placeholderapi:2.9.2")
     testImplementation(kotlin("test"))
 
     testImplementation(kotlin("test"))

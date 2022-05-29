@@ -4,6 +4,7 @@ import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.MCTennisLanguage
 import com.github.shynixn.mctennis.entity.PlayerData
 import com.github.shynixn.mctennis.entity.TennisArena
+import com.github.shynixn.mctennis.enumeration.GameState
 import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.LeaveResult
 import com.github.shynixn.mctennis.enumeration.Team
@@ -19,12 +20,12 @@ class TennisGame(val arena: TennisArena) {
         private val random = Random()
     }
 
-    private val teamRedPlayers = ArrayList<Player>()
-    private val teamBluePlayers = ArrayList<Player>()
+
     private val cachedData = HashMap<Player, PlayerData>()
     private var redTeamCounter = 0
     private var blueTeamCounter = 0
     private var servingTeam = Team.RED
+
 
     init {
         if (random.nextInt(100) < 50) {
@@ -41,6 +42,21 @@ class TennisGame(val arena: TennisArena) {
      * Gets if this game is no longer useable.
      */
     var isDisposed = false
+
+    /**
+     * Holds the gamestate.
+     */
+    var gameState: GameState = GameState.LOBBY
+
+    /**
+     * Team players.
+     */
+    val teamRedPlayers = ArrayList<Player>()
+
+    /**
+     * Team players.
+     */
+    val teamBluePlayers = ArrayList<Player>()
 
     /**
      * Joins the given player.

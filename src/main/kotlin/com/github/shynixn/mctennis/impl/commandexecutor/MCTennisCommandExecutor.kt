@@ -3,15 +3,13 @@ package com.github.shynixn.mctennis.impl.commandexecutor
 import com.github.shynixn.mccoroutine.bukkit.SuspendingCommandExecutor
 import com.github.shynixn.mccoroutine.bukkit.SuspendingTabCompleter
 import com.github.shynixn.mctennis.MCTennisLanguage
-import com.github.shynixn.mctennis.MCTennisPlugin
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.JoinResult
+import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.google.inject.Inject
-import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -106,13 +104,15 @@ class MCTennisCommandExecutor @Inject constructor(
         args: Array<out String>
     ): List<String> {
         if (args.size == 1) {
-            return arrayListOf("create", "delete", "list", "enable", "disable")
+            if (sender.hasPermission(Permission.EDIT_GAME.permissionString)) {
+                return arrayListOf("create", "delete", "list", "join", "leave", "reload")
+            }
+
+            return arrayListOf("join", "leave")
         }
 
         if (args.size == 2 && (args[0].equals("create", true)
-                    || args[0].equals("delete", true)
-                    || args[0].equals("enable", true)
-                    || args[0].equals("disable", true))
+                    || args[0].equals("delete", true) || args[0].equals("reload", true))
         ) {
             return arenaRepository.getAll().map { e -> e.name }
         }
@@ -154,9 +154,9 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (joinResult == JoinResult.SUCCESS_BLUE) {
-            player.sendMessage(MCTennisPlugin.prefix + ChatColor.BLUE + "Successfully joined team ${game.arena.blueTeamMeta.name}.")
+            player.sendMessage(MCTennisLanguage.joinedTeamSuccessMessage.format(game.arena.blueTeamMeta.name))
         } else if (joinResult == JoinResult.SUCCESS_RED) {
-            player.sendMessage(MCTennisPlugin.prefix + ChatColor.BLUE + "Successfully joined team ${game.arena.redTeamMeta.name}.")
+            player.sendMessage(MCTennisLanguage.joinedTeamSuccessMessage.format(game.arena.redTeamMeta.name))
         }
     }
 
@@ -167,14 +167,14 @@ class MCTennisCommandExecutor @Inject constructor(
             }
         }
 
-        player.sendMessage(MCTennisPlugin.prefix + ChatColor.BLUE + "Left the game.")
+        player.sendMessage(MCTennisLanguage.leftGameMessage)
     }
 
     private suspend fun listArena(sender: CommandSender) {
         val existingArenas = arenaRepository.getAll()
 
         for (arena in existingArenas) {
-            sender.sendMessage(MCTennisPlugin.prefix + "${arena.name}: " + arena.displayName)
+            sender.sendMessage(MCTennisLanguage.listArenaMessage.format(arena.name, arena.displayName))
         }
     }
 
@@ -183,12 +183,12 @@ class MCTennisCommandExecutor @Inject constructor(
         val existingArena = existingArenas.firstOrNull { e -> e.name.equals(name, true) }
 
         if (existingArena == null) {
-            sender.sendMessage(MCTennisPlugin.prefix + ChatColor.RED + "Arena '$name' does not exist and cannot be deleted.")
+            sender.sendMessage(MCTennisLanguage.gameDoesNotExistMessage.format(name))
             return
         }
 
         arenaRepository.delete(existingArena)
-        sender.sendMessage(MCTennisPlugin.prefix + ChatColor.GREEN + "Deleted arena '$name'.")
+        sender.sendMessage(MCTennisLanguage.deletedGameMessage.format(name))
     }
 
     private suspend fun createArena(sender: CommandSender, name: String, displayName: String) {
@@ -198,12 +198,12 @@ class MCTennisCommandExecutor @Inject constructor(
         val existingArenas = arenaRepository.getAll()
 
         if (existingArenas.firstOrNull { e -> e.name.equals(name, true) } != null) {
-            sender.sendMessage(MCTennisPlugin.prefix + ChatColor.RED + "Arena '$name' already exists and cannot be created.")
+            sender.sendMessage(MCTennisLanguage.gameAlreadyExistsMessage.format(name))
             return
         }
 
         arenaRepository.save(arena)
-        sender.sendMessage(MCTennisPlugin.prefix + ChatColor.GREEN + "Created arena '$name'.")
+        sender.sendMessage(MCTennisLanguage.gameCreatedMessage)
     }
 
     private suspend fun reloadArena(sender: CommandSender, name: String?) {
@@ -221,7 +221,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         gameService.reload(arena)
-        sender.sendMessage(MCTennisPlugin.prefix + ChatColor.GREEN + "Reloaded game '$name'.")
+        sender.sendMessage(MCTennisLanguage.reloadedGameMessage)
         return
     }
 }
