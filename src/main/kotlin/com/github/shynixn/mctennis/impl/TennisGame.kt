@@ -20,12 +20,10 @@ class TennisGame(val arena: TennisArena) {
         private val random = Random()
     }
 
-
     private val cachedData = HashMap<Player, PlayerData>()
     private var redTeamCounter = 0
     private var blueTeamCounter = 0
     private var servingTeam = Team.RED
-
 
     init {
         if (random.nextInt(100) < 50) {
@@ -47,6 +45,28 @@ class TennisGame(val arena: TennisArena) {
      * Holds the gamestate.
      */
     var gameState: GameState = GameState.LOBBY
+
+    /**
+     * Tennis ball.
+     */
+    var ball: Ball? = null
+
+    /**
+     * Player who was the last one to hit the ball.
+     */
+    var lastHitPlayer: Player? = null
+
+    /**
+     * The target field which requires bouncing before the next player shoots back.
+     * This is useful for cases, where the ball does not hit far enough (hitField != targetField) -> error.
+     * The ball comes up more than once in the target field. Does not come up one in the field.
+     */
+    var targetField: Team = Team.BLUE
+
+    /**
+     * Amount of bounces of the ball in the target fields.
+     */
+    var targetFieldCounter = 0
 
     /**
      * Team players.

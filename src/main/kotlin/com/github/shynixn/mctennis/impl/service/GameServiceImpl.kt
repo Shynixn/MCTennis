@@ -5,6 +5,7 @@ import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.impl.TennisGame
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.google.inject.Inject
+import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 import java.util.logging.Level
 
@@ -48,6 +49,19 @@ class GameServiceImpl @Inject constructor(
      */
     override fun getAll(): List<TennisGame> {
         return games
+    }
+
+    /**
+     * Tries to locate a game this player is playing.
+     */
+    override fun getByPlayer(player: Player): TennisGame? {
+        for (game in games) {
+            if (game.teamRedPlayers.contains(player) || game.teamBluePlayers.contains(player)) {
+                return game
+            }
+        }
+
+        return null
     }
 
     /**

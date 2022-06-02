@@ -19,6 +19,8 @@ repositories {
 dependencies {
     implementation(project(":arena"))
     implementation(project(":common"))
+    implementation(project(":packet"))
+    implementation(project(":ball"))
 
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
     implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.2.0")

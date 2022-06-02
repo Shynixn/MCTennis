@@ -7,12 +7,13 @@ import com.github.shynixn.mcutils.Version
 import com.github.shynixn.mcutils.reloadTranslation
 import com.google.inject.Guice
 import com.google.inject.Injector
+import com.sun.org.apache.xpath.internal.operations.Neg
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 
 class MCTennisPlugin : SuspendingJavaPlugin() {
     companion object {
-        private val prefix: String = ChatColor.BLUE.toString() + "[LobbyBalls] " + ChatColor.WHITE
+        private val prefix: String = ChatColor.BLUE.toString() + "[MCTennis] " + ChatColor.WHITE
     }
 
     private var injector: Injector? = null
