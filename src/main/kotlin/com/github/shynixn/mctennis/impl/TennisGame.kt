@@ -241,8 +241,20 @@ class TennisGame(val arena: TennisArena) {
             }
 
             player.inventory.contents =
-                teamMeta.inventoryContents.clone()
-            player.inventory.setArmorContents(teamMeta.armorInventoryContents.clone())
+                teamMeta.inventoryContents.map {
+                    if (it != null) {
+                        ItemStack.deserialize(it)
+                    } else {
+                        null
+                    }
+                }.toTypedArray()
+            player.inventory.setArmorContents(teamMeta.armorInventoryContents.map {
+                if (it != null) {
+                    ItemStack.deserialize(it)
+                } else {
+                    null
+                }
+            }.toTypedArray())
         }
 
         runGame()

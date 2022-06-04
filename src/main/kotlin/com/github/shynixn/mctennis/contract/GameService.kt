@@ -8,7 +8,7 @@ interface GameService {
     /**
      * Reloads all games.
      */
-    suspend fun reload()
+    suspend fun reloadAll()
 
     /**
      * Reloads the specific game.

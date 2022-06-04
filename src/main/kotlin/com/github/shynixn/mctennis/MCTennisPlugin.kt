@@ -1,12 +1,18 @@
 package com.github.shynixn.mctennis
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingExecutor
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingTabCompleter
+import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
 import com.github.shynixn.mctennis.impl.listener.GameListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
+import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.Version
 import com.github.shynixn.mcutils.common.reloadTranslation
@@ -22,6 +28,8 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
     }
 
     private var injector: Injector? = null
+    private val objectMapper: ObjectMapper =
+        ObjectMapper(YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
 
     /**
      * Called when this plugin is enabled.
@@ -68,7 +76,17 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         }
 
         val language = configurationService.findValue<String>("language")
-        this.reloadTranslation(language, MCTennisLanguage::class.java, "en_us", "de_de")
+        this.reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
+        logger.log(Level.INFO, "Loaded language file $language.properties.")
+
+        val arenaService = resolve(ArenaRepository::class.java)
+        arenaService.save(TennisArena().also {
+            it.name = "Demo"
+        })
+
+        val gameService = resolve(GameService::class.java)
+        gameService.reloadAll()
+
         Bukkit.getServer()
             .consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled MCTennis " + this.description.version + " by Shynixn")
     }
@@ -82,7 +100,7 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         try {
             return this.injector!!.getBinding(service).provider.get() as S
         } catch (e: Exception) {
-            throw IllegalArgumentException("Service could not be resolved.", e)
+            throw IllegalArgumentException("Service ${service.name} could not be resolved.", e)
         }
     }
 }

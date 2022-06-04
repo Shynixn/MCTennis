@@ -3,7 +3,8 @@ import java.util.*
 import java.io.*
 
 plugins {
-    kotlin("jvm") version "1.6.21"
+    id("org.jetbrains.kotlin.jvm") version ("1.6.10")
+    id("com.github.johnrengelman.shadow") version ("6.1.0")
 }
 
 group = "com.github.shynixn"
@@ -31,9 +32,9 @@ dependencies {
     compileOnly("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:1.0.9")
+    implementation("com.github.shynixn.mcutils:common:1.0.11")
     implementation("com.github.shynixn.mcutils:packet:1.0.10")
-    implementation("com.github.shynixn.mcutils:arena:1.0.3")
+    implementation("com.github.shynixn.mcutils:arena:1.0.5")
     implementation("com.github.shynixn.mcutils:ball:1.0.4")
 
     testImplementation(kotlin("test"))
@@ -41,10 +42,6 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
     testImplementation("org.mockito:mockito-core:2.23.0")
-}
-
-tasks.test {
-    useJUnitPlatform()
 }
 
 tasks.test {
@@ -71,6 +68,16 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    dependsOn("jar")
+
+    destinationDir = File("C:\\temp\\plugins")
+
+    relocate("com.github.shynixn.mcutils","com.github.shynixn.mctennis.mcutils")
+    exclude("kotlin/**")
+    exclude("org/**")
+}
+
 tasks.register("languageFile", Exec::class.java) {
     val kotlinSrcFolder = project.sourceSets.toList()[0].allJava.srcDirs.first { e -> e.endsWith("kotlin") }
     val languageKotlinFile = kotlinSrcFolder.resolve("com/github/shynixn/mctennis/MCTennisLanguage.kt")
@@ -86,7 +93,7 @@ tasks.register("languageFile", Exec::class.java) {
     for (key in bundle.keys) {
         val value = bundle.getString(key)
         contents.add("  /** $value **/")
-        contents.add("  val ${key} : String = \"$value\"")
+        contents.add("  var ${key} : String = \"$value\"")
         contents.add("")
     }
     contents.removeLast()

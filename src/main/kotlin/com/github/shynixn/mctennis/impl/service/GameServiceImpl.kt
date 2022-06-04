@@ -17,7 +17,7 @@ class GameServiceImpl @Inject constructor(
     /**
      * Reloads all games.
      */
-    override suspend fun reload() {
+    override suspend fun reloadAll() {
         dispose()
 
         val arenas = arenaRepository.getAll().filter { e -> e.isEnabled }

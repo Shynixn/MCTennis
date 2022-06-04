@@ -9,15 +9,22 @@ import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
+import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
+import com.github.shynixn.mcutils.common.ConfigurationService
+import com.github.shynixn.mcutils.common.reloadTranslation
 import com.google.inject.Inject
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.plugin.Plugin
+import java.util.logging.Level
 import kotlin.streams.asSequence
 
 class MCTennisCommandExecutor @Inject constructor(
-    private val arenaRepository: ArenaRepository<TennisArena>,
-    private val gameService: GameService
+    private val arenaRepository: CacheArenaRepository<TennisArena>,
+    private val gameService: GameService,
+    private val plugin: Plugin,
+    private val configurationService: ConfigurationService
 ) : SuspendingCommandExecutor, SuspendingTabCompleter {
     /**
      * Executes the given command, returning its success.
@@ -208,7 +215,12 @@ class MCTennisCommandExecutor @Inject constructor(
 
     private suspend fun reloadArena(sender: CommandSender, name: String?) {
         if (name == null) {
-            gameService.reload()
+            plugin.reloadConfig()
+            val language = configurationService.findValue<String>("language")
+            plugin.reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
+            plugin.logger.log(Level.INFO, "Loaded language file $language.properties.")
+            arenaRepository.clearCache()
+            gameService.reloadAll()
             sender.sendMessage(MCTennisLanguage.reloadedAllGamesMessage)
             return
         }

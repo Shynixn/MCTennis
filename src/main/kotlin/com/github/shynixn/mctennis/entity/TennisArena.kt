@@ -1,8 +1,11 @@
 package com.github.shynixn.mctennis.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.github.shynixn.mcutils.arena.api.Arena
 import com.github.shynixn.mcutils.common.Vector3d
 
+@JsonPropertyOrder(value = arrayOf("name", "displayName", "enabled"))
 class TennisArena : Arena {
     /**
      * Unique Identifier of the arena.
@@ -42,7 +45,8 @@ class TennisArena : Arena {
     /**
      * Leave spawnpoint.
      */
-    var leaveSpawnpoint: Vector3d = Vector3d()
+    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))
+    var leaveSpawnpoint: Vector3d = Vector3d("world")
 
     /**
      * Gets the redteam meta.
