@@ -1,6 +1,6 @@
 package com.github.shynixn.mctennis.entity
 
-import com.github.shynixn.mcutils.Vector3d
+import com.github.shynixn.mcutils.common.Vector3d
 import org.bukkit.inventory.ItemStack
 
 class TeamMetadata {

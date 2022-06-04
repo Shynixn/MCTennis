@@ -1,0 +1,20 @@
+#######################################################################
+#                          MCTennis                                   #
+# 		            	   by Shynixn							      #
+#######################################################################
+
+############################
+# Language settings
+############################
+language: "en_us"
+
+############################
+# Command settings
+############################
+commands:
+  mctennis:
+    aliases:
+      - tennis
+    usage: /mctennis
+    description: All commands for the MCTennis plugin.
+    permission-message: You do not have permission.

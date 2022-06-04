@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.*
 import java.io.*
-import java.nio.*
 
 plugins {
     kotlin("jvm") version "1.6.21"
@@ -14,23 +13,29 @@ repositories {
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
+    maven("https://shynixn.github.io/m2/repository/mcutils")
 }
 
 dependencies {
-    implementation(project(":arena"))
-    implementation(project(":common"))
-    implementation(project(":packet"))
-    implementation(project(":ball"))
-
+    // Compile Onl
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.2.0")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.2.0")
-    implementation("com.google.inject:guice:5.0.1")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.2.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-    implementation("com.google.code.gson:gson:2.8.6")
     compileOnly("me.clip:placeholderapi:2.9.2")
+
+    // Plugin.yml Shade dependencies
+    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.2.0")
+    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.2.0")
+    compileOnly("com.google.inject:guice:5.0.1")
+    compileOnly("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
+    compileOnly("com.fasterxml.jackson.core:jackson-databind:2.2.3")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+    compileOnly("com.google.code.gson:gson:2.8.6")
+
+    // Custom dependencies
+    implementation("com.github.shynixn.mcutils:common:1.0.9")
+    implementation("com.github.shynixn.mcutils:packet:1.0.10")
+    implementation("com.github.shynixn.mcutils:arena:1.0.3")
+    implementation("com.github.shynixn.mcutils:ball:1.0.4")
+
     testImplementation(kotlin("test"))
 
     testImplementation(kotlin("test"))

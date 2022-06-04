@@ -1,7 +1,7 @@
 package com.github.shynixn.mctennis.entity
 
-import com.github.shynixn.mcutils.Vector3d
 import com.github.shynixn.mcutils.arena.api.Arena
+import com.github.shynixn.mcutils.common.Vector3d
 
 class TennisArena : Arena {
     /**

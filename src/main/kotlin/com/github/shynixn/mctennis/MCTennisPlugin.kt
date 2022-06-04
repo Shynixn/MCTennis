@@ -1,15 +1,20 @@
 package com.github.shynixn.mctennis
 
 import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
-import com.github.shynixn.mctennis.impl.TennisGame
-import com.github.shynixn.mcutils.ConfigurationService
-import com.github.shynixn.mcutils.Version
-import com.github.shynixn.mcutils.reloadTranslation
+import com.github.shynixn.mccoroutine.bukkit.setSuspendingExecutor
+import com.github.shynixn.mccoroutine.bukkit.setSuspendingTabCompleter
+import com.github.shynixn.mctennis.enumeration.PluginDependency
+import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
+import com.github.shynixn.mctennis.impl.listener.GameListener
+import com.github.shynixn.mctennis.impl.listener.TennisListener
+import com.github.shynixn.mcutils.common.ConfigurationService
+import com.github.shynixn.mcutils.common.Version
+import com.github.shynixn.mcutils.common.reloadTranslation
 import com.google.inject.Guice
 import com.google.inject.Injector
-import com.sun.org.apache.xpath.internal.operations.Neg
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import java.util.logging.Level
 
 class MCTennisPlugin : SuspendingJavaPlugin() {
     companion object {
@@ -41,36 +46,29 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         // Guice
         this.injector = Guice.createInjector(MCTennisDependencyInjectionBinder(this))
         this.reloadConfig()
-        val configurationService = resolve(ConfigurationService::class.java)
 
         // Register Listeners
-        // Bukkit.getPluginManager().registerEvents(resolve(BallListener::class.java), this)
-        //   Bukkit.getPluginManager().registerEvents(resolve(PlayerDataListener::class.java), this)
+        Bukkit.getPluginManager().registerEvents(resolve(GameListener::class.java), this)
+        Bukkit.getPluginManager().registerEvents(resolve(TennisListener::class.java), this)
 
-        // Register CommandExecutor
-        //  getCommand("lobbyballsreload")!!.setSuspendingExecutor(resolve(ReloadCommandExecutor::class.java))
+        // Register CommandExecutors
+        val configurationService = resolve(ConfigurationService::class.java)
+        val mcTennisCommandExecutor = resolve(MCTennisCommandExecutor::class.java)
+        val mcTennisCommand = this.getCommand("mctennis")!!
+        mcTennisCommand.aliases = configurationService.findValue("commands.mctennis.aliases")
+        mcTennisCommand.usage = configurationService.findValue("commands.mctennis.usage")
+        mcTennisCommand.description = configurationService.findValue("commands.mctennis.description")
+        mcTennisCommand.permissionMessage = configurationService.findValue("commands.mctennis.permission-message")
+        mcTennisCommand.setSuspendingExecutor(mcTennisCommandExecutor)
+        mcTennisCommand.setSuspendingTabCompleter(mcTennisCommandExecutor)
 
-        /*   val playerDataCommandExecutor = resolve(PlayerBallCommandExecutor::class.java)
-           val lobbyBallsCommand = this.getCommand("lobbyballs")!!
-           lobbyBallsCommand.aliases = configurationService.findValue("commands.lobbyballs.aliases")
-           lobbyBallsCommand.usage = configurationService.findValue("commands.lobbyballs.usage")
-           lobbyBallsCommand.description = configurationService.findValue("commands.lobbyballs.description")
-           lobbyBallsCommand.permissionMessage = configurationService.findValue("commands.lobbyballs.permission-message")
-           lobbyBallsCommand.setSuspendingExecutor(playerDataCommandExecutor)
-           lobbyBallsCommand.setSuspendingTabCompleter(playerDataCommandExecutor)*/
+        // Register Dependencies
+        if (Bukkit.getPluginManager().getPlugin(PluginDependency.PLACEHOLDERAPI.pluginName) != null) {
+            logger.log(Level.INFO, "Loaded dependency ${PluginDependency.PLACEHOLDERAPI.pluginName}.")
+        }
 
-        // Register Dependencies.
-        /* val dependencyService = resolve(DependencyService::class.java)
-         dependencyService.checkForInstalledDependencies()
-
-         if (dependencyService.isInstalled(PluginDependency.PLACEHOLDERAPI)) {
-             val placeHolderService = resolve(DependencyPlaceholderApiService::class.java)
-             placeHolderService.registerListener()
-         }*/
-
-
-
-        this.reloadTranslation("en_us", MCTennisLanguage::class.java, "en_us", "de_de")
+        val language = configurationService.findValue<String>("language")
+        this.reloadTranslation(language, MCTennisLanguage::class.java, "en_us", "de_de")
         Bukkit.getServer()
             .consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled MCTennis " + this.description.version + " by Shynixn")
     }

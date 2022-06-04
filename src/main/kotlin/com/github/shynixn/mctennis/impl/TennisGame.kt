@@ -8,7 +8,8 @@ import com.github.shynixn.mctennis.enumeration.GameState
 import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.LeaveResult
 import com.github.shynixn.mctennis.enumeration.Team
-import com.github.shynixn.mcutils.toLocation
+import com.github.shynixn.mcutils.ball.api.Ball
+import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -20,7 +21,6 @@ class TennisGame(val arena: TennisArena) {
         private val random = Random()
     }
 
-    private val cachedData = HashMap<Player, PlayerData>()
     private var redTeamCounter = 0
     private var blueTeamCounter = 0
     private var servingTeam = Team.RED
@@ -77,6 +77,11 @@ class TennisGame(val arena: TennisArena) {
      * Team players.
      */
     val teamBluePlayers = ArrayList<Player>()
+
+    /**
+     * All Players.
+     */
+    val cachedData = HashMap<Player, PlayerData>()
 
     /**
      * Joins the given player.
@@ -142,9 +147,8 @@ class TennisGame(val arena: TennisArena) {
         val playerData = cachedData[player]!!
         if (playerData.inventoryContents != null) {
             player.inventory.contents =
-                playerData.inventoryContents!!.clone().map { d -> d as ItemStack? }.toTypedArray()
-            player.inventory.setArmorContents(playerData.armorContents!!.clone().map { d -> d as ItemStack? }
-                .toTypedArray())
+                playerData.inventoryContents!!.clone()
+            player.inventory.setArmorContents(playerData.armorContents!!.clone())
             player.updateInventory()
         }
 
@@ -177,14 +181,14 @@ class TennisGame(val arena: TennisArena) {
         delay(3000)
 
         for (i in 0 until teamRedPlayers.size) {
-            val player = teamRedPlayers[i]
+            val teamPlayer = teamRedPlayers[i]
             val spawnpoint = arena.redTeamMeta.spawnpoints[i]
-            player.teleport(spawnpoint.toLocation())
+            teamPlayer.teleport(spawnpoint.toLocation())
         }
         for (i in 0 until teamBluePlayers.size) {
-            val player = teamBluePlayers[i]
+            val teamPlayer = teamBluePlayers[i]
             val spawnpoint = arena.blueTeamMeta.spawnpoints[i]
-            player.teleport(spawnpoint.toLocation())
+            teamPlayer.teleport(spawnpoint.toLocation())
         }
     }
 
@@ -227,8 +231,8 @@ class TennisGame(val arena: TennisArena) {
         delay(250)
         for (player in cachedData.keys) {
             val cacheData = cachedData[player]!!
-            cacheData.armorContents = player.inventory.armorContents.clone() as Array<Any?>
-            cacheData.inventoryContents = player.inventory.contents.clone() as Array<Any?>
+            cacheData.armorContents = player.inventory.armorContents.clone()
+            cacheData.inventoryContents = player.inventory.contents.clone()
 
             val teamMeta = if (teamBluePlayers.contains(player)) {
                 arena.blueTeamMeta

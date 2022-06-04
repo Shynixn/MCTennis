@@ -7,7 +7,6 @@ import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.google.inject.Inject
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
-import java.util.logging.Level
 
 class GameServiceImpl @Inject constructor(
     private val arenaRepository: ArenaRepository<TennisArena>,
@@ -56,7 +55,7 @@ class GameServiceImpl @Inject constructor(
      */
     override fun getByPlayer(player: Player): TennisGame? {
         for (game in games) {
-            if (game.teamRedPlayers.contains(player) || game.teamBluePlayers.contains(player)) {
+            if (game.cachedData.containsKey(player)) {
                 return game
             }
         }

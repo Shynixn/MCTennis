@@ -11,7 +11,5 @@ class GameListener @Inject constructor(private val gameService: GameService) : L
     fun onPlayerQuitEvent(event: PlayerQuitEvent) {
         val game = gameService.getByPlayer(event.player) ?: return
         game.leave(event.player)
-
-        Ball
     }
 }
