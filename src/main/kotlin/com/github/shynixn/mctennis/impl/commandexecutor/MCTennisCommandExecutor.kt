@@ -233,7 +233,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         gameService.reload(arena)
-        sender.sendMessage(MCTennisLanguage.reloadedGameMessage)
+        sender.sendMessage(MCTennisLanguage.reloadedGameMessage.format(name))
         return
     }
 }

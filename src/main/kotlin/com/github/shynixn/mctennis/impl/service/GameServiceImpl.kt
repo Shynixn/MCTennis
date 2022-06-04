@@ -20,7 +20,7 @@ class GameServiceImpl @Inject constructor(
     override suspend fun reloadAll() {
         dispose()
 
-        val arenas = arenaRepository.getAll().filter { e -> e.isEnabled }
+        val arenas = arenaRepository.getAll()
 
         for (arena in arenas) {
             reload(arena)
@@ -38,9 +38,11 @@ class GameServiceImpl @Inject constructor(
             games.remove(existingGame)
         }
 
-        val tennisGame = TennisGame(arena)
-        tennisGame.plugin = plugin
-        games.add(tennisGame)
+        if (arena.isEnabled) {
+            val tennisGame = TennisGame(arena)
+            tennisGame.plugin = plugin
+            games.add(tennisGame)
+        }
     }
 
     /**
