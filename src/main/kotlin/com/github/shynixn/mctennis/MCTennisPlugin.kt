@@ -14,6 +14,7 @@ import com.github.shynixn.mctennis.impl.listener.GameListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.common.ConfigurationService
+import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.Version
 import com.github.shynixn.mcutils.common.reloadTranslation
 import com.google.inject.Guice
@@ -82,6 +83,7 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         val arenaService = resolve(ArenaRepository::class.java)
         arenaService.save(TennisArena().also {
             it.name = "Demo"
+            it.redTeamMeta.spawnpoints = arrayListOf(Vector3d("world", 20.0, 30.0, 40.0))
         })
 
         val gameService = resolve(GameService::class.java)

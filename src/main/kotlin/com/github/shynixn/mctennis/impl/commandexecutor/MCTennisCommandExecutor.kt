@@ -54,12 +54,12 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (args.size == 2 && args[0].equals("delete", true)) {
-            val name = args[0]
+            val name = args[1]
             deleteArena(sender, name)
             return true
         }
 
-        if (args.size == 2 && args[0].equals("list", true)) {
+        if (args.size == 1 && args[0].equals("list", true)) {
             listArena(sender)
             return true
         }
@@ -76,7 +76,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (sender is Player && args[0].equals("leave", true)) {
+        if (sender is Player && args.size == 1 && args[0].equals("leave", true)) {
             leaveGame(sender)
             return true
         }
@@ -92,7 +92,13 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        return false
+        sender.sendMessage("/mctennis create <name> <displayName>")
+        sender.sendMessage("/mctennis delete <name>")
+        sender.sendMessage("/mctennis list")
+        sender.sendMessage("/mctennis join <name>")
+        sender.sendMessage("/mctennis leave")
+        sender.sendMessage("/mctennis reload")
+        return true
     }
 
     /**
@@ -138,7 +144,7 @@ class MCTennisCommandExecutor @Inject constructor(
             }
         }
 
-        val game = gameService.getAll().firstOrNull { e -> e.arena.name.equals(name, true) }
+        val game = gameService.getByName(name)
 
         if (game == null) {
             player.sendMessage(MCTennisLanguage.gameDoesNotExistMessage.format(name))
@@ -199,9 +205,6 @@ class MCTennisCommandExecutor @Inject constructor(
     }
 
     private suspend fun createArena(sender: CommandSender, name: String, displayName: String) {
-        val arena = TennisArena()
-        arena.name = name
-        arena.displayName = displayName
         val existingArenas = arenaRepository.getAll()
 
         if (existingArenas.firstOrNull { e -> e.name.equals(name, true) } != null) {
@@ -209,7 +212,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return
         }
 
-        arenaRepository.save(arena)
+        arenaRepository.generateTemplate(name, displayName)
         sender.sendMessage(MCTennisLanguage.gameCreatedMessage)
     }
 

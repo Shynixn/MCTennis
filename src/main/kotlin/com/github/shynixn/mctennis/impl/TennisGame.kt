@@ -208,8 +208,8 @@ class TennisGame(val arena: TennisArena) {
                 return
             }
 
-            if (teamBluePlayers.size <= arena.minPlayersPerTeam || teamRedPlayers.size <= arena.minPlayersPerTeam) {
-                sendMessageToPlayers("Not enough players! Game start was cancelled.")
+            if (teamBluePlayers.size < arena.minPlayersPerTeam || teamRedPlayers.size < arena.minPlayersPerTeam) {
+                sendMessageToPlayers(MCTennisLanguage.notEnoughPlayersMessage)
                 dispose()
                 return
             }
@@ -282,13 +282,13 @@ class TennisGame(val arena: TennisArena) {
             }
 
             if (teamBluePlayers.size == 0) {
-                winTeam(Team.RED)
-                return
+             //  TODO: winTeam(Team.RED)
+              //  return
             }
 
             if (teamRedPlayers.size == 0) {
-                winTeam(Team.BLUE)
-                return
+             //   TODO winTeam(Team.BLUE)
+              //  return
             }
 
             delay(1000L)

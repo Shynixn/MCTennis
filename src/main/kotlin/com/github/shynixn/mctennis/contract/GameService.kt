@@ -26,6 +26,11 @@ interface GameService {
     fun getByPlayer(player: Player): TennisGame?
 
     /**
+     * Tries to locate a game of the given name.
+     */
+    fun getByName(name: String): TennisGame?
+
+    /**
      * Disposes all running games.
      */
     fun dispose()

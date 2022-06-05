@@ -1,42 +1,45 @@
 package com.github.shynixn.mctennis
 
 object MCTennisLanguage {
-  /** [MCTennis] Game %1$1s already exists. **/
-  var gameAlreadyExistsMessage : String = "[MCTennis] Game %1$1s already exists."
+  /** [&9MCTennis&f] Game %1$1s already exists. **/
+  var gameAlreadyExistsMessage : String = "[&9MCTennis&f] Game %1$1s already exists."
 
-  /** [MCTennis] Game start has been cancelled. **/
-  var gameStartCancelledMessage : String = "[MCTennis] Game start has been cancelled."
+  /** [&9MCTennis&f] Game start has been cancelled. **/
+  var gameStartCancelledMessage : String = "[&9MCTennis&f] Game start has been cancelled."
 
-  /** [MCTennis] Game is starting in %1$1d seconds. **/
-  var gameStartingMessage : String = "[MCTennis] Game is starting in %1$1d seconds."
+  /** [&9MCTennis&f] Game is starting in %1$1d seconds. **/
+  var gameStartingMessage : String = "[&9MCTennis&f] Game is starting in %1$1d seconds."
 
-  /** [MCTennis] Player %1$1s has scored for team %1$2s. **/
-  var playerScoredMessage : String = "[MCTennis] Player %1$1s has scored for team %1$2s."
+  /** [&9MCTennis&f] Player %1$1s has scored for team %1$2s. **/
+  var playerScoredMessage : String = "[&9MCTennis&f] Player %1$1s has scored for team %1$2s."
 
-  /** [MCTennis] Reloaded game %1$1s. **/
-  var reloadedGameMessage : String = "[MCTennis] Reloaded game %1$1s."
+  /** [&9MCTennis&f] Reloaded game %1$1s. **/
+  var reloadedGameMessage : String = "[&9MCTennis&f] Reloaded game %1$1s."
 
-  /** [MCTennis] %1$1s: %1$2s. **/
-  var listArenaMessage : String = "[MCTennis] %1$1s: %1$2s."
+  /** [&9MCTennis&f] %1$1s - %2$1s **/
+  var listArenaMessage : String = "[&9MCTennis&f] %1$1s - %2$1s"
 
-  /** [MCTennis] Successfully joined team %1$1s. **/
-  var joinedTeamSuccessMessage : String = "[MCTennis] Successfully joined team %1$1s."
+  /** [&9MCTennis&f] Successfully joined team %1$1s. **/
+  var joinedTeamSuccessMessage : String = "[&9MCTennis&f] Successfully joined team %1$1s."
 
-  /** [MCTennis] Left the game. **/
-  var leftGameMessage : String = "[MCTennis] Left the game."
+  /** [&9MCTennis&f] Left the game. **/
+  var leftGameMessage : String = "[&9MCTennis&f] Left the game."
 
-  /** [MCTennis] Reloaded all games. **/
-  var reloadedAllGamesMessage : String = "[MCTennis] Reloaded all games."
+  /** [&9MCTennis&f] Reloaded all games. **/
+  var reloadedAllGamesMessage : String = "[&9MCTennis&f] Reloaded all games."
 
-  /** [MCTennis] Created game %1$1s. **/
-  var gameCreatedMessage : String = "[MCTennis] Created game %1$1s."
+  /** [&9MCTennis&f] Created game %1$1s. **/
+  var gameCreatedMessage : String = "[&9MCTennis&f] Created game %1$1s."
 
-  /** [MCTennis] Game %1$1s does not exist. **/
-  var gameDoesNotExistMessage : String = "[MCTennis] Game %1$1s does not exist."
+  /** [&9MCTennis&f] Game %1$1s does not exist. **/
+  var gameDoesNotExistMessage : String = "[&9MCTennis&f] Game %1$1s does not exist."
 
-  /** [MCTennis] Deleted game %1$1s. **/
-  var deletedGameMessage : String = "[MCTennis] Deleted game %1$1s."
+  /** [&9MCTennis&f] Deleted game %1$1s. **/
+  var deletedGameMessage : String = "[&9MCTennis&f] Deleted game %1$1s."
 
-  /** [MCTennis] Game is already full. **/
-  var gameIsFullMessage : String = "[MCTennis] Game is already full."
+  /** [&9MCTennis&f] Game is already full. **/
+  var gameIsFullMessage : String = "[&9MCTennis&f] Game is already full."
+
+  /** [&9MCTennis&f] Not enough players! Game start was cancelled. **/
+  var notEnoughPlayersMessage : String = "[&9MCTennis&f] Not enough players! Game start was cancelled."
 }

@@ -66,6 +66,19 @@ class GameServiceImpl @Inject constructor(
     }
 
     /**
+     * Tries to locate a game of the given name.
+     */
+    override fun getByName(name: String): TennisGame? {
+        for (game in games) {
+            if (game.arena.name.equals(name, true)) {
+                return game
+            }
+        }
+
+        return null
+    }
+
+    /**
      * Disposes all running games.
      */
     override fun dispose() {
