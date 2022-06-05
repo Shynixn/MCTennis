@@ -2,7 +2,6 @@ package com.github.shynixn.mctennis.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.github.shynixn.mcutils.common.Vector3d
-import org.bukkit.inventory.ItemStack
 
 class TeamMetadata {
     /**
@@ -25,10 +24,10 @@ class TeamMetadata {
     /**
      * ItemStacks during the game.
      */
-    var inventoryContents: Array<HashMap<String, Any>?> = emptyArray()
+    var inventoryContents: Array<Map<String, Any>?> = emptyArray()
 
     /**
      * ItemStacks during the game.
      */
-    var armorInventoryContents: Array<HashMap<String, Any>?> = emptyArray()
+    var armorInventoryContents: Array<Map<String, Any>?> = emptyArray()
 }

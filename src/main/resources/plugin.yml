@@ -7,7 +7,7 @@ softdepend: [ PlaceholderAPI ]
 api-version: 1.18
 commands:
   mctennis:
-    usage: /command
+    usage: Use /mctennis help to see more info about the plugin.
     description: All commands for the MCTennis plugin.
     permission-message: You do not have permission.
 libraries:

@@ -44,7 +44,7 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
      * Gets the identifier which is required by placeholderapi to match the placeholder against this plugin.
      */
     override fun getIdentifier(): String {
-        return "lobbyballs"
+        return "mctennis"
     }
 
     /**
@@ -83,22 +83,22 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
             }
 
             // All placeholders based on games.
-            if (parts[0].equals(PlaceHolder.GAME_ENABLED.text, true)) {
+            if (parts[1].equals(PlaceHolder.GAME_ENABLED.text, true)) {
                 return game.arena.isEnabled.toString()
             }
-            if (parts[0].equals(PlaceHolder.GAME_STARTED.text, true)) {
+            if (parts[1].equals(PlaceHolder.GAME_STARTED.text, true)) {
                 return (game.gameState == GameState.RUNNING).toString()
             }
-            if (parts[0].equals(PlaceHolder.GAME_JOINABLE.text, true)) {
+            if (parts[1].equals(PlaceHolder.GAME_JOINABLE.text, true)) {
                 return (game.gameState == GameState.LOBBY).toString()
             }
-            if (parts[0].equals(PlaceHolder.GAME_DISPLAYNAME.text, true)) {
+            if (parts[1].equals(PlaceHolder.GAME_DISPLAYNAME.text, true)) {
                 return game.arena.displayName
             }
-            if (parts[0].equals(PlaceHolder.GAME_ISTEAMREDPLAYER.text, true)) {
+            if (parts[1].equals(PlaceHolder.GAME_ISTEAMREDPLAYER.text, true)) {
                 return game.teamRedPlayers.contains(player).toString()
             }
-            if (parts[0].equals(PlaceHolder.GAME_ISTEAMBLUEPLAYER.text, true)) {
+            if (parts[1].equals(PlaceHolder.GAME_ISTEAMBLUEPLAYER.text, true)) {
                 return game.teamBluePlayers.contains(player).toString()
             }
 

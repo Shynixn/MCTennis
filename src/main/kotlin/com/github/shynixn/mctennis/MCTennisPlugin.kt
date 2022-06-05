@@ -6,13 +6,16 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingExecutor
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingTabCompleter
+import com.github.shynixn.mctennis.contract.DependencyPlaceholderApiService
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
 import com.github.shynixn.mctennis.impl.listener.GameListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
+import com.github.shynixn.mctennis.impl.service.DependencyPlaceholderApiServiceImpl
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
+import com.github.shynixn.mcutils.ball.api.BallService
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.Version
@@ -73,6 +76,8 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
 
         // Register Dependencies
         if (Bukkit.getPluginManager().getPlugin(PluginDependency.PLACEHOLDERAPI.pluginName) != null) {
+            val placeHolderApi = resolve(DependencyPlaceholderApiService::class.java)
+            placeHolderApi.registerListener()
             logger.log(Level.INFO, "Loaded dependency ${PluginDependency.PLACEHOLDERAPI.pluginName}.")
         }
 
@@ -91,6 +96,16 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
 
         Bukkit.getServer()
             .consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled MCTennis " + this.description.version + " by Shynixn")
+    }
+
+    /**
+     * Called when this plugin is disabled
+     */
+    override fun onDisable() {
+        val ballService = resolve(BallService::class.java)
+        ballService.close()
+        val gameService = resolve(GameService::class.java)
+        gameService.dispose()
     }
 
     /**

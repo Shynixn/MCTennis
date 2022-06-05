@@ -32,8 +32,8 @@ dependencies {
     compileOnly("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:1.0.12")
-    implementation("com.github.shynixn.mcutils:packet:1.0.11")
+    implementation("com.github.shynixn.mcutils:common:1.0.14")
+    implementation("com.github.shynixn.mcutils:packet:1.0.13")
     implementation("com.github.shynixn.mcutils:arena:1.0.5")
     implementation("com.github.shynixn.mcutils:ball:1.0.5")
 

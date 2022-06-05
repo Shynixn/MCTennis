@@ -10,13 +10,20 @@ import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
+import com.github.shynixn.mcutils.ball.api.Ball
+import com.github.shynixn.mcutils.ball.api.BallService
+import com.github.shynixn.mcutils.ball.api.BallSettings
+import com.github.shynixn.mcutils.ball.impl.BallServiceImpl
 import com.github.shynixn.mcutils.common.ConfigurationService
+import com.github.shynixn.mcutils.common.item
 import com.github.shynixn.mcutils.common.reloadTranslation
+import com.github.shynixn.mcutils.common.toItemStack
 import com.google.inject.Inject
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
+import java.util.*
 import java.util.logging.Level
 import kotlin.streams.asSequence
 
@@ -24,8 +31,11 @@ class MCTennisCommandExecutor @Inject constructor(
     private val arenaRepository: CacheArenaRepository<TennisArena>,
     private val gameService: GameService,
     private val plugin: Plugin,
-    private val configurationService: ConfigurationService
+    private val configurationService: ConfigurationService,
+    private val ballService: BallService
 ) : SuspendingCommandExecutor, SuspendingTabCompleter {
+    private var ball: Ball? = null
+
     /**
      * Executes the given command, returning its success.
      * If false is returned, then the "usage" plugin.yml entry for this command (if defined) will be sent to the player.
@@ -61,6 +71,33 @@ class MCTennisCommandExecutor @Inject constructor(
 
         if (args.size == 1 && args[0].equals("list", true)) {
             listArena(sender)
+
+            if (ball != null) {
+                ball!!.remove()
+            }
+            val itemStack = item {
+                this.typeName = "PLAYER_HEAD"
+                this.nbt =
+                    "{SkullOwner:{Id:[I;1,1,1,1],Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU0YTcwYjdiYmNkN2E4YzMyMmQ1MjI1MjA0OTFhMjdlYTZiODNkNjBlY2Y5NjFkMmI0ZWZiYmY5ZjYwNWQifX19\"}]}}}"
+            }.toItemStack()
+
+            require(sender is Player)
+            ballService.spawnBall(sender.location, BallSettings(itemStack))
+
+            return true
+        }
+
+        if (sender is Player && args.size == 3 && args[0].equals("inventory", true)) {
+            val name = args[1]
+            val team = args[2]
+            setInventory(sender, name, team)
+            return true
+        }
+
+        if (sender is Player && args.size == 3 && args[0].equals("armor", true)) {
+            val name = args[1]
+            val team = args[2]
+            setArmor(sender, name, team)
             return true
         }
 
@@ -92,13 +129,19 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        sender.sendMessage("/mctennis create <name> <displayName>")
-        sender.sendMessage("/mctennis delete <name>")
-        sender.sendMessage("/mctennis list")
-        sender.sendMessage("/mctennis join <name>")
-        sender.sendMessage("/mctennis leave")
-        sender.sendMessage("/mctennis reload")
-        return true
+        if (args.size == 1 && args[0].equals("help", true)) {
+            sender.sendMessage("/mctennis create <name> <displayName>")
+            sender.sendMessage("/mctennis delete <name>")
+            sender.sendMessage("/mctennis list")
+            sender.sendMessage("/mctennis inventory <name> <red/blue>")
+            sender.sendMessage("/mctennis armor <name> <red/blue>")
+            sender.sendMessage("/mctennis join <name>")
+            sender.sendMessage("/mctennis leave")
+            sender.sendMessage("/mctennis reload")
+            return true
+        }
+
+        return false
     }
 
     /**
@@ -238,5 +281,56 @@ class MCTennisCommandExecutor @Inject constructor(
         gameService.reload(arena)
         sender.sendMessage(MCTennisLanguage.reloadedGameMessage.format(name))
         return
+    }
+
+    private suspend fun setInventory(player: Player, name: String, teamName: String) {
+        val arena = arenaRepository.getAll().firstOrNull { e -> e.name.equals(name, true) }
+
+        if (arena == null) {
+            player.sendMessage(MCTennisLanguage.gameDoesNotExistMessage.format(name))
+            return
+        }
+
+        val team: Team = try {
+            Team.valueOf(teamName.uppercase(Locale.ENGLISH))
+        } catch (e: Exception) {
+            player.sendMessage(MCTennisLanguage.teamDoesNotExistMessage.format(teamName))
+            return
+        }
+        val teamMeta = if (team == Team.RED) {
+            arena.redTeamMeta
+        } else {
+            arena.blueTeamMeta
+        }
+
+        teamMeta.inventoryContents = player.inventory.contents.clone().map { e -> e?.serialize() }.toTypedArray()
+        arenaRepository.save(arena)
+        player.sendMessage(MCTennisLanguage.updatedInventoryMessage)
+    }
+
+    private suspend fun setArmor(player: Player, name: String, teamName: String) {
+        val arena = arenaRepository.getAll().firstOrNull { e -> e.name.equals(name, true) }
+
+        if (arena == null) {
+            player.sendMessage(MCTennisLanguage.gameDoesNotExistMessage.format(name))
+            return
+        }
+
+        val team: Team = try {
+            Team.valueOf(teamName.uppercase(Locale.ENGLISH))
+        } catch (e: Exception) {
+            player.sendMessage(MCTennisLanguage.teamDoesNotExistMessage.format(teamName))
+            return
+        }
+        val teamMeta = if (team == Team.RED) {
+            arena.redTeamMeta
+        } else {
+            arena.blueTeamMeta
+        }
+
+        teamMeta.armorInventoryContents =
+            player.inventory.armorContents.clone().map { e -> e?.serialize() }.toTypedArray()
+        arenaRepository.save(arena)
+        player.sendMessage(MCTennisLanguage.updatedArmorMessage)
     }
 }

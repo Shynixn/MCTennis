@@ -61,4 +61,14 @@ class TennisArena : Arena {
     var blueTeamMeta: TeamMetadata = TeamMetadata().also {
         this.name = "blue"
     }
+
+    /**
+     * Commands executed on player join.
+     */
+    var joinCommands: List<CommandMeta> = ArrayList()
+
+    /**
+     * Commands executed on player leave.
+     */
+    var leaveCommands: List<CommandMeta> = ArrayList()
 }

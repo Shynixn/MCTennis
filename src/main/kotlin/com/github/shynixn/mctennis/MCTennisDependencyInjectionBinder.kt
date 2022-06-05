@@ -1,15 +1,21 @@
 package com.github.shynixn.mctennis
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.github.shynixn.mctennis.contract.DependencyPlaceholderApiService
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.entity.TennisArena
+import com.github.shynixn.mctennis.impl.service.DependencyPlaceholderApiServiceImpl
 import com.github.shynixn.mctennis.impl.service.GameServiceImpl
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
 import com.github.shynixn.mcutils.arena.impl.CachedArenaRepositoryImpl
 import com.github.shynixn.mcutils.arena.impl.YamlFileArenaRepositoryImpl
+import com.github.shynixn.mcutils.ball.api.BallService
+import com.github.shynixn.mcutils.ball.impl.BallServiceImpl
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.ConfigurationServiceImpl
+import com.github.shynixn.mcutils.common.ItemService
+import com.github.shynixn.mcutils.common.ItemServiceImpl
 import com.google.inject.AbstractModule
 import com.google.inject.Scopes
 import com.google.inject.TypeLiteral
@@ -37,6 +43,9 @@ class MCTennisDependencyInjectionBinder(private val plugin: MCTennisPlugin) : Ab
 
         // Services
         bind(ConfigurationService::class.java).toInstance(ConfigurationServiceImpl(plugin))
+        bind(BallService::class.java).toInstance(BallServiceImpl(plugin))
+        bind(ItemService::class.java).toInstance(ItemServiceImpl())
         bind(GameService::class.java).to(GameServiceImpl::class.java).`in`(Scopes.SINGLETON)
+        bind(DependencyPlaceholderApiService::class.java).to(DependencyPlaceholderApiServiceImpl::class.java).`in`(Scopes.SINGLETON)
     }
 }
