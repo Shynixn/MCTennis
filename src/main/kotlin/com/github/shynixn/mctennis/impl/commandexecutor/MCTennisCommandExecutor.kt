@@ -9,7 +9,7 @@ import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
-import com.github.shynixn.mctennis.impl.TennisArenaException
+import com.github.shynixn.mctennis.impl.exception.TennisArenaException
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.chat.ChatColor

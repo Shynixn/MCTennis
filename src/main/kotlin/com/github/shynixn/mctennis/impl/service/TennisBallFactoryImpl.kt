@@ -1,8 +1,10 @@
-package com.github.shynixn.mctennis.impl
+package com.github.shynixn.mctennis.impl.service
 
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisBallFactory
+import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TennisBallSettings
+import com.github.shynixn.mctennis.impl.TennisBallImpl
 import com.github.shynixn.mcutils.common.toVector3d
 import com.github.shynixn.mcutils.physicobject.api.MathComponentSettings
 import com.github.shynixn.mcutils.physicobject.api.PhysicObjectService
@@ -17,7 +19,7 @@ class TennisBallFactoryImpl @Inject constructor(private val physicObjectService:
     /**
      * Create a new tennis ball.
      */
-    override fun createTennisBall(location: Location, settings: TennisBallSettings): TennisBall {
+    override fun createTennisBall(location: Location, game: TennisGame, settings: TennisBallSettings): TennisBall {
         val mathComponentSettings = MathComponentSettings()
         mathComponentSettings.airResistanceAbsolute = settings.airResistanceAbsolute
         mathComponentSettings.airResistanceRelative = settings.airResistanceRelative
@@ -56,7 +58,8 @@ class TennisBallFactoryImpl @Inject constructor(private val physicObjectService:
             spinComponent,
             slimeEntity,
             settings,
-            plugin
+            plugin,
+            game
         )
 
         physicObjectService.addPhysicObject(ball)

@@ -1,6 +1,7 @@
 package com.github.shynixn.mctennis.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.shynixn.mcutils.common.Vector3d
 
 class TeamMetadata {
@@ -8,6 +9,20 @@ class TeamMetadata {
      * Team displayName.
      */
     var name: String = ""
+
+    /**
+     * Right upper corner.
+     */
+    @JsonProperty("corner1")
+    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))
+    var rightUpperCorner: Vector3d = Vector3d("world")
+
+    /**
+     * Left lower corner.
+     */
+    @JsonProperty("corner2")
+    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))
+    var leftLowerCorner: Vector3d = Vector3d("world")
 
     /**
      * All  player spawnpoints.

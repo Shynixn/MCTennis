@@ -1,4 +1,7 @@
 package com.github.shynixn.mctennis.event
 
-class TennisBallBounceGroundEvent {
+import com.github.shynixn.mctennis.contract.TennisBall
+import com.github.shynixn.mctennis.contract.TennisGame
+
+class TennisBallBounceGroundEvent(val tennisBall: TennisBall, val game : TennisGame) : MCTennisEvent() {
 }

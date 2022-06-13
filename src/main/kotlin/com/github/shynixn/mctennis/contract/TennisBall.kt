@@ -6,12 +6,17 @@ interface TennisBall {
     /**
      * Allows clicking the ball.
      */
-    var allowLeftClick: Boolean
+    var allowActions: Boolean
 
     /**
      * Sets the velocity of the tennis ball.
      */
     fun setVelocity(vector: Vector3d)
+
+    /**
+     * Gets the location of the ball.
+     */
+    fun getLocation(): Vector3d
 
     /**
      * Removes the ball.

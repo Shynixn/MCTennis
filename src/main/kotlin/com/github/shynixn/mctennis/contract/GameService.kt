@@ -1,7 +1,7 @@
 package com.github.shynixn.mctennis.contract
 
 import com.github.shynixn.mctennis.entity.TennisArena
-import com.github.shynixn.mctennis.impl.TennisGame
+import com.github.shynixn.mctennis.impl.TennisGameImpl
 import org.bukkit.entity.Player
 
 interface GameService {
@@ -18,17 +18,17 @@ interface GameService {
     /**
      * Gets all running games.
      */
-    fun getAll(): List<TennisGame>
+    fun getAll(): List<TennisGameImpl>
 
     /**
      * Tries to locate a game this player is playing.
      */
-    fun getByPlayer(player: Player): TennisGame?
+    fun getByPlayer(player: Player): TennisGameImpl?
 
     /**
      * Tries to locate a game of the given name.
      */
-    fun getByName(name: String): TennisGame?
+    fun getByName(name: String): TennisGameImpl?
 
     /**
      * Disposes all running games.

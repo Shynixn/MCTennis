@@ -4,6 +4,7 @@ import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.MCTennisLanguage
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisBallFactory
+import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.CommandMeta
 import com.github.shynixn.mctennis.entity.PlayerData
 import com.github.shynixn.mctennis.entity.TeamMetadata
@@ -12,14 +13,14 @@ import com.github.shynixn.mctennis.enumeration.*
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
-import net.md_5.bungee.api.ChatMessageType
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
 import java.util.*
 
-class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactory) {
+class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: TennisBallFactory) : TennisGame {
     companion object {
         private val random = Random()
     }
@@ -30,7 +31,7 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
 
     init {
         if (random.nextInt(100) < 50) {
-            servingTeam = Team.BLUE
+            //   servingTeam = Team.BLUE
         }
     }
 
@@ -47,7 +48,7 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
     /**
      * Holds the gamestate.
      */
-    var gameState: GameState = GameState.LOBBY
+    var gameState: GameState = GameState.LOBBY_IDLE
 
     /**
      * Tennis ball.
@@ -55,9 +56,14 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
     var ball: TennisBall? = null
 
     /**
+     * Amount of bounces.
+     */
+    override var bounceCounter: Int = 0
+
+    /**
      * Player who was the last one to hit the ball.
      */
-    var lastHitPlayer: Player? = null
+    override var lastHitPlayer: Player? = null
 
     /**
      * The target field which requires bouncing before the next player shoots back.
@@ -65,11 +71,6 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
      * The ball comes up more than once in the target field. Does not come up one in the field.
      */
     var targetField: Team = Team.BLUE
-
-    /**
-     * Amount of bounces of the ball in the target fields.
-     */
-    var targetFieldCounter = 0
 
     /**
      * Team players.
@@ -114,6 +115,10 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
             return JoinResult.TEAM_FULL
         }
 
+        if (gameState != GameState.LOBBY_IDLE && gameState != GameState.LOBBY_COUNTDOWN) {
+            return JoinResult.GAME_ALREADY_RUNNING
+        }
+
         // Join team
         val joinResult = if (targetTeam == Team.RED) {
             teamRedPlayers.add(player)
@@ -130,8 +135,11 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
         cachedData[player] = playerData
 
         if (teamBluePlayers.size >= arena.minPlayersPerTeam && teamRedPlayers.size >= arena.minPlayersPerTeam) {
-            plugin.launch {
-                startGame()
+            if (gameState == GameState.LOBBY_IDLE) {
+                gameState = GameState.LOBBY_COUNTDOWN
+                plugin.launch {
+                    startGame()
+                }
             }
         }
 
@@ -174,20 +182,32 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
     }
 
     /**
-     * Lets the given player score for the given team.
+     * Lets the given player score a point for the given team.
+     * The player does not have to be in this team.
      */
-    suspend fun score(player: Player, team: Team) {
+    override fun scorePoint(player: Player, team: Team) {
+        ball!!.allowActions = false
+
         if (team == Team.RED) {
             redTeamCounter++
         } else {
             blueTeamCounter++
         }
 
-        sendMessageToPlayers(MCTennisLanguage.playerScoredMessage.format(player.name, team.name))
-        delay(3000)
-        ball?.remove()
-        ball = null
-        gameState = GameState.RUNNING_SERVING
+        plugin.launch {
+            sendMessageToPlayers(MCTennisLanguage.playerScoredMessage.format(player.name, team.name))
+            delay(3000)
+            teleportPlayersToSpawnpoint()
+            ball?.remove()
+            ball = null
+            gameState = GameState.RUNNING_SERVING
+
+            if (redTeamCounter > 4 && redTeamCounter - blueTeamCounter >= 2) {
+                winTeam(Team.RED)
+            } else if (blueTeamCounter > 4 && blueTeamCounter - redTeamCounter >= 2) {
+                winTeam(Team.BLUE)
+            }
+        }
     }
 
     /**
@@ -201,17 +221,19 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
             delay(1000L)
 
             if (!arena.isEnabled) {
-                sendMessageToPlayers(MCTennisLanguage.gameStartCancelledMessage)
                 dispose()
+                sendMessageToPlayers(MCTennisLanguage.gameStartCancelledMessage)
                 return
             }
 
             if (teamBluePlayers.size < arena.minPlayersPerTeam || teamRedPlayers.size < arena.minPlayersPerTeam) {
                 sendMessageToPlayers(MCTennisLanguage.notEnoughPlayersMessage)
-                dispose()
+                gameState = GameState.LOBBY_IDLE
                 return
             }
         }
+
+        gameState = GameState.RUNNING_SERVING
 
         // Move to arena.
         teleportPlayersToSpawnpoint()
@@ -219,9 +241,9 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
         // Store cache data.
         delay(250)
         for (player in cachedData.keys) {
-            val cacheData = cachedData[player]!!
-            cacheData.armorContents = player.inventory.armorContents.clone()
-            cacheData.inventoryContents = player.inventory.contents.clone()
+            val playerData = cachedData[player]!!
+            playerData.armorContents = player.inventory.armorContents.clone()
+            playerData.inventoryContents = player.inventory.contents.clone()
 
             val teamMeta = if (teamBluePlayers.contains(player)) {
                 arena.blueTeamMeta
@@ -296,14 +318,20 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
         val spawnpoint = teamMetaData.spawnpoints[0]
         val ballspawnpoint = spawnpoint.clone().addRelativeFront(2.0).addRelativeUp(0.5)
 
-        ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), arena.ballSettings)
+        ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), this, arena.ballSettings)
 
         delay(500)
-        sendTitleMessageToPlayers("Ready?", "")
+        sendTitleMessageToPlayers(ChatColor.YELLOW.toString() + ChatColor.BOLD + "Ready?")
         delay(1500)
         ball!!.setVelocity(Vector3d(x = 0.0, y = 0.5, z = 0.0))
-        ball!!.allowLeftClick = true
+        ball!!.allowActions = true
         gameState = GameState.RUNNING_PLAYING
+
+        if (team == Team.RED) {
+            lastHitPlayer = teamRedPlayers[0]
+        } else if (team == Team.BLUE) {
+            lastHitPlayer = teamBluePlayers[0]
+        }
     }
 
     /**
@@ -370,7 +398,6 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
     }
 
 
-
     /**
      * Gets the tennis score for correct cases.
      */
@@ -416,17 +443,10 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
         }
     }
 
-    private fun getTeamMetaFromTeam(team: Team): TeamMetadata {
-        if (team == Team.RED) {
-            return arena.redTeamMeta
-        } else if (team == Team.BLUE) {
-            return arena.blueTeamMeta
-        }
-
-        throw RuntimeException("Team $team not found!")
-    }
-
-    private fun sendMessageToPlayers(message: String) {
+    /**
+     * Sends a message to all players in game.
+     */
+    override fun sendMessageToPlayers(message: String) {
         if (message.isEmpty()) {
             return
         }
@@ -439,7 +459,33 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
         }
     }
 
-    private fun sendTitleMessageToPlayers(title : String? = null, subTitle : String? = null){
+    /**
+     * Gets the team from a player.
+     * Throws an exception if the player isn't in this game.
+     */
+    override fun getTeamFromPlayer(player: Player): Team {
+        if (teamBluePlayers.contains(player)) {
+            return Team.BLUE
+        }
+
+        if (teamRedPlayers.contains(player)) {
+            return Team.RED
+        }
+
+        throw RuntimeException("Team of ${player.name} not found!")
+    }
+
+    private fun getTeamMetaFromTeam(team: Team): TeamMetadata {
+        if (team == Team.RED) {
+            return arena.redTeamMeta
+        } else if (team == Team.BLUE) {
+            return arena.blueTeamMeta
+        }
+
+        throw RuntimeException("Team $team not found!")
+    }
+
+    private fun sendTitleMessageToPlayers(title: String? = null, subTitle: String? = null) {
         for (player in teamRedPlayers) {
             player.sendTitle(title, subTitle, 10, 70, 20)
         }

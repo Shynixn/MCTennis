@@ -86,7 +86,7 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
                 return (game.gameState == GameState.RUNNING_SERVING || game.gameState == GameState.RUNNING_PLAYING).toString()
             }
             if (parts[1].equals(PlaceHolder.GAME_JOINABLE.text, true)) {
-                return (game.gameState == GameState.LOBBY).toString()
+                return (game.gameState == GameState.LOBBY_IDLE || game.gameState == GameState.LOBBY_COUNTDOWN).toString()
             }
             if (parts[1].equals(PlaceHolder.GAME_DISPLAYNAME.text, true)) {
                 return game.arena.displayName

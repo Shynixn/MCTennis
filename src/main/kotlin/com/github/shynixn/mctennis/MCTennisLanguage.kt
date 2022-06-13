@@ -16,14 +16,11 @@ object MCTennisLanguage {
   /** [&9MCTennis&f] Game is starting in %1$1d seconds. **/
   var gameStartingMessage : String = "[&9MCTennis&f] Game is starting in %1$1d seconds."
 
-  /** [&9MCTennis&f] Player %1$1s has scored for team %1$2s. **/
-  var playerScoredMessage : String = "[&9MCTennis&f] Player %1$1s has scored for team %1$2s."
+  /** [&9MCTennis&f] Player %1$1s has scored for team %2$1s. **/
+  var playerScoredMessage : String = "[&9MCTennis&f] Player %1$1s has scored for team %2$1s."
 
   /** [&9MCTennis&f] Reloaded game %1$1s. **/
   var reloadedGameMessage : String = "[&9MCTennis&f] Reloaded game %1$1s."
-
-  /** %1$1s - %2$1s [enabled:%2$1s] **/
-  var listArenaMessage : String = "%1$1s - %2$1s [enabled:%2$1s]"
 
   /** [&9MCTennis&f] Successfully joined team %1$1s. **/
   var joinedTeamSuccessMessage : String = "[&9MCTennis&f] Successfully joined team %1$1s."

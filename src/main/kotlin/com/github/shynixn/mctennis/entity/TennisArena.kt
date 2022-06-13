@@ -74,5 +74,5 @@ class TennisArena : Arena {
     var leaveCommands: List<CommandMeta> = ArrayList()
 
     @JsonProperty("ball")
-    var ballSettings  : TennisBallSettings = TennisBallSettings()
+    var ballSettings: TennisBallSettings = TennisBallSettings()
 }

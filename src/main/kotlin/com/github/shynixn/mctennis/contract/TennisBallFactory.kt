@@ -7,5 +7,5 @@ interface TennisBallFactory {
     /**
      * Create a new tennis ball.
      */
-    fun createTennisBall(location: Location, settings: TennisBallSettings): TennisBall
+    fun createTennisBall(location: Location, game : TennisGame, settings: TennisBallSettings): TennisBall
 }

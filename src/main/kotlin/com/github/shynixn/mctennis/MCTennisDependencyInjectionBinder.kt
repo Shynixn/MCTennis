@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TennisArena
-import com.github.shynixn.mctennis.impl.TennisBallFactoryImpl
+import com.github.shynixn.mctennis.impl.service.TennisBallFactoryImpl
 import com.github.shynixn.mctennis.impl.service.GameServiceImpl
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
