@@ -8,16 +8,9 @@ import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
-import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
-import com.github.shynixn.mcutils.ball.api.Ball
-import com.github.shynixn.mcutils.ball.api.BallService
-import com.github.shynixn.mcutils.ball.api.BallSettings
-import com.github.shynixn.mcutils.ball.impl.BallServiceImpl
 import com.github.shynixn.mcutils.common.ConfigurationService
-import com.github.shynixn.mcutils.common.item
 import com.github.shynixn.mcutils.common.reloadTranslation
-import com.github.shynixn.mcutils.common.toItemStack
 import com.google.inject.Inject
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -31,10 +24,8 @@ class MCTennisCommandExecutor @Inject constructor(
     private val arenaRepository: CacheArenaRepository<TennisArena>,
     private val gameService: GameService,
     private val plugin: Plugin,
-    private val configurationService: ConfigurationService,
-    private val ballService: BallService
+    private val configurationService: ConfigurationService
 ) : SuspendingCommandExecutor, SuspendingTabCompleter {
-    private var ball: Ball? = null
 
     /**
      * Executes the given command, returning its success.
@@ -71,19 +62,6 @@ class MCTennisCommandExecutor @Inject constructor(
 
         if (args.size == 1 && args[0].equals("list", true)) {
             listArena(sender)
-
-            if (ball != null) {
-                ball!!.remove()
-            }
-            val itemStack = item {
-                this.typeName = "PLAYER_HEAD"
-                this.nbt =
-                    "{SkullOwner:{Id:[I;1,1,1,1],Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU0YTcwYjdiYmNkN2E4YzMyMmQ1MjI1MjA0OTFhMjdlYTZiODNkNjBlY2Y5NjFkMmI0ZWZiYmY5ZjYwNWQifX19\"}]}}}"
-            }.toItemStack()
-
-            require(sender is Player)
-            ballService.spawnBall(sender.location, BallSettings(itemStack))
-
             return true
         }
 

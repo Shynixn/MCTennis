@@ -1,6 +1,7 @@
 package com.github.shynixn.mctennis.impl.service
 
 import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.impl.TennisGame
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
@@ -10,6 +11,7 @@ import org.bukkit.plugin.Plugin
 
 class GameServiceImpl @Inject constructor(
     private val arenaRepository: ArenaRepository<TennisArena>,
+    private val tennisBallFactory: TennisBallFactory,
     private val plugin: Plugin
 ) : GameService {
     private val games = ArrayList<TennisGame>()
@@ -39,7 +41,7 @@ class GameServiceImpl @Inject constructor(
         }
 
         if (arena.isEnabled) {
-            val tennisGame = TennisGame(arena)
+            val tennisGame = TennisGame(arena, tennisBallFactory)
             tennisGame.plugin = plugin
             games.add(tennisGame)
         }

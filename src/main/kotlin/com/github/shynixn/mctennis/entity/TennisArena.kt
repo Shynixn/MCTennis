@@ -1,6 +1,7 @@
 package com.github.shynixn.mctennis.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.github.shynixn.mcutils.arena.api.Arena
 import com.github.shynixn.mcutils.common.Vector3d
@@ -71,4 +72,7 @@ class TennisArena : Arena {
      * Commands executed on player leave.
      */
     var leaveCommands: List<CommandMeta> = ArrayList()
+
+    @JsonProperty("ball")
+    var ballSettings  : TennisBallSettings = TennisBallSettings()
 }

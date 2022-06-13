@@ -2,21 +2,23 @@ package com.github.shynixn.mctennis.impl
 
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.MCTennisLanguage
+import com.github.shynixn.mctennis.contract.TennisBall
+import com.github.shynixn.mctennis.contract.TennisBallFactory
+import com.github.shynixn.mctennis.entity.CommandMeta
 import com.github.shynixn.mctennis.entity.PlayerData
+import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
-import com.github.shynixn.mctennis.enumeration.GameState
-import com.github.shynixn.mctennis.enumeration.JoinResult
-import com.github.shynixn.mctennis.enumeration.LeaveResult
-import com.github.shynixn.mctennis.enumeration.Team
-import com.github.shynixn.mcutils.ball.api.Ball
+import com.github.shynixn.mctennis.enumeration.*
+import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
 import java.util.*
 
-class TennisGame(val arena: TennisArena) {
+class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactory) {
     companion object {
         private val random = Random()
     }
@@ -49,7 +51,7 @@ class TennisGame(val arena: TennisArena) {
     /**
      * Tennis ball.
      */
-    var ball: Ball? = null
+    var ball: TennisBall? = null
 
     /**
      * Player who was the last one to hit the ball.
@@ -132,6 +134,7 @@ class TennisGame(val arena: TennisArena) {
             }
         }
 
+        executeCommand(arena.joinCommands, listOf(player))
         return joinResult
     }
 
@@ -142,6 +145,8 @@ class TennisGame(val arena: TennisArena) {
         if (!cachedData.containsKey(player)) {
             return LeaveResult.NOT_IN_MATCH
         }
+
+        executeCommand(arena.leaveCommands, listOf(player))
 
         // Restore armor contents
         val playerData = cachedData[player]!!
@@ -179,17 +184,9 @@ class TennisGame(val arena: TennisArena) {
 
         sendMessageToPlayers(MCTennisLanguage.playerScoredMessage.format(player.name, team.name))
         delay(3000)
-
-        for (i in 0 until teamRedPlayers.size) {
-            val teamPlayer = teamRedPlayers[i]
-            val spawnpoint = arena.redTeamMeta.spawnpoints[i]
-            teamPlayer.teleport(spawnpoint.toLocation())
-        }
-        for (i in 0 until teamBluePlayers.size) {
-            val teamPlayer = teamBluePlayers[i]
-            val spawnpoint = arena.blueTeamMeta.spawnpoints[i]
-            teamPlayer.teleport(spawnpoint.toLocation())
-        }
+        ball?.remove()
+        ball = null
+        gameState = GameState.RUNNING_SERVING
     }
 
     /**
@@ -216,16 +213,7 @@ class TennisGame(val arena: TennisArena) {
         }
 
         // Move to arena.
-        for (i in 0 until teamRedPlayers.size) {
-            val player = teamRedPlayers[i]
-            val spawnpoint = arena.redTeamMeta.spawnpoints[i]
-            player.teleport(spawnpoint.toLocation())
-        }
-        for (i in 0 until teamBluePlayers.size) {
-            val player = teamBluePlayers[i]
-            val spawnpoint = arena.blueTeamMeta.spawnpoints[i]
-            player.teleport(spawnpoint.toLocation())
-        }
+        teleportPlayersToSpawnpoint()
 
         // Store cache data.
         delay(250)
@@ -282,17 +270,38 @@ class TennisGame(val arena: TennisArena) {
             }
 
             if (teamBluePlayers.size == 0) {
-             //  TODO: winTeam(Team.RED)
-              //  return
+                //  TODO: winTeam(Team.RED)
+                //  return
             }
 
             if (teamRedPlayers.size == 0) {
-             //   TODO winTeam(Team.BLUE)
-              //  return
+                //   TODO winTeam(Team.BLUE)
+                //  return
+            }
+
+            if (gameState == GameState.RUNNING_SERVING) {
+                setBallForServingTeam(servingTeam)
             }
 
             delay(1000L)
         }
+    }
+
+    private suspend fun setBallForServingTeam(team: Team) {
+        teleportPlayersToSpawnpoint()
+
+        val teamMetaData = getTeamMetaFromTeam(team)
+        // Spawnpoint 0 is always serving.
+        val spawnpoint = teamMetaData.spawnpoints[0]
+        val ballspawnpoint = spawnpoint.clone().addRelativeFront(2.0).addRelativeUp(0.5)
+
+        ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), arena.ballSettings)
+
+        delay(500)
+        sendMessageToPlayers("Ready?")
+        delay(1500)
+        ball!!.setVelocity(Vector3d(x = 0.0, y = 0.5, z = 0.0))
+        gameState = GameState.RUNNING_PLAYING
     }
 
     /**
@@ -332,6 +341,7 @@ class TennisGame(val arena: TennisArena) {
         teamBluePlayers.clear()
         cachedData.clear()
         isDisposed = true
+        ball?.remove()
     }
 
     /**
@@ -342,6 +352,19 @@ class TennisGame(val arena: TennisArena) {
         players.addAll(teamBluePlayers)
         players.addAll(teamRedPlayers)
         return players
+    }
+
+    private fun teleportPlayersToSpawnpoint() {
+        for (i in 0 until teamRedPlayers.size) {
+            val player = teamRedPlayers[i]
+            val spawnpoint = arena.redTeamMeta.spawnpoints[i]
+            player.teleport(spawnpoint.toLocation())
+        }
+        for (i in 0 until teamBluePlayers.size) {
+            val player = teamBluePlayers[i]
+            val spawnpoint = arena.blueTeamMeta.spawnpoints[i]
+            player.teleport(spawnpoint.toLocation())
+        }
     }
 
     private fun sendMessageToPlayers(message: String) {
@@ -377,6 +400,39 @@ class TennisGame(val arena: TennisArena) {
         val redScore = getScore(redTeamCounter)
         val blueScore = getScore(blueTeamCounter)
         return "$redScore - $blueScore"
+    }
+
+    private fun executeCommand(commandMetas: List<CommandMeta>, players: List<Player>) {
+        for (commandMeta in commandMetas) {
+            when (commandMeta.type) {
+                CommandType.SERVER -> {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandMeta.command)
+                }
+                CommandType.SERVER_PER_PLAYER -> {
+                    for (player in players) {
+                        Bukkit.dispatchCommand(
+                            Bukkit.getConsoleSender(),
+                            commandMeta.command.replace("%player_name%", player.name)
+                        )
+                    }
+                }
+                CommandType.PER_PLAYER -> {
+                    for (player in players) {
+                        Bukkit.dispatchCommand(player, commandMeta.command.replace("%player_name%", player.name))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getTeamMetaFromTeam(team: Team): TeamMetadata {
+        if (team == Team.RED) {
+            return arena.redTeamMeta
+        } else if (team == Team.BLUE) {
+            return arena.blueTeamMeta
+        }
+
+        throw RuntimeException("Team $team not found!")
     }
 
     private fun getScore(points: Int): String {

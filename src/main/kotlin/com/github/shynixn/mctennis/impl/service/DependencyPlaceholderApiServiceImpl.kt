@@ -62,18 +62,14 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
         try {
             val parts = s.split("_")
 
-            if (parts[0].equals("global", true)) {
+            if (parts[0].equals("global", true) && player != null) {
                 // All global placeholders.
                 if (parts[1].equals(PlaceHolder.PLAYER_ISINGAME.text, true)) {
-                    return (gameService.getAll()
-                        .firstOrNull { e -> e.getPlayers().contains(player) } != null).toString()
+                    return (gameService.getByPlayer(player) != null).toString()
                 }
             }
-            val game = if (parts[0].equals("currentGame", true)) {
-                val game = gameService.getAll().firstOrNull { e -> e.getPlayers().contains(player) }
-                if (game == null) {
-                    return null
-                }
+            val game = if (parts[0].equals("currentGame", true) && player != null) {
+                val game = gameService.getByPlayer(player) ?: return null
                 game
             } else {
                 val name = parts[0]
@@ -87,7 +83,7 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
                 return game.arena.isEnabled.toString()
             }
             if (parts[1].equals(PlaceHolder.GAME_STARTED.text, true)) {
-                return (game.gameState == GameState.RUNNING).toString()
+                return (game.gameState == GameState.RUNNING_SERVING || game.gameState == GameState.RUNNING_PLAYING).toString()
             }
             if (parts[1].equals(PlaceHolder.GAME_JOINABLE.text, true)) {
                 return (game.gameState == GameState.LOBBY).toString()

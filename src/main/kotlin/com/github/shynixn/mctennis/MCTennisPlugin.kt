@@ -13,13 +13,12 @@ import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
 import com.github.shynixn.mctennis.impl.listener.GameListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
-import com.github.shynixn.mctennis.impl.service.DependencyPlaceholderApiServiceImpl
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
-import com.github.shynixn.mcutils.ball.api.BallService
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.Version
 import com.github.shynixn.mcutils.common.reloadTranslation
+import com.github.shynixn.mcutils.physicobject.api.PhysicObjectService
 import com.google.inject.Guice
 import com.google.inject.Injector
 import org.bukkit.Bukkit
@@ -102,7 +101,7 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
      * Called when this plugin is disabled
      */
     override fun onDisable() {
-        val ballService = resolve(BallService::class.java)
+        val ballService = resolve(PhysicObjectService::class.java)
         ballService.close()
         val gameService = resolve(GameService::class.java)
         gameService.dispose()
