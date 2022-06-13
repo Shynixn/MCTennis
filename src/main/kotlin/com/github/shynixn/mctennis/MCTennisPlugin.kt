@@ -13,6 +13,7 @@ import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
 import com.github.shynixn.mctennis.impl.listener.GameListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
+import com.github.shynixn.mctennis.impl.service.DependencyPlaceholderApiServiceImpl
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.Vector3d
@@ -27,7 +28,7 @@ import java.util.logging.Level
 
 class MCTennisPlugin : SuspendingJavaPlugin() {
     companion object {
-        private val prefix: String = ChatColor.BLUE.toString() + "[MCTennis] " + ChatColor.WHITE
+        val prefix: String = ChatColor.BLUE.toString() + "[MCTennis] " + ChatColor.WHITE
     }
 
     private var injector: Injector? = null
@@ -75,7 +76,7 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
 
         // Register Dependencies
         if (Bukkit.getPluginManager().getPlugin(PluginDependency.PLACEHOLDERAPI.pluginName) != null) {
-            val placeHolderApi = resolve(DependencyPlaceholderApiService::class.java)
+            val placeHolderApi = DependencyPlaceholderApiServiceImpl(this, resolve(GameService::class.java))
             placeHolderApi.registerListener()
             logger.log(Level.INFO, "Loaded dependency ${PluginDependency.PLACEHOLDERAPI.pluginName}.")
         }

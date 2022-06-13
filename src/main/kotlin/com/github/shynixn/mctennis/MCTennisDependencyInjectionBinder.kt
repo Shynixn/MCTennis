@@ -1,12 +1,10 @@
 package com.github.shynixn.mctennis
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.github.shynixn.mctennis.contract.DependencyPlaceholderApiService
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.impl.TennisBallFactoryImpl
-import com.github.shynixn.mctennis.impl.service.DependencyPlaceholderApiServiceImpl
 import com.github.shynixn.mctennis.impl.service.GameServiceImpl
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
@@ -49,7 +47,5 @@ class MCTennisDependencyInjectionBinder(private val plugin: MCTennisPlugin) : Ab
         bind(ItemService::class.java).toInstance(ItemServiceImpl())
         bind(GameService::class.java).to(GameServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(TennisBallFactory::class.java).to(TennisBallFactoryImpl::class.java).`in`(Scopes.SINGLETON)
-        bind(DependencyPlaceholderApiService::class.java).to(DependencyPlaceholderApiServiceImpl::class.java)
-            .`in`(Scopes.SINGLETON)
     }
 }

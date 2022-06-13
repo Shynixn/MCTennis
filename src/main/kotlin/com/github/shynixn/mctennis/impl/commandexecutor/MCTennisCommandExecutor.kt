@@ -3,14 +3,18 @@ package com.github.shynixn.mctennis.impl.commandexecutor
 import com.github.shynixn.mccoroutine.bukkit.SuspendingCommandExecutor
 import com.github.shynixn.mccoroutine.bukkit.SuspendingTabCompleter
 import com.github.shynixn.mctennis.MCTennisLanguage
+import com.github.shynixn.mctennis.MCTennisPlugin
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
+import com.github.shynixn.mctennis.impl.TennisArenaException
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
 import com.github.shynixn.mcutils.common.ConfigurationService
+import com.github.shynixn.mcutils.common.chat.ChatColor
 import com.github.shynixn.mcutils.common.reloadTranslation
+import com.github.shynixn.mcutils.common.translateChatColors
 import com.google.inject.Inject
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -108,14 +112,16 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (args.size == 1 && args[0].equals("help", true)) {
-            sender.sendMessage("/mctennis create <name> <displayName>")
-            sender.sendMessage("/mctennis delete <name>")
-            sender.sendMessage("/mctennis list")
-            sender.sendMessage("/mctennis inventory <name> <red/blue>")
-            sender.sendMessage("/mctennis armor <name> <red/blue>")
-            sender.sendMessage("/mctennis join <name>")
-            sender.sendMessage("/mctennis leave")
-            sender.sendMessage("/mctennis reload")
+            sender.sendMessage("---------MCTennis---------")
+            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis create <name> <displayName>")
+            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis delete <name>")
+            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis list")
+            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis inventory <name> <red/blue>")
+            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis armor <name> <red/blue>")
+            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis join <name>")
+            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis leave")
+            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis reload")
+            sender.sendMessage("----------┌1/1┐----------")
             return true
         }
 
@@ -139,7 +145,7 @@ class MCTennisCommandExecutor @Inject constructor(
     ): List<String> {
         if (args.size == 1) {
             if (sender.hasPermission(Permission.EDIT_GAME.permissionString)) {
-                return arrayListOf("create", "delete", "list", "join", "leave", "reload")
+                return arrayListOf("create", "delete", "list", "join", "leave", "reload", "help", "inventory")
             }
 
             return arrayListOf("join", "leave")
@@ -207,9 +213,18 @@ class MCTennisCommandExecutor @Inject constructor(
     private suspend fun listArena(sender: CommandSender) {
         val existingArenas = arenaRepository.getAll()
 
+        sender.sendMessage("---------MCTennis---------")
         for (arena in existingArenas) {
-            sender.sendMessage(MCTennisLanguage.listArenaMessage.format(arena.name, arena.displayName))
+            if (arena.isEnabled) {
+                sender.sendMessage(ChatColor.GRAY.toString() + arena.name + " [${arena.displayName.translateChatColors()}" + ChatColor.GRAY + "] " + ChatColor.GREEN + "[enabled]")
+            } else {
+                sender.sendMessage(ChatColor.GRAY.toString() + arena.name + " [${arena.displayName.translateChatColors()}" + ChatColor.GRAY + "] " + ChatColor.RED + "[disabled]")
+
+            }
+
+            sender.sendMessage()
         }
+        sender.sendMessage("----------┌1/1┐----------")
     }
 
     private suspend fun deleteArena(sender: CommandSender, name: String) {
@@ -233,8 +248,11 @@ class MCTennisCommandExecutor @Inject constructor(
             return
         }
 
-        arenaRepository.generateTemplate(name, displayName)
-        sender.sendMessage(MCTennisLanguage.gameCreatedMessage)
+        val arena = TennisArena()
+        arena.name = name
+        arena.displayName = displayName
+        arenaRepository.save(arena)
+        sender.sendMessage(MCTennisLanguage.gameCreatedMessage.format(arena.name))
     }
 
     private suspend fun reloadArena(sender: CommandSender, name: String?) {
@@ -244,7 +262,15 @@ class MCTennisCommandExecutor @Inject constructor(
             plugin.reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
             plugin.logger.log(Level.INFO, "Loaded language file $language.properties.")
             arenaRepository.clearCache()
-            gameService.reloadAll()
+
+            try {
+                gameService.reloadAll()
+            } catch (e: TennisArenaException) {
+                sender.sendMessage(MCTennisPlugin.prefix + ChatColor.RED.toString() + "Failed to reload arena ${e.arena.name}.")
+                sender.sendMessage(MCTennisPlugin.prefix + e.message)
+                return
+            }
+
             sender.sendMessage(MCTennisLanguage.reloadedAllGamesMessage)
             return
         }
@@ -256,7 +282,13 @@ class MCTennisCommandExecutor @Inject constructor(
             return
         }
 
-        gameService.reload(arena)
+        try {
+            gameService.reload(arena)
+        } catch (e: TennisArenaException) {
+            sender.sendMessage(MCTennisPlugin.prefix + ChatColor.RED.toString() + "Failed to reload arena ${e.arena.name}.")
+            sender.sendMessage(MCTennisPlugin.prefix + e.message)
+            return
+        }
         sender.sendMessage(MCTennisLanguage.reloadedGameMessage.format(name))
         return
     }

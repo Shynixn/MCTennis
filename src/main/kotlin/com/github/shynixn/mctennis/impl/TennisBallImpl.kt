@@ -43,6 +43,11 @@ class TennisBallImpl(
         }
 
     /**
+     * Allows clicking the ball.
+     */
+    override var allowLeftClick: Boolean = false
+
+    /**
      * Sets the velocity in the world.
      */
     override fun setVelocity(vector: Vector3d) {
@@ -53,6 +58,10 @@ class TennisBallImpl(
      * LeftClick on the physic object.
      */
     override fun leftClick(player: Player) {
+        if (!allowLeftClick) {
+            return
+        }
+
         val current = Date().time
         val timeDif = current - lastClick
 

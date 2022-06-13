@@ -12,6 +12,7 @@ import com.github.shynixn.mctennis.enumeration.*
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
+import net.md_5.bungee.api.ChatMessageType
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -298,9 +299,10 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
         ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), arena.ballSettings)
 
         delay(500)
-        sendMessageToPlayers("Ready?")
+        sendTitleMessageToPlayers("Ready?", "")
         delay(1500)
         ball!!.setVelocity(Vector3d(x = 0.0, y = 0.5, z = 0.0))
+        ball!!.allowLeftClick = true
         gameState = GameState.RUNNING_PLAYING
     }
 
@@ -367,18 +369,7 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
         }
     }
 
-    private fun sendMessageToPlayers(message: String) {
-        if (message.isEmpty()) {
-            return
-        }
 
-        for (player in teamRedPlayers) {
-            player.sendMessage(message)
-        }
-        for (player in teamBluePlayers) {
-            player.sendMessage(message)
-        }
-    }
 
     /**
      * Gets the tennis score for correct cases.
@@ -433,6 +424,28 @@ class TennisGame(val arena: TennisArena, val tennisBallFactory: TennisBallFactor
         }
 
         throw RuntimeException("Team $team not found!")
+    }
+
+    private fun sendMessageToPlayers(message: String) {
+        if (message.isEmpty()) {
+            return
+        }
+
+        for (player in teamRedPlayers) {
+            player.sendMessage(message)
+        }
+        for (player in teamBluePlayers) {
+            player.sendMessage(message)
+        }
+    }
+
+    private fun sendTitleMessageToPlayers(title : String? = null, subTitle : String? = null){
+        for (player in teamRedPlayers) {
+            player.sendTitle(title, subTitle, 10, 70, 20)
+        }
+        for (player in teamBluePlayers) {
+            player.sendTitle(title, subTitle, 10, 70, 20)
+        }
     }
 
     private fun getScore(points: Int): String {

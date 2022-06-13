@@ -8,10 +8,11 @@ import com.github.shynixn.mcutils.physicobject.api.MathComponentSettings
 import com.github.shynixn.mcutils.physicobject.api.PhysicObjectService
 import com.github.shynixn.mcutils.physicobject.api.PlayerComponentSettings
 import com.github.shynixn.mcutils.physicobject.api.component.*
+import com.google.inject.Inject
 import org.bukkit.Location
 import org.bukkit.plugin.Plugin
 
-class TennisBallFactoryImpl(private val physicObjectService: PhysicObjectService, private val plugin: Plugin) :
+class TennisBallFactoryImpl @Inject constructor(private val physicObjectService: PhysicObjectService, private val plugin: Plugin) :
     TennisBallFactory {
     /**
      * Create a new tennis ball.

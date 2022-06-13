@@ -3,6 +3,7 @@ package com.github.shynixn.mctennis.impl.service
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TennisArena
+import com.github.shynixn.mctennis.impl.TennisArenaException
 import com.github.shynixn.mctennis.impl.TennisGame
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.google.inject.Inject
@@ -41,6 +42,7 @@ class GameServiceImpl @Inject constructor(
         }
 
         if (arena.isEnabled) {
+            validateGame(arena)
             val tennisGame = TennisGame(arena, tennisBallFactory)
             tennisGame.plugin = plugin
             games.add(tennisGame)
@@ -89,5 +91,23 @@ class GameServiceImpl @Inject constructor(
         }
 
         games.clear()
+    }
+
+    private fun validateGame(arena: TennisArena) {
+        if (arena.leaveSpawnpoint.isEmpty()) {
+            throw TennisArenaException(arena, "Set the leave spawnpoint values in arena ${arena.name}!")
+        }
+        if (arena.redTeamMeta.lobbySpawnpoint.isEmpty()) {
+            throw TennisArenaException(arena, "Set the lobby spawnpoint of team red in arena ${arena.name}!")
+        }
+        if (arena.redTeamMeta.spawnpoints.firstOrNull() == null || arena.redTeamMeta.spawnpoints.first().isEmpty()) {
+            throw TennisArenaException(arena, "Set the first spawnpoint of team red in arena ${arena.name}!")
+        }
+        if (arena.blueTeamMeta.lobbySpawnpoint.isEmpty()) {
+            throw TennisArenaException(arena, "Set the lobby spawnpoint of team blue in arena ${arena.name}!")
+        }
+        if (arena.blueTeamMeta.spawnpoints.firstOrNull() == null || arena.blueTeamMeta.spawnpoints.first().isEmpty()) {
+            throw TennisArenaException(arena, "Set the first spawnpoint of team blue in arena ${arena.name}!")
+        }
     }
 }
