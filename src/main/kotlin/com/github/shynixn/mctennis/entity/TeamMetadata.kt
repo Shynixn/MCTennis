@@ -45,4 +45,19 @@ class TeamMetadata {
      * ItemStacks during the game.
      */
     var armorInventoryContents: Array<Map<String, Any>?> = emptyArray()
+
+    /**
+     * Commands executed on player win.
+     */
+    var winCommands: List<CommandMeta> = ArrayList()
+
+    /**
+     * Commands executed on player loose.
+     */
+    var looseCommands: List<CommandMeta> = ArrayList()
+
+    /**
+     * Commands executed on player raw.
+     */
+    var drawCommands: List<CommandMeta> = ArrayList()
 }

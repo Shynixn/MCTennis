@@ -3,8 +3,10 @@ package com.github.shynixn.mctennis.impl.service
 import com.github.shynixn.mctennis.MCTennisLanguage
 import com.github.shynixn.mctennis.contract.DependencyPlaceholderApiService
 import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.enumeration.GameState
 import com.github.shynixn.mctennis.enumeration.PlaceHolder
+import com.github.shynixn.mctennis.enumeration.Team
 import com.google.inject.Inject
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import org.bukkit.entity.Player
@@ -97,10 +99,62 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
             if (parts[1].equals(PlaceHolder.GAME_ISTEAMBLUEPLAYER.text, true)) {
                 return game.teamBluePlayers.contains(player).toString()
             }
-
+            if (parts[1].equals(PlaceHolder.GAME_RAWSCORETEAMRED.text, true)) {
+                return game.teamRedScore.toString()
+            }
+            if (parts[1].equals(PlaceHolder.GAME_RAWSCORETEAMBLUE.text, true)) {
+                return game.teamBlueScore.toString()
+            }
+            if (parts[1].equals(PlaceHolder.GAME_SCORE.text, true)) {
+                return getFullScoreText(game)
+            }
+            if (parts[1].equals(PlaceHolder.GAME_SETSCORETEAMRED.text, true)) {
+                return game.teamRedSetScore.toString()
+            }
+            if (parts[1].equals(PlaceHolder.GAME_SETSCORETEAMBLUE.text, true)) {
+                return game.teamBlueSetScore.toString()
+            }
         } catch (ignored: Exception) {
         }
 
         return null
+    }
+
+    private fun getFullScoreText(game: TennisGame): String {
+        if (game.teamRedScore == 3 && game.teamBlueScore == 3) {
+            return "Deuce"
+        }
+
+        if (game.teamRedScore >= 3 && game.teamBlueScore >= 3) {
+            return if (game.servingTeam == Team.RED && game.teamRedScore > game.teamBlueScore) {
+                "Ad-In"
+            } else if (game.servingTeam == Team.BLUE && game.teamBlueScore > game.teamRedScore) {
+                "Ad-In"
+            } else {
+                "Ad-Out"
+            }
+        }
+
+        val redScore = getScore(game.teamRedScore)
+        val blueScore = getScore(game.teamBlueScore)
+        return "$redScore - $blueScore"
+    }
+
+    private fun getScore(points: Int): String {
+        return when (points) {
+            0 -> {
+                "0"
+            }
+            1 -> {
+                "15"
+            }
+            2 -> {
+                "30"
+            }
+            3 -> {
+                "40"
+            }
+            else -> throw RuntimeException("Score $points cannot be converted!")
+        }
     }
 }

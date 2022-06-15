@@ -39,6 +39,31 @@ interface TennisGame {
     val teamBluePlayers: List<Player>
 
     /**
+     * Score.
+     */
+    val teamRedScore: Int
+
+    /**
+     * Score.
+     */
+    val teamBlueScore: Int
+
+    /**
+     * Amount of won sets.
+     */
+    val teamRedSetScore: Int
+
+    /**
+     * Amount of won sets.
+     */
+    val teamBlueSetScore: Int
+
+    /**
+     * Gets the team who is serving.
+     */
+    val servingTeam: Team
+
+    /**
      * Gets the team from a player.
      * Throws an exception if the player isn't in this game.
      */

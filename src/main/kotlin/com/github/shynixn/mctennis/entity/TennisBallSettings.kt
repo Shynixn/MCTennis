@@ -77,4 +77,14 @@ class TennisBallSettings {
      * Minimum amount of cooldown milliseconds between two clicks.
      */
     var clickCooldown: Int = 250
+
+    /**
+     * Sets the slime visible or not.
+     */
+    var isSlimeVisible: Boolean = false
+
+    /**
+     * Is the armorstand visible.
+     */
+    var isArmorstandVisible: Boolean = false
 }

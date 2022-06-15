@@ -14,7 +14,10 @@ import com.google.inject.Inject
 import org.bukkit.Location
 import org.bukkit.plugin.Plugin
 
-class TennisBallFactoryImpl @Inject constructor(private val physicObjectService: PhysicObjectService, private val plugin: Plugin) :
+class TennisBallFactoryImpl @Inject constructor(
+    private val physicObjectService: PhysicObjectService,
+    private val plugin: Plugin
+) :
     TennisBallFactory {
     /**
      * Create a new tennis ball.
@@ -46,10 +49,15 @@ class TennisBallFactoryImpl @Inject constructor(private val physicObjectService:
 
         val armorStandEntityId = physicObjectService.createNewEntityId()
         val slimeEntityId = physicObjectService.createNewEntityId()
-        val armorstandEntityComponent =
+
+        val armorstandEntityComponent = if (settings.isArmorstandVisible) {
             ArmorstandEntityComponent(mathPhysicComponent, playerComponent, armorStandEntityId)
+        } else {
+            null
+        }
+
         val slimeEntity =
-            SlimeEntityComponent(mathPhysicComponent, playerComponent, slimeEntityId, settings.clickHitBoxSize)
+            SlimeEntityComponent(mathPhysicComponent, playerComponent, slimeEntityId, settings.clickHitBoxSize, false)
 
         val ball = TennisBallImpl(
             mathPhysicComponent,

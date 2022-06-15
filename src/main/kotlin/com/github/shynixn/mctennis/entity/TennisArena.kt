@@ -44,6 +44,11 @@ class TennisArena : Arena {
     var gameTime: Int = 300
 
     /**
+     * Amount of sets to win the entire game.
+     */
+    var setsToWin: Int = 3
+
+    /**
      * Leave spawnpoint.
      */
     @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))

@@ -2,14 +2,17 @@ package com.github.shynixn.mctennis.impl
 
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.MCTennisLanguage
+import com.github.shynixn.mctennis.contract.CommandService
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.contract.TennisGame
-import com.github.shynixn.mctennis.entity.CommandMeta
 import com.github.shynixn.mctennis.entity.PlayerData
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
-import com.github.shynixn.mctennis.enumeration.*
+import com.github.shynixn.mctennis.enumeration.GameState
+import com.github.shynixn.mctennis.enumeration.JoinResult
+import com.github.shynixn.mctennis.enumeration.LeaveResult
+import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.event.GameEndEvent
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
@@ -19,12 +22,12 @@ import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
-import java.util.*
 
 class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: TennisBallFactory) : TennisGame {
-    private var redTeamCounter = 0
-    private var blueTeamCounter = 0
-    private var servingTeam = Team.RED
+    companion object {
+        private val random = java.util.Random()
+    }
+
     private var isDisposed = false
 
     /**
@@ -36,6 +39,11 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
      * Dependency.
      */
     lateinit var plugin: Plugin
+
+    /**
+     * Dependency.
+     */
+    lateinit var commandService: CommandService
 
     /**
      * All Players.
@@ -67,6 +75,36 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
      */
     override val teamBluePlayers = ArrayList<Player>()
 
+    /**
+     * Score.
+     */
+    override var teamRedScore: Int = 0
+
+    /**
+     * Score.
+     */
+    override var teamBlueScore: Int = 0
+
+    /**
+     * Amount of won sets.
+     */
+    override var teamRedSetScore: Int = 0
+
+    /**
+     * Amount of won sets.
+     */
+    override var teamBlueSetScore: Int = 0
+
+    /**
+     * Gets the team who is serving.
+     */
+    override var servingTeam: Team = Team.RED
+
+    init {
+        if (random.nextInt(100) < 50) {
+            servingTeam = Team.BLUE
+        }
+    }
 
     /**
      * Joins the given player.
@@ -124,7 +162,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             }
         }
 
-        executeCommand(arena.joinCommands, listOf(player))
+        commandService.executeCommands(listOf(player), arena.joinCommands)
         return joinResult
     }
 
@@ -136,7 +174,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             return LeaveResult.NOT_IN_MATCH
         }
 
-        executeCommand(arena.leaveCommands, listOf(player))
+        commandService.executeCommands(listOf(player), arena.leaveCommands)
 
         // Restore armor contents
         val playerData = cachedData[player]!!
@@ -170,9 +208,9 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         ball!!.allowActions = false
 
         if (team == Team.RED) {
-            redTeamCounter++
+            teamRedScore++
         } else {
-            blueTeamCounter++
+            teamBlueScore++
         }
 
         plugin.launch {
@@ -183,10 +221,10 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             ball = null
             gameState = GameState.RUNNING_SERVING
 
-            if (redTeamCounter > 4 && redTeamCounter - blueTeamCounter >= 2) {
-                winTeam(Team.RED)
-            } else if (blueTeamCounter > 4 && blueTeamCounter - redTeamCounter >= 2) {
-                winTeam(Team.BLUE)
+            if (teamRedScore > 4 && teamRedScore - teamBlueScore >= 2) {
+                winSet(Team.RED)
+            } else if (teamBlueScore > 4 && teamBlueScore - teamRedScore >= 2) {
+                winSet(Team.BLUE)
             }
         }
     }
@@ -316,19 +354,61 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
     }
 
     /**
+     * Gets called when a team has won the set.
+     */
+    private suspend fun winSet(team: Team) {
+        gameState = GameState.ENDING
+        when (team) {
+            Team.RED -> {
+                teamRedSetScore++
+                sendMessageToPlayers("Team red has won this set.")
+            }
+            else -> {
+                teamBlueSetScore++
+                sendMessageToPlayers("Team blue has won this set.")
+            }
+        }
+
+        delay(5000)
+
+        if (team == Team.RED && teamRedSetScore >= this.arena.setsToWin) {
+            winGame(team)
+            return
+        } else if (team == Team.BLUE && teamBlueSetScore >= this.arena.setsToWin) {
+            winGame(team)
+            return
+        }
+
+        teamRedScore = 0
+        teamBlueScore = 0
+        sendMessageToPlayers("Switching service.")
+        servingTeam = if (servingTeam == Team.RED) {
+            Team.BLUE
+        } else {
+            Team.RED
+        }
+        gameState = GameState.RUNNING_SERVING
+    }
+
+    /**
      * Gets called when a team has won the game.
      */
-    private suspend fun winTeam(team: Team? = null) {
-        gameState = GameState.ENDING
+    private suspend fun winGame(team: Team? = null) {
         when (team) {
             null -> {
                 sendMessageToPlayers("Game has ended in a draw.")
+                commandService.executeCommands(teamRedPlayers, arena.redTeamMeta.drawCommands)
+                commandService.executeCommands(teamBluePlayers, arena.blueTeamMeta.drawCommands)
             }
             Team.RED -> {
                 sendMessageToPlayers("Team red has won the match.")
+                commandService.executeCommands(teamRedPlayers, arena.redTeamMeta.winCommands)
+                commandService.executeCommands(teamBluePlayers, arena.blueTeamMeta.looseCommands)
             }
             else -> {
                 sendMessageToPlayers("Team blue has won the match.")
+                commandService.executeCommands(teamBluePlayers, arena.blueTeamMeta.winCommands)
+                commandService.executeCommands(teamRedPlayers, arena.redTeamMeta.looseCommands)
             }
         }
 
@@ -373,65 +453,6 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         return players
     }
 
-    private fun teleportPlayersToSpawnpoint() {
-        for (i in 0 until teamRedPlayers.size) {
-            val player = teamRedPlayers[i]
-            val spawnpoint = arena.redTeamMeta.spawnpoints[i]
-            player.teleport(spawnpoint.toLocation())
-        }
-        for (i in 0 until teamBluePlayers.size) {
-            val player = teamBluePlayers[i]
-            val spawnpoint = arena.blueTeamMeta.spawnpoints[i]
-            player.teleport(spawnpoint.toLocation())
-        }
-    }
-
-
-    /**
-     * Gets the tennis score for correct cases.
-     */
-    private fun getFullScoreText(): String {
-        if (redTeamCounter == 3 && blueTeamCounter == 3) {
-            return "Deuce"
-        }
-        if (redTeamCounter >= 3 && blueTeamCounter >= 3) {
-            return if (servingTeam == Team.RED && redTeamCounter > blueTeamCounter) {
-                "Ad-In"
-            } else if (servingTeam == Team.BLUE && blueTeamCounter > redTeamCounter) {
-                "Ad-In"
-            } else {
-                "Ad-Out"
-            }
-        }
-
-        val redScore = getScore(redTeamCounter)
-        val blueScore = getScore(blueTeamCounter)
-        return "$redScore - $blueScore"
-    }
-
-    private fun executeCommand(commandMetas: List<CommandMeta>, players: List<Player>) {
-        for (commandMeta in commandMetas) {
-            when (commandMeta.type) {
-                CommandType.SERVER -> {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandMeta.command)
-                }
-                CommandType.SERVER_PER_PLAYER -> {
-                    for (player in players) {
-                        Bukkit.dispatchCommand(
-                            Bukkit.getConsoleSender(),
-                            commandMeta.command.replace("%player_name%", player.name)
-                        )
-                    }
-                }
-                CommandType.PER_PLAYER -> {
-                    for (player in players) {
-                        Bukkit.dispatchCommand(player, commandMeta.command.replace("%player_name%", player.name))
-                    }
-                }
-            }
-        }
-    }
-
     /**
      * Sends a message to all players in game.
      */
@@ -464,6 +485,19 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         throw RuntimeException("Team of ${player.name} not found!")
     }
 
+    private fun teleportPlayersToSpawnpoint() {
+        for (i in 0 until teamRedPlayers.size) {
+            val player = teamRedPlayers[i]
+            val spawnpoint = arena.redTeamMeta.spawnpoints[i]
+            player.teleport(spawnpoint.toLocation())
+        }
+        for (i in 0 until teamBluePlayers.size) {
+            val player = teamBluePlayers[i]
+            val spawnpoint = arena.blueTeamMeta.spawnpoints[i]
+            player.teleport(spawnpoint.toLocation())
+        }
+    }
+
     private fun getTeamMetaFromTeam(team: Team): TeamMetadata {
         if (team == Team.RED) {
             return arena.redTeamMeta
@@ -480,24 +514,6 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         }
         for (player in teamBluePlayers) {
             player.sendTitle(title, subTitle, 10, 70, 20)
-        }
-    }
-
-    private fun getScore(points: Int): String {
-        when (points) {
-            0 -> {
-                return "0"
-            }
-            1 -> {
-                return "15"
-            }
-            2 -> {
-                return "30"
-            }
-            3 -> {
-                return "40"
-            }
-            else -> throw RuntimeException("Score $redTeamCounter $blueTeamCounter cannot be converted!")
         }
     }
 }

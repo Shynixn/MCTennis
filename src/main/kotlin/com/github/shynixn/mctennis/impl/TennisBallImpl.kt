@@ -18,7 +18,7 @@ import java.util.*
 class TennisBallImpl(
     private val physicsComponent: MathComponent,
     private val playerComponent: PlayerComponent,
-    private val entityComponent: ArmorstandEntityComponent,
+    private val entityComponent: ArmorstandEntityComponent?, // Armorstand is optional.
     private val spinComponent: SpinComponent,
     private val slimeEntityComponent: SlimeEntityComponent,
     private val settings: TennisBallSettings,
@@ -35,21 +35,19 @@ class TennisBallImpl(
     /**
      * Gets all entity ids.
      */
-    override val entityIds: List<Int> = arrayListOf(entityComponent.entityId, slimeEntityComponent.entityId)
+    override val entityIds: List<Int> by lazy {
+        if (entityComponent == null) {
+            arrayListOf(slimeEntityComponent.entityId)
+        } else {
+            arrayListOf(entityComponent.entityId, slimeEntityComponent.entityId)
+        }
+    }
 
     /**
      * Sets the ball dead or not.
      */
     override var isDead: Boolean = false
         private set
-
-    /**
-     * Gets the entity id.
-     */
-    val entityId: Int
-        get() {
-            return entityComponent.entityId
-        }
 
     /**
      * Allows clicking the ball.
@@ -101,7 +99,7 @@ class TennisBallImpl(
      * Gets called on ground bounce.
      */
     private fun onTouchGround() {
-        if (!allowActions){
+        if (!allowActions) {
             return
         }
 
@@ -119,7 +117,8 @@ class TennisBallImpl(
         this.currentLocation = physicsComponent.position.clone()
         physicsComponent.tickMinecraft()
         playerComponent.tickMinecraft()
-        entityComponent.tickMinecraft()
+        entityComponent?.tickMinecraft()
+        slimeEntityComponent.tickMinecraft()
     }
 
     /**
@@ -128,7 +127,8 @@ class TennisBallImpl(
     override fun tickAsync() {
         physicsComponent.tickAsync()
         playerComponent.tickAsync()
-        entityComponent.tickAsync()
+        entityComponent?.tickAsync()
+        slimeEntityComponent.tickAsync()
     }
 
     /**
@@ -137,7 +137,8 @@ class TennisBallImpl(
     override fun remove() {
         physicsComponent.close()
         playerComponent.close()
-        entityComponent.close()
+        entityComponent?.close()
+        slimeEntityComponent.close()
         isDead = true
         game = null
     }
