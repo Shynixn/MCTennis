@@ -2,6 +2,7 @@ package com.github.shynixn.mctennis.impl.service
 
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
+import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.impl.exception.TennisArenaException
@@ -10,6 +11,7 @@ import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.google.inject.Inject
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
+import java.util.logging.Level
 import kotlin.math.max
 import kotlin.math.min
 
@@ -38,10 +40,11 @@ class GameServiceImpl @Inject constructor(
      */
     override suspend fun reload(arena: TennisArena) {
         // A game with the same arena name is currently running. Stop it and reboot it.
-        val existingGame = games.firstOrNull { e -> e.arena.name == arena.name }
+        val existingGame = getByName(arena.name)
         if (existingGame != null) {
             existingGame.dispose()
             games.remove(existingGame)
+            plugin.logger.log(Level.INFO, "Stopped game '" + arena.name + "'.")
         }
 
         if (arena.isEnabled) {
@@ -49,6 +52,9 @@ class GameServiceImpl @Inject constructor(
             val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory)
             tennisGameImpl.plugin = plugin
             games.add(tennisGameImpl)
+            plugin.logger.log(Level.INFO, "Booted game '" + arena.name + "'.")
+        } else {
+            plugin.logger.log(Level.INFO, "Cannot boot game '" + arena.name + "' because it is not enabled.")
         }
     }
 

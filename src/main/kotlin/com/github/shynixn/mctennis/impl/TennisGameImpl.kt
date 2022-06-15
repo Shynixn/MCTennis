@@ -10,6 +10,7 @@ import com.github.shynixn.mctennis.entity.PlayerData
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.*
+import com.github.shynixn.mctennis.event.GameEndEvent
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
@@ -21,19 +22,15 @@ import org.bukkit.plugin.Plugin
 import java.util.*
 
 class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: TennisBallFactory) : TennisGame {
-    companion object {
-        private val random = Random()
-    }
-
     private var redTeamCounter = 0
     private var blueTeamCounter = 0
     private var servingTeam = Team.RED
+    private var isDisposed = false
 
-    init {
-        if (random.nextInt(100) < 50) {
-            //   servingTeam = Team.BLUE
-        }
-    }
+    /**
+     * Tennis ball.
+     */
+    private var ball: TennisBall? = null
 
     /**
      * Dependency.
@@ -41,19 +38,9 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
     lateinit var plugin: Plugin
 
     /**
-     * Gets if this game is no longer useable.
+     * All Players.
      */
-    var isDisposed = false
-
-    /**
-     * Holds the gamestate.
-     */
-    var gameState: GameState = GameState.LOBBY_IDLE
-
-    /**
-     * Tennis ball.
-     */
-    var ball: TennisBall? = null
+    val cachedData = HashMap<Player, PlayerData>()
 
     /**
      * Amount of bounces.
@@ -66,31 +53,25 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
     override var lastHitPlayer: Player? = null
 
     /**
-     * The target field which requires bouncing before the next player shoots back.
-     * This is useful for cases, where the ball does not hit far enough (hitField != targetField) -> error.
-     * The ball comes up more than once in the target field. Does not come up one in the field.
+     * Holds the gamestate.
      */
-    var targetField: Team = Team.BLUE
+    override var gameState: GameState = GameState.LOBBY_IDLE
 
     /**
      * Team players.
      */
-    val teamRedPlayers = ArrayList<Player>()
+    override val teamRedPlayers = ArrayList<Player>()
 
     /**
      * Team players.
      */
-    val teamBluePlayers = ArrayList<Player>()
+    override val teamBluePlayers = ArrayList<Player>()
 
-    /**
-     * All Players.
-     */
-    val cachedData = HashMap<Player, PlayerData>()
 
     /**
      * Joins the given player.
      */
-    fun join(player: Player, team: Team? = null): JoinResult {
+    override fun join(player: Player, team: Team?): JoinResult {
         // Make sure a team is selected.
         var targetTeam = Team.RED
 
@@ -150,7 +131,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
     /**
      * Leaves the given player.
      */
-    fun leave(player: Player): LeaveResult {
+    override fun leave(player: Player): LeaveResult {
         if (!cachedData.containsKey(player)) {
             return LeaveResult.NOT_IN_MATCH
         }
@@ -323,7 +304,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         delay(500)
         sendTitleMessageToPlayers(ChatColor.YELLOW.toString() + ChatColor.BOLD + "Ready?")
         delay(1500)
-        ball!!.setVelocity(Vector3d(x = 0.0, y = 0.5, z = 0.0))
+        ball!!.setVelocity(Vector3d(x = 0.0, y = 0.2, z = 0.0))
         ball!!.allowActions = true
         gameState = GameState.RUNNING_PLAYING
 
@@ -338,6 +319,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
      * Gets called when a team has won the game.
      */
     private suspend fun winTeam(team: Team? = null) {
+        gameState = GameState.ENDING
         when (team) {
             null -> {
                 sendMessageToPlayers("Game has ended in a draw.")
@@ -363,6 +345,10 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
 
      */
     fun dispose() {
+        if (isDisposed) {
+            return
+        }
+
         for (player in cachedData.keys.toTypedArray()) {
             leave(player)
         }
@@ -372,12 +358,15 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         cachedData.clear()
         isDisposed = true
         ball?.remove()
+
+        val gameEndEvent = GameEndEvent(this)
+        Bukkit.getPluginManager().callEvent(gameEndEvent)
     }
 
     /**
      * Gets all players.
      */
-    fun getPlayers(): List<Player> {
+    override fun getPlayers(): List<Player> {
         val players = ArrayList<Player>()
         players.addAll(teamBluePlayers)
         players.addAll(teamRedPlayers)

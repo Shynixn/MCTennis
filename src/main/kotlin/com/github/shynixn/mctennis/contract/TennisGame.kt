@@ -1,12 +1,15 @@
 package com.github.shynixn.mctennis.contract
 
 import com.github.shynixn.mctennis.entity.TennisArena
+import com.github.shynixn.mctennis.enumeration.GameState
+import com.github.shynixn.mctennis.enumeration.JoinResult
+import com.github.shynixn.mctennis.enumeration.LeaveResult
 import com.github.shynixn.mctennis.enumeration.Team
 import org.bukkit.entity.Player
 
 interface TennisGame {
     /**
-     * Amount of bounces.
+     * Amount of bounces the ball has performed.
      */
     var bounceCounter: Int
 
@@ -19,6 +22,21 @@ interface TennisGame {
      * Gets the arena.
      */
     val arena: TennisArena
+
+    /**
+     * Gets the state of the game.
+     */
+    val gameState: GameState
+
+    /**
+     * Gets all players of team red.
+     */
+    val teamRedPlayers: List<Player>
+
+    /**
+     * Gets all players of team blue.
+     */
+    val teamBluePlayers: List<Player>
 
     /**
      * Gets the team from a player.
@@ -36,4 +54,19 @@ interface TennisGame {
      * Sends a message to all players in game.
      */
     fun sendMessageToPlayers(message: String)
+
+    /**
+     * Gets all players.
+     */
+    fun getPlayers(): List<Player>
+
+    /**
+     * Joins the given player.
+     */
+    fun join(player: Player, team: Team? = null): JoinResult
+
+    /**
+     * Leaves the given player.
+     */
+    fun leave(player: Player): LeaveResult
 }

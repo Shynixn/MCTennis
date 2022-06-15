@@ -18,17 +18,17 @@ interface GameService {
     /**
      * Gets all running games.
      */
-    fun getAll(): List<TennisGameImpl>
+    fun getAll(): List<TennisGame>
 
     /**
      * Tries to locate a game this player is playing.
      */
-    fun getByPlayer(player: Player): TennisGameImpl?
+    fun getByPlayer(player: Player): TennisGame?
 
     /**
      * Tries to locate a game of the given name.
      */
-    fun getByName(name: String): TennisGameImpl?
+    fun getByName(name: String): TennisGame?
 
     /**
      * Disposes all running games.

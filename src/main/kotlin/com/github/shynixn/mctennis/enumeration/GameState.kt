@@ -4,5 +4,6 @@ enum class GameState {
     LOBBY_IDLE,
     LOBBY_COUNTDOWN,
     RUNNING_PLAYING,
-    RUNNING_SERVING
+    RUNNING_SERVING,
+    ENDING,
 }
