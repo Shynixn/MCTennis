@@ -18,7 +18,6 @@ import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
@@ -299,27 +298,27 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             val remaining = arena.gameTime - i
 
             if (remaining == 30) {
-                sendMessageToPlayers("30 seconds remaining.")
+                sendMessageToPlayers(MCTennisLanguage.secondsRemaining.format(30))
             }
 
             if (remaining <= 10) {
-                sendMessageToPlayers("$remaining second(s) remaining.")
+                sendMessageToPlayers(MCTennisLanguage.secondsRemaining.format(remaining))
             }
 
             if (!arena.isEnabled) {
-                sendMessageToPlayers("Game was cancelled!")
+                sendMessageToPlayers(MCTennisLanguage.gameCancelledMessage)
                 dispose()
                 return
             }
 
             if (teamBluePlayers.size == 0) {
-                //  TODO: winTeam(Team.RED)
-                //  return
+                winGame(Team.RED)
+                return
             }
 
             if (teamRedPlayers.size == 0) {
-                //   TODO winTeam(Team.BLUE)
-                //  return
+                winGame(Team.BLUE)
+                return
             }
 
             if (gameState == GameState.RUNNING_SERVING) {
@@ -341,7 +340,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), this, arena.ballSettings)
 
         delay(500)
-        sendTitleMessageToPlayers(ChatColor.YELLOW.toString() + ChatColor.BOLD + "Ready?")
+        sendTitleMessageToPlayers(MCTennisLanguage.readyTitle, MCTennisLanguage.readySubTitle)
         delay(1500)
         ball!!.setVelocity(Vector3d(x = 0.0, y = 0.2, z = 0.0))
         ball!!.allowActions = true
@@ -366,11 +365,11 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         when (team) {
             Team.RED -> {
                 teamRedSetScore++
-                sendMessageToPlayers("Team red has won this set.")
+                sendTitleMessageToPlayers(MCTennisLanguage.winSetRedTitle, MCTennisLanguage.winSetRedSubTitle)
             }
             else -> {
                 teamBlueSetScore++
-                sendMessageToPlayers("Team blue has won this set.")
+                sendTitleMessageToPlayers(MCTennisLanguage.winSetBlueTitle, MCTennisLanguage.winSetBlueSubTitle)
             }
         }
 
@@ -386,7 +385,6 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
 
         teamRedScore = 0
         teamBlueScore = 0
-        sendMessageToPlayers("Switching service.")
         servingTeam = if (servingTeam == Team.RED) {
             Team.BLUE
         } else {
@@ -401,17 +399,17 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
     private suspend fun winGame(team: Team? = null) {
         when (team) {
             null -> {
-                sendMessageToPlayers("Game has ended in a draw.")
+                sendTitleMessageToPlayers(MCTennisLanguage.winDrawTitle, MCTennisLanguage.winDrawSubTitle)
                 commandService.executeCommands(teamRedPlayers, arena.redTeamMeta.drawCommands)
                 commandService.executeCommands(teamBluePlayers, arena.blueTeamMeta.drawCommands)
             }
             Team.RED -> {
-                sendMessageToPlayers("Team red has won the match.")
+                sendTitleMessageToPlayers(MCTennisLanguage.winRedTitle, MCTennisLanguage.winRedSubTitle)
                 commandService.executeCommands(teamRedPlayers, arena.redTeamMeta.winCommands)
                 commandService.executeCommands(teamBluePlayers, arena.blueTeamMeta.looseCommands)
             }
             else -> {
-                sendMessageToPlayers("Team blue has won the match.")
+                sendTitleMessageToPlayers(MCTennisLanguage.winBlueTitle, MCTennisLanguage.winBlueSubTitle)
                 commandService.executeCommands(teamBluePlayers, arena.blueTeamMeta.winCommands)
                 commandService.executeCommands(teamRedPlayers, arena.redTeamMeta.looseCommands)
             }
@@ -513,7 +511,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         throw RuntimeException("Team $team not found!")
     }
 
-    private fun sendTitleMessageToPlayers(title: String? = null, subTitle: String? = null) {
+    private fun sendTitleMessageToPlayers(title: String, subTitle: String? = null) {
         for (player in teamRedPlayers) {
             player.sendTitle(title, subTitle, 10, 70, 20)
         }

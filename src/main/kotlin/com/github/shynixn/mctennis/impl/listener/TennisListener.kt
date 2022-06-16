@@ -1,15 +1,26 @@
 package com.github.shynixn.mctennis.impl.listener
 
-import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mccoroutine.bukkit.launch
+import com.github.shynixn.mctennis.MCTennisLanguage
+import com.github.shynixn.mctennis.contract.TennisBall
+import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.event.TennisBallBounceGroundEvent
 import com.github.shynixn.mcutils.common.Vector3d
+import com.github.shynixn.mcutils.common.toLocation
+import com.github.shynixn.mcutils.packet.api.*
+import com.github.shynixn.mcutils.physicobject.api.PhysicObjectService
 import com.google.inject.Inject
+import kotlinx.coroutines.delay
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.plugin.Plugin
 
-class TennisListener @Inject constructor(private val gameService: GameService) : Listener {
+class TennisListener @Inject constructor(
+    private val physicObjectService: PhysicObjectService,
+    private val plugin: Plugin
+) : Listener {
     /**
      * Handles ground bouncing.
      */
@@ -27,10 +38,12 @@ class TennisListener @Inject constructor(private val gameService: GameService) :
         val team = game.getTeamFromPlayer(player)
         val opponentTeam = getOppositeTeam(team)
 
-        println("HIT: " + hitTeamArea)
-
         if (hitTeamArea == null) {
-            game.sendMessageToPlayers("Out")
+            printMessageAtScorePosition(
+                game,
+                event.tennisBall,
+                MCTennisLanguage.bounceOutHologram
+            )
 
             if (game.bounceCounter == 1) {
                 // Player shot the ball directly outside the field.
@@ -45,7 +58,11 @@ class TennisListener @Inject constructor(private val gameService: GameService) :
 
         if (hitTeamArea == team) {
             // Shot in own field, now allowed.
-            game.sendMessageToPlayers("Net")
+            printMessageAtScorePosition(
+                game,
+                event.tennisBall,
+                MCTennisLanguage.bounceSecondHologram
+            )
             game.scorePoint(player, opponentTeam)
             return
         }
@@ -55,8 +72,48 @@ class TennisListener @Inject constructor(private val gameService: GameService) :
             return
         }
 
-        game.sendMessageToPlayers("2nd bounce")
+        printMessageAtScorePosition(
+            game,
+            event.tennisBall,
+            MCTennisLanguage.bounceSecondHologram
+        )
         game.scorePoint(player, team)
+    }
+
+    /**
+     * Print at score position.
+     */
+    private fun printMessageAtScorePosition(game: TennisGame, ball : TennisBall, message: String) {
+        val location = ball.getLocation().clone().addRelativeUp(-1.5).toLocation()
+        val entityId = physicObjectService.createNewEntityId()
+        val entitySpawnPacket = packetOutEntitySpawn {
+            this.entityId = entityId
+            this.entityType = EntityType.ARMOR_STAND
+            this.target = location
+        }
+        val entityMetaDataPacket = packetOutEntityMetadata {
+            this.entityId = entityId
+            this.customNameVisible = true
+            this.customname = message
+            this.isInvisible = true
+        }
+        val players = game.getPlayers()
+
+        for (player in players) {
+            player.sendPacket(entitySpawnPacket)
+            player.sendPacket(entityMetaDataPacket)
+        }
+
+        plugin.launch {
+            delay(2000)
+            val destroyPacket = packetOutEntityDestroy {
+                this.entityId = entityId
+            }
+
+            for (player in players) {
+                player.sendPacket(destroyPacket)
+            }
+        }
     }
 
     /**
