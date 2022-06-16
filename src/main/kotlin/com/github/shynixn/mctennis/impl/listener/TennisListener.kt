@@ -35,6 +35,13 @@ class TennisListener @Inject constructor(
 
         val hitTeamArea = getHitTeamArea(event.tennisBall.getLocation(), game.arena)
         val player = game.lastHitPlayer!!
+
+        if (!player.isOnline) {
+            // Just assign it one randomly.
+            game.lastHitPlayer = game.getPlayers().filter { e -> e.isOnline }.firstOrNull()
+            return
+        }
+
         val team = game.getTeamFromPlayer(player)
         val opponentTeam = getOppositeTeam(team)
 
@@ -83,7 +90,7 @@ class TennisListener @Inject constructor(
     /**
      * Print at score position.
      */
-    private fun printMessageAtScorePosition(game: TennisGame, ball : TennisBall, message: String) {
+    private fun printMessageAtScorePosition(game: TennisGame, ball: TennisBall, message: String) {
         val location = ball.getLocation().clone().addRelativeUp(-1.5).toLocation()
         val entityId = physicObjectService.createNewEntityId()
         val entitySpawnPacket = packetOutEntitySpawn {
