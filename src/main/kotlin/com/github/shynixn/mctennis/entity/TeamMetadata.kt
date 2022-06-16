@@ -39,12 +39,12 @@ class TeamMetadata {
     /**
      * ItemStacks during the game.
      */
-    var inventoryContents: Array<Map<String, Any>?> = emptyArray()
+    var inventoryContents: Array<String?> = emptyArray()
 
     /**
      * ItemStacks during the game.
      */
-    var armorInventoryContents: Array<Map<String, Any>?> = emptyArray()
+    var armorInventoryContents: Array<String?> = emptyArray()
 
     /**
      * Commands executed on player win.

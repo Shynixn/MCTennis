@@ -18,6 +18,7 @@ import com.github.shynixn.mcutils.common.translateChatColors
 import com.google.inject.Inject
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 import java.util.*
@@ -41,14 +42,10 @@ class MCTennisCommandExecutor @Inject constructor(
      * @return True if a valid command, otherwise false.
      */
     override suspend fun onCommand(
-        sender: CommandSender,
-        command: Command,
-        label: String,
-        args: Array<out String>
+        sender: CommandSender, command: Command, label: String, args: Array<out String>
     ): Boolean {
         if (args.size >= 3 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
-                "create",
-                true
+                "create", true
             )
         ) {
             val name = args[1]
@@ -63,8 +60,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (args.size == 2 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
-                "delete",
-                true
+                "delete", true
             )
         ) {
             val name = args[1]
@@ -73,8 +69,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (args.size == 1 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
-                "list",
-                true
+                "list", true
             )
         ) {
             listArena(sender)
@@ -82,8 +77,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (sender is Player && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args.size == 3 && args[0].equals(
-                "inventory",
-                true
+                "inventory", true
             )
         ) {
             val name = args[1]
@@ -93,8 +87,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (sender is Player && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args.size == 3 && args[0].equals(
-                "armor",
-                true
+                "armor", true
             )
         ) {
             val name = args[1]
@@ -104,8 +97,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size >= 2 && args[0].equals(
-                "join",
-                true
+                "join", true
             )
         ) {
             val name = args[1]
@@ -120,8 +112,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size == 1 && args[0].equals(
-                "leave",
-                true
+                "leave", true
             )
         ) {
             leaveGame(sender)
@@ -129,8 +120,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (args.size >= 1 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
-                "reload",
-                true
+                "reload", true
             )
         ) {
             val name = if (args.size >= 2) {
@@ -144,8 +134,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (args.size == 1 && args[0].equals(
-                "help",
-                true
+                "help", true
             ) && sender.hasPermission(Permission.COMMAND_EDIT.permission)
         ) {
             sender.sendMessage("---------MCTennis---------")
@@ -174,10 +163,7 @@ class MCTennisCommandExecutor @Inject constructor(
      * @return A list of possible completions for the final argument, or an empty list.
      */
     override suspend fun onTabComplete(
-        sender: CommandSender,
-        command: Command,
-        alias: String,
-        args: Array<out String>
+        sender: CommandSender, command: Command, alias: String, args: Array<out String>
     ): List<String> {
         if (args.size == 1) {
             if (sender.hasPermission(Permission.COMMAND_EDIT.permission)) {
@@ -190,17 +176,14 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (args.size == 2 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && (args[0].equals(
-                "create",
-                true
-            )
-                    || args[0].equals("delete", true) || args[0].equals("reload", true))
+                "create", true
+            ) || args[0].equals("delete", true) || args[0].equals("reload", true))
         ) {
             return arenaRepository.getAll().map { e -> e.name }
         }
 
         if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size >= 2 && (args[0].equals(
-                "join",
-                true
+                "join", true
             ))
         ) {
             return arenaRepository.getAll().map { e -> e.name }
@@ -363,7 +346,11 @@ class MCTennisCommandExecutor @Inject constructor(
             arena.blueTeamMeta
         }
 
-        teamMeta.inventoryContents = player.inventory.contents.clone().map { e -> e?.serialize() }.toTypedArray()
+        teamMeta.inventoryContents = player.inventory.contents.clone().map { e ->
+            val yamlConfiguration = YamlConfiguration()
+            yamlConfiguration.set("item", e)
+            yamlConfiguration.saveToString()
+        }.toTypedArray()
         arenaRepository.save(arena)
         player.sendMessage(MCTennisLanguage.updatedInventoryMessage)
     }
@@ -388,8 +375,11 @@ class MCTennisCommandExecutor @Inject constructor(
             arena.blueTeamMeta
         }
 
-        teamMeta.armorInventoryContents =
-            player.inventory.armorContents.clone().map { e -> e?.serialize() }.toTypedArray()
+        teamMeta.armorInventoryContents = player.inventory.armorContents.clone().map { e ->
+            val yamlConfiguration = YamlConfiguration()
+            yamlConfiguration.set("item", e)
+            yamlConfiguration.saveToString()
+        }.toTypedArray()
         arenaRepository.save(arena)
         player.sendMessage(MCTennisLanguage.updatedArmorMessage)
     }

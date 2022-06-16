@@ -18,6 +18,7 @@ import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
 import org.bukkit.Bukkit
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
@@ -284,14 +285,18 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             player.inventory.contents =
                 teamMeta.inventoryContents.map {
                     if (it != null) {
-                        ItemStack.deserialize(it)
+                        val configuration = YamlConfiguration()
+                        configuration.load(it)
+                        configuration.getItemStack("item")
                     } else {
                         null
                     }
                 }.toTypedArray()
             player.inventory.setArmorContents(teamMeta.armorInventoryContents.map {
                 if (it != null) {
-                    ItemStack.deserialize(it)
+                    val configuration = YamlConfiguration()
+                    configuration.load(it)
+                    configuration.getItemStack("item")
                 } else {
                     null
                 }
@@ -342,6 +347,20 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             }
 
             delay(1000L)
+        }
+
+        if (teamRedSetScore > teamBlueSetScore) {
+            winGame(Team.RED)
+        } else if (teamRedSetScore < teamBlueSetScore) {
+            winGame(Team.BLUE)
+        } else {
+            if (teamRedScore > teamBlueScore) {
+                winGame(Team.RED)
+            } else if (teamRedScore < teamBlueScore) {
+                winGame(Team.BLUE)
+            } else {
+                winGame(null)
+            }
         }
     }
 
