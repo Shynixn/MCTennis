@@ -1,5 +1,6 @@
 package com.github.shynixn.mctennis.impl.service
 
+import com.github.shynixn.mctennis.contract.SoundService
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.contract.TennisGame
@@ -16,7 +17,8 @@ import org.bukkit.plugin.Plugin
 
 class TennisBallFactoryImpl @Inject constructor(
     private val physicObjectService: PhysicObjectService,
-    private val plugin: Plugin
+    private val plugin: Plugin,
+    private val soundService: SoundService
 ) :
     TennisBallFactory {
     /**
@@ -67,7 +69,8 @@ class TennisBallFactoryImpl @Inject constructor(
             slimeEntity,
             settings,
             plugin,
-            game
+            soundService,
+            game,
         )
 
         physicObjectService.addPhysicObject(ball)

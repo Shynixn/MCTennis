@@ -101,7 +101,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
 
     init {
         if (random.nextInt(100) < 50) {
-            servingTeam = Team.BLUE
+            //  servingTeam = Team.BLUE
         }
     }
 
@@ -175,6 +175,10 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
 
         commandService.executeCommands(listOf(player), arena.leaveCommands)
 
+        // Disable flying.
+        player.isFlying = false
+        player.allowFlight = false
+
         // Restore armor contents
         val playerData = cachedData[player]!!
         if (playerData.inventoryContents != null) {
@@ -209,12 +213,19 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
 
         if (team == Team.RED) {
             teamRedScore++
+            sendTitleMessageToPlayers(
+                MCTennisLanguage.scoreRedTitle.format(getScoreText(), player.name),
+                MCTennisLanguage.scoreRedSubTitle.format(getScoreText(), player.name)
+            )
         } else {
             teamBlueScore++
+            sendTitleMessageToPlayers(
+                MCTennisLanguage.scoreBlueTitle.format(getScoreText(), player.name),
+                MCTennisLanguage.scoreBlueSubTitle.format(getScoreText(), player.name)
+            )
         }
 
         plugin.launch {
-            sendMessageToPlayers(MCTennisLanguage.playerScoredMessage.format(player.name, team.name))
             delay(3000)
             teleportPlayersToSpawnpoint()
             ball?.remove()
@@ -312,12 +323,17 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             }
 
             if (teamBluePlayers.size == 0) {
-                winGame(Team.RED)
-                return
+                //   winGame(Team.RED)
+                //   return
             }
 
             if (teamRedPlayers.size == 0) {
-                winGame(Team.BLUE)
+                //  winGame(Team.BLUE)
+                //  return
+            }
+
+            if (teamRedPlayers.size == 0 && teamBluePlayers.size == 0) {
+                dispose()
                 return
             }
 
@@ -346,13 +362,14 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         ball!!.allowActions = true
         gameState = GameState.RUNNING_PLAYING
 
-        if (team == Team.RED) {
+        if (team == Team.RED && teamRedPlayers.size > 0) {
             lastHitPlayer = teamRedPlayers[0]
         } else if (team == Team.BLUE) {
-            lastHitPlayer = if (teamBluePlayers.size == 0) {
-                teamRedPlayers[0] // Auto balance when testing.
-            } else {
-                teamBluePlayers[0]
+            if (teamBluePlayers.size > 0) {
+                lastHitPlayer = teamBluePlayers[0]
+            } else if (teamRedPlayers.size > 0) {
+                // Auto balance for testing.
+                lastHitPlayer = teamRedPlayers[0]
             }
         }
     }
@@ -427,7 +444,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
      * to make their `close` methods idempotent.
 
      */
-    fun dispose() {
+    override fun dispose() {
         if (isDisposed) {
             return
         }
@@ -486,6 +503,51 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         }
 
         throw RuntimeException("Team of ${player.name} not found!")
+    }
+
+    /**
+     * Gets the score text.
+     */
+    override fun getScoreText(): String {
+        if (teamRedScore == 3 && teamBlueScore == 3) {
+            return "Deuce"
+        }
+
+        if (teamRedScore >= 3 && teamBlueScore >= 3) {
+            return if (servingTeam == Team.RED && teamRedScore > teamBlueScore) {
+                "Ad-In"
+            } else if (servingTeam == Team.BLUE && teamBlueScore > teamRedScore) {
+                "Ad-In"
+            } else {
+                "Ad-Out"
+            }
+        }
+
+        if (teamRedScore > 3 || teamBlueScore > 3) {
+            return "Game"
+        }
+
+        val redScore = getScore(teamRedScore)
+        val blueScore = getScore(teamBlueScore)
+        return "$redScore - $blueScore"
+    }
+
+    private fun getScore(points: Int): String {
+        return when (points) {
+            0 -> {
+                "0"
+            }
+            1 -> {
+                "15"
+            }
+            2 -> {
+                "30"
+            }
+            3 -> {
+                "40"
+            }
+            else -> throw RuntimeException("Score $points cannot be converted!")
+        }
     }
 
     private fun teleportPlayersToSpawnpoint() {

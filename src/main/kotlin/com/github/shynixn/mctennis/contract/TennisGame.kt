@@ -86,6 +86,11 @@ interface TennisGame {
     fun getPlayers(): List<Player>
 
     /**
+     * Gets the tennis score.
+     */
+    fun getScoreText(): String
+
+    /**
      * Joins the given player.
      */
     fun join(player: Player, team: Team? = null): JoinResult
@@ -94,4 +99,9 @@ interface TennisGame {
      * Leaves the given player.
      */
     fun leave(player: Player): LeaveResult
+
+    /**
+     * Cancels the game.
+     */
+    fun dispose()
 }

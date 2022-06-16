@@ -1,5 +1,7 @@
 package com.github.shynixn.mctennis.entity
 
+import org.bukkit.Sound
+
 class TennisBallSettings {
     // Ground
 
@@ -87,4 +89,24 @@ class TennisBallSettings {
      * Is the armorstand visible.
      */
     var isArmorstandVisible: Boolean = true
+
+    /**
+     * Sound played when hitting the ball.
+     */
+    var hitSound: SoundMeta = SoundMeta().also {
+        it.name = "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR"
+        it.pitch = 2.0
+        it.volume = 5.0
+        it.effectType = EffectTargetType.EVERYONE
+    }
+
+    /**
+     * Sound played when bouncing on ground.
+     */
+    var bounceSound: SoundMeta = SoundMeta().also {
+        it.name = Sound.BLOCK_STONE_HIT.toString()
+        it.pitch = 2.0
+        it.volume = 5.0
+        it.effectType =EffectTargetType.EVERYONE
+    }
 }

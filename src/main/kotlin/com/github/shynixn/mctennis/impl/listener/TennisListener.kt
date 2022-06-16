@@ -2,6 +2,7 @@ package com.github.shynixn.mctennis.impl.listener
 
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.MCTennisLanguage
+import com.github.shynixn.mctennis.contract.SoundService
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TennisArena
@@ -39,6 +40,11 @@ class TennisListener @Inject constructor(
         if (!player.isOnline) {
             // Just assign it one randomly.
             game.lastHitPlayer = game.getPlayers().filter { e -> e.isOnline }.firstOrNull()
+
+            if (game.lastHitPlayer == null) {
+                game.dispose()
+            }
+
             return
         }
 

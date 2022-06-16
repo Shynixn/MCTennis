@@ -58,14 +58,14 @@ class TennisArena : Arena {
      * Gets the redteam meta.
      */
     var redTeamMeta: TeamMetadata = TeamMetadata().also {
-        this.name = "red"
+        it.name = "red"
     }
 
     /**
      * BlueTeam.
      */
     var blueTeamMeta: TeamMetadata = TeamMetadata().also {
-        this.name = "blue"
+        it.name = "blue"
     }
 
     /**
@@ -77,6 +77,11 @@ class TennisArena : Arena {
      * Commands executed on player leave.
      */
     var leaveCommands: List<CommandMeta> = ArrayList()
+
+    /**
+     * Double Jump Meta.
+     */
+    var doubleJumpMeta = DoubleJumpMeta()
 
     @JsonProperty("ball")
     var ballSettings: TennisBallSettings = TennisBallSettings()

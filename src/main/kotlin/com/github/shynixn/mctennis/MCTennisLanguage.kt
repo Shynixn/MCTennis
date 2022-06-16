@@ -1,6 +1,12 @@
 package com.github.shynixn.mctennis
 
 object MCTennisLanguage {
+  /** &9&l%1$1s **/
+  var scoreBlueTitle : String = "&9&l%1$1s"
+
+  /** %2$1s scored for &cTeam Red. **/
+  var scoreRedSubTitle : String = "%2$1s scored for &cTeam Red."
+
   /** &cTeam Red **/
   var winRedTitle : String = "&cTeam Red"
 
@@ -16,14 +22,17 @@ object MCTennisLanguage {
   /** &cTeam Red &ahas won the match **/
   var winRedSubTitle : String = "&cTeam Red &ahas won the match"
 
+  /** %2$1s scored for &9Team Blue. **/
+  var scoreBlueSubTitle : String = "%2$1s scored for &9Team Blue."
+
+  /** &9Team Blue &ahas won the match **/
+  var winBlueSubTitle : String = "&9Team Blue &ahas won the match"
+
   /** [&9MCTennis&f] Reloaded game %1$1s. **/
   var reloadedGameMessage : String = "[&9MCTennis&f] Reloaded game %1$1s."
 
   /** [&9MCTennis&f] Successfully joined team %1$1s. **/
   var joinedTeamSuccessMessage : String = "[&9MCTennis&f] Successfully joined team %1$1s."
-
-  /** &9Team Blue &ahas won the match **/
-  var winBlueSubTitle : String = "&9Team Blue &ahas won the match"
 
   /** [&9MCTennis&f] Left the game. **/
   var leftGameMessage : String = "[&9MCTennis&f] Left the game."
@@ -31,14 +40,14 @@ object MCTennisLanguage {
   /** [&9MCTennis&f] Reloaded all games. **/
   var reloadedAllGamesMessage : String = "[&9MCTennis&f] Reloaded all games."
 
-  /** [&9MCTennis&f] Deleted game %1$1s. **/
-  var deletedGameMessage : String = "[&9MCTennis&f] Deleted game %1$1s."
-
   /** [&9MCTennis&f] Game is already full. **/
   var gameIsFullMessage : String = "[&9MCTennis&f] Game is already full."
 
   /** [&9MCTennis&f] Game %1$1s does not exist. **/
   var gameDoesNotExistMessage : String = "[&9MCTennis&f] Game %1$1s does not exist."
+
+  /** [&9MCTennis&f] Deleted game %1$1s. **/
+  var deletedGameMessage : String = "[&9MCTennis&f] Deleted game %1$1s."
 
   /** &9Team Blue **/
   var winBlueTitle : String = "&9Team Blue"
@@ -52,11 +61,14 @@ object MCTennisLanguage {
   /**  **/
   var readySubTitle : String = ""
 
-  /** &lOut **/
-  var bounceOutHologram : String = "&lOut"
+  /** &c&l%1$1s **/
+  var scoreRedTitle : String = "&c&l%1$1s"
 
   /** &l2nd Bounce **/
   var bounceSecondHologram : String = "&l2nd Bounce"
+
+  /** &lOut **/
+  var bounceOutHologram : String = "&lOut"
 
   /** [&9MCTennis&f] Game start has been cancelled. **/
   var gameStartCancelledMessage : String = "[&9MCTennis&f] Game start has been cancelled."
@@ -85,11 +97,11 @@ object MCTennisLanguage {
   /** [&9MCTennis&f] Game has been cancelled. **/
   var gameCancelledMessage : String = "[&9MCTennis&f] Game has been cancelled."
 
-  /** &cTeam Red **/
-  var winSetRedTitle : String = "&cTeam Red"
-
   /** &6&lReady? **/
   var readyTitle : String = "&6&lReady?"
+
+  /** &cTeam Red **/
+  var winSetRedTitle : String = "&cTeam Red"
 
   /** &fDraw **/
   var winDrawTitle : String = "&fDraw"

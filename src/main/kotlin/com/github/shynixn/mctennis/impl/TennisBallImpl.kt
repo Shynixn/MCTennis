@@ -1,11 +1,13 @@
 package com.github.shynixn.mctennis.impl
 
 import com.github.shynixn.mccoroutine.bukkit.launch
+import com.github.shynixn.mctennis.contract.SoundService
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TennisBallSettings
 import com.github.shynixn.mctennis.event.TennisBallBounceGroundEvent
 import com.github.shynixn.mcutils.common.Vector3d
+import com.github.shynixn.mcutils.common.toLocation
 import com.github.shynixn.mcutils.common.toVector3d
 import com.github.shynixn.mcutils.physicobject.api.PhysicObject
 import com.github.shynixn.mcutils.physicobject.api.component.*
@@ -23,6 +25,7 @@ class TennisBallImpl(
     private val slimeEntityComponent: SlimeEntityComponent,
     private val settings: TennisBallSettings,
     private val plugin: Plugin,
+    private val soundService: SoundService,
     var game: TennisGame? = null
 ) : PhysicObject, TennisBall {
     private var lastClick = 0L
@@ -83,6 +86,7 @@ class TennisBallImpl(
             return
         }
 
+        soundService.playSound(getLocation().toLocation(), player, settings.hitSound)
         lastClick = current
 
         plugin.launch {
@@ -101,6 +105,10 @@ class TennisBallImpl(
     private fun onTouchGround() {
         if (!allowActions) {
             return
+        }
+
+        if (game != null) {
+            soundService.playSound(getLocation().toLocation(), listOf(), game!!.arena.ballSettings.bounceSound)
         }
 
         val ball = this

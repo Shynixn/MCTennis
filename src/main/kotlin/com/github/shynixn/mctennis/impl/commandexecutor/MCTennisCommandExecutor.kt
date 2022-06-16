@@ -46,7 +46,11 @@ class MCTennisCommandExecutor @Inject constructor(
         label: String,
         args: Array<out String>
     ): Boolean {
-        if (args.size >= 3 && sender.hasPermission(Permission.COMMAND_EDIT.permission) &&  args[0].equals("create", true)) {
+        if (args.size >= 3 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
+                "create",
+                true
+            )
+        ) {
             val name = args[1]
             var displayName = args.asList().stream().skip(2).asSequence().joinToString(" ")
 
@@ -58,32 +62,52 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (args.size == 2 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals("delete", true)) {
+        if (args.size == 2 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
+                "delete",
+                true
+            )
+        ) {
             val name = args[1]
             deleteArena(sender, name)
             return true
         }
 
-        if (args.size == 1 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals("list", true)) {
+        if (args.size == 1 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
+                "list",
+                true
+            )
+        ) {
             listArena(sender)
             return true
         }
 
-        if (sender is Player && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args.size == 3 && args[0].equals("inventory", true)) {
+        if (sender is Player && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args.size == 3 && args[0].equals(
+                "inventory",
+                true
+            )
+        ) {
             val name = args[1]
             val team = args[2]
             setInventory(sender, name, team)
             return true
         }
 
-        if (sender is Player && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args.size == 3 && args[0].equals("armor", true)) {
+        if (sender is Player && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args.size == 3 && args[0].equals(
+                "armor",
+                true
+            )
+        ) {
             val name = args[1]
             val team = args[2]
             setArmor(sender, name, team)
             return true
         }
 
-        if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size >= 2 && args[0].equals("join", true)) {
+        if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size >= 2 && args[0].equals(
+                "join",
+                true
+            )
+        ) {
             val name = args[1]
             val team = if (args.size > 2) {
                 Team.values().firstOrNull { e -> e.name == args[2] }
@@ -95,12 +119,20 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size == 1 && args[0].equals("leave", true)) {
+        if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size == 1 && args[0].equals(
+                "leave",
+                true
+            )
+        ) {
             leaveGame(sender)
             return true
         }
 
-        if (args.size >= 1 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals("reload", true)) {
+        if (args.size >= 1 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
+                "reload",
+                true
+            )
+        ) {
             val name = if (args.size >= 2) {
                 args[1]
             } else {
@@ -157,13 +189,20 @@ class MCTennisCommandExecutor @Inject constructor(
             }
         }
 
-        if (args.size == 2 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && (args[0].equals("create", true)
+        if (args.size == 2 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && (args[0].equals(
+                "create",
+                true
+            )
                     || args[0].equals("delete", true) || args[0].equals("reload", true))
         ) {
             return arenaRepository.getAll().map { e -> e.name }
         }
 
-        if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size >= 2 && (args[0].equals("join", true))) {
+        if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size >= 2 && (args[0].equals(
+                "join",
+                true
+            ))
+        ) {
             return arenaRepository.getAll().map { e -> e.name }
         }
 
@@ -173,6 +212,11 @@ class MCTennisCommandExecutor @Inject constructor(
     private fun joinGame(player: Player, name: String, team: Team? = null) {
         for (game in gameService.getAll()) {
             if (game.getPlayers().contains(player)) {
+                if (game.arena.name.equals(name, true)) {
+                    // Do not leave, if it is the same game.
+                    return
+                }
+
                 game.leave(player)
             }
         }
@@ -194,7 +238,7 @@ class MCTennisCommandExecutor @Inject constructor(
             }
         }
 
-        if (joinResult == JoinResult.GAME_FULL) {
+        if (joinResult == JoinResult.GAME_FULL || joinResult == JoinResult.GAME_ALREADY_RUNNING) {
             player.sendMessage(MCTennisLanguage.gameIsFullMessage)
             return
         }

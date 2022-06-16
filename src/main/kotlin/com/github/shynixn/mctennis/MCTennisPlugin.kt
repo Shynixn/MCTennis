@@ -1,22 +1,16 @@
 package com.github.shynixn.mctennis
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingExecutor
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingTabCompleter
-import com.github.shynixn.mctennis.contract.DependencyPlaceholderApiService
 import com.github.shynixn.mctennis.contract.GameService
-import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
+import com.github.shynixn.mctennis.impl.listener.DoubleJumpListener
 import com.github.shynixn.mctennis.impl.listener.GameListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
 import com.github.shynixn.mctennis.impl.service.DependencyPlaceholderApiServiceImpl
-import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.common.ConfigurationService
-import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.Version
 import com.github.shynixn.mcutils.common.reloadTranslation
 import com.github.shynixn.mcutils.physicobject.api.PhysicObjectService
@@ -32,8 +26,6 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
     }
 
     private var injector: Injector? = null
-    private val objectMapper: ObjectMapper =
-        ObjectMapper(YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
 
     /**
      * Called when this plugin is enabled.
@@ -62,6 +54,7 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         // Register Listeners
         Bukkit.getPluginManager().registerEvents(resolve(GameListener::class.java), this)
         Bukkit.getPluginManager().registerEvents(resolve(TennisListener::class.java), this)
+        Bukkit.getPluginManager().registerEvents(resolve(DoubleJumpListener::class.java), this)
 
         // Register CommandExecutors
         val configurationService = resolve(ConfigurationService::class.java)

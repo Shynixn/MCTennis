@@ -3,11 +3,13 @@ package com.github.shynixn.mctennis
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.shynixn.mctennis.contract.CommandService
 import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mctennis.contract.SoundService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.impl.service.CommandServiceImpl
 import com.github.shynixn.mctennis.impl.service.TennisBallFactoryImpl
 import com.github.shynixn.mctennis.impl.service.GameServiceImpl
+import com.github.shynixn.mctennis.impl.service.SoundServiceImpl
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
 import com.github.shynixn.mcutils.arena.impl.CachedArenaRepositoryImpl
@@ -22,7 +24,6 @@ import com.google.inject.AbstractModule
 import com.google.inject.Scopes
 import com.google.inject.TypeLiteral
 import org.bukkit.plugin.Plugin
-
 
 class MCTennisDependencyInjectionBinder(private val plugin: MCTennisPlugin) : AbstractModule() {
     /**
@@ -48,6 +49,7 @@ class MCTennisDependencyInjectionBinder(private val plugin: MCTennisPlugin) : Ab
         bind(PhysicObjectService::class.java).toInstance(PhysicObjectServiceImpl(plugin))
         bind(ItemService::class.java).toInstance(ItemServiceImpl())
         bind(GameService::class.java).to(GameServiceImpl::class.java).`in`(Scopes.SINGLETON)
+        bind(SoundService::class.java).to(SoundServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(CommandService::class.java).to(CommandServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(TennisBallFactory::class.java).to(TennisBallFactoryImpl::class.java).`in`(Scopes.SINGLETON)
     }
