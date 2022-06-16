@@ -206,6 +206,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
      */
     override fun scorePoint(player: Player, team: Team) {
         ball!!.allowActions = false
+        bounceCounter = 0
 
         if (team == Team.RED) {
             teamRedScore++
@@ -221,9 +222,9 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             ball = null
             gameState = GameState.RUNNING_SERVING
 
-            if (teamRedScore > 4 && teamRedScore - teamBlueScore >= 2) {
+            if (teamRedScore > 3 && teamRedScore - teamBlueScore >= 2) {
                 winSet(Team.RED)
-            } else if (teamBlueScore > 4 && teamBlueScore - teamRedScore >= 2) {
+            } else if (teamBlueScore > 3 && teamBlueScore - teamRedScore >= 2) {
                 winSet(Team.BLUE)
             }
         }
@@ -349,7 +350,11 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         if (team == Team.RED) {
             lastHitPlayer = teamRedPlayers[0]
         } else if (team == Team.BLUE) {
-            lastHitPlayer = teamBluePlayers[0]
+            lastHitPlayer = if (teamBluePlayers.size == 0) {
+                teamRedPlayers[0] // Auto balance when testing.
+            } else {
+                teamBluePlayers[0]
+            }
         }
     }
 

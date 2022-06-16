@@ -56,7 +56,7 @@ class TennisListener @Inject constructor(private val gameService: GameService) :
         }
 
         game.sendMessageToPlayers("2nd bounce")
-        game.scorePoint(player, opponentTeam)
+        game.scorePoint(player, team)
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.github.shynixn.mctennis.impl.service
 
+import com.github.shynixn.mctennis.contract.CommandService
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.contract.TennisGame
@@ -18,7 +19,8 @@ import kotlin.math.min
 class GameServiceImpl @Inject constructor(
     private val arenaRepository: ArenaRepository<TennisArena>,
     private val tennisBallFactory: TennisBallFactory,
-    private val plugin: Plugin
+    private val plugin: Plugin,
+    private val commandService: CommandService
 ) : GameService {
     private val games = ArrayList<TennisGameImpl>()
 
@@ -51,6 +53,7 @@ class GameServiceImpl @Inject constructor(
             validateGame(arena)
             val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory)
             tennisGameImpl.plugin = plugin
+            tennisGameImpl.commandService = commandService
             games.add(tennisGameImpl)
             plugin.logger.log(Level.INFO, "Booted game '" + arena.name + "'.")
         } else {

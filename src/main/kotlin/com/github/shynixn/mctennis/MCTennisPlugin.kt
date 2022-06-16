@@ -85,12 +85,6 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         this.reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
         logger.log(Level.INFO, "Loaded language file $language.properties.")
 
-        val arenaService = resolve(ArenaRepository::class.java)
-        arenaService.save(TennisArena().also {
-            it.name = "Demo"
-            it.redTeamMeta.spawnpoints = arrayListOf(Vector3d("world", 20.0, 30.0, 40.0))
-        })
-
         val gameService = resolve(GameService::class.java)
         gameService.reloadAll()
 

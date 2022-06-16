@@ -115,6 +115,7 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
                 return game.teamBlueSetScore.toString()
             }
         } catch (ignored: Exception) {
+            ignored.printStackTrace()
         }
 
         return null
@@ -133,6 +134,10 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
             } else {
                 "Ad-Out"
             }
+        }
+
+        if (game.teamRedScore > 3 || game.teamBlueScore > 3) {
+            return "Game"
         }
 
         val redScore = getScore(game.teamRedScore)

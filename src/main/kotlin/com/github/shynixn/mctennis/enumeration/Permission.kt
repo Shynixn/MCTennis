@@ -1,6 +1,6 @@
 package com.github.shynixn.mctennis.enumeration
 
-enum class Permission(val permissionString: String) {
-    EDIT_GAME("mctennis.admin.edit"),
-    JOIN_GAME("mctennis.player.join")
+enum class Permission(val permission: String) {
+    COMMAND_EDIT("mctennis.command.edit"),
+    COMMAND_PLAYER("mctennis.command.play"),
 }

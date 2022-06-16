@@ -86,5 +86,5 @@ class TennisBallSettings {
     /**
      * Is the armorstand visible.
      */
-    var isArmorstandVisible: Boolean = false
+    var isArmorstandVisible: Boolean = true
 }
