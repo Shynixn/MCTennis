@@ -57,16 +57,12 @@ class TennisArena : Arena {
     /**
      * Gets the redteam meta.
      */
-    var redTeamMeta: TeamMetadata = TeamMetadata().also {
-        it.name = "red"
-    }
+    var redTeamMeta: TeamMetadata = TeamMetadata()
 
     /**
      * BlueTeam.
      */
-    var blueTeamMeta: TeamMetadata = TeamMetadata().also {
-        it.name = "blue"
-    }
+    var blueTeamMeta: TeamMetadata = TeamMetadata()
 
     /**
      * Commands executed on player join.
