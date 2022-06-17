@@ -101,7 +101,7 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
     }
 
     /**
-     * Gets a business logic from the LobbyBalls plugin.
+     * Gets a business logic from the MCTennis plugin.
      * All types in the service package can be accessed.
      * Throws a [IllegalArgumentException] if the service could not be found.
      */

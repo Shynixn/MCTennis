@@ -1,13 +1,13 @@
 =======================
-LobbyBalls Documentation
+MCTennis Documentation
 =======================
 
 Introduction
 ============
 
-Welcome to LobbyBallsDocs, the official documentation for the LobbyBalls project.
+Welcome to the wiki of MCTennis, the official documentation for the MCTennis project.
 
-LobbyBalls is a spigot plugin to add balls to your Minecraft worlds.
+MCTennis is a spigot plugin to play tennis games in Minecraft.
 
 Contents
 ========
