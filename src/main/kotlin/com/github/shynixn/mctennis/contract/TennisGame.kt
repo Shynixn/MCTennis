@@ -103,5 +103,10 @@ interface TennisGame {
     /**
      * Cancels the game.
      */
-    fun dispose(sendEvent : Boolean = true)
+    fun dispose(sendEvent: Boolean = true)
+
+    /**
+     * Gets if the game is full.
+     */
+    fun isFull(): Boolean
 }

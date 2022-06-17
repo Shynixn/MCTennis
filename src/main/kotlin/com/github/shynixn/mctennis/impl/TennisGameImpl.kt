@@ -122,7 +122,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         }
 
         // Check if teams are full.
-        if (teamBluePlayers.size >= arena.maxPlayersPerTeam && teamRedPlayers.size >= arena.maxPlayersPerTeam) {
+        if (isFull()) {
             return JoinResult.GAME_FULL
         }
 
@@ -482,6 +482,13 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             val gameEndEvent = GameEndEvent(this)
             Bukkit.getPluginManager().callEvent(gameEndEvent)
         }
+    }
+
+    /**
+     * Gets if the game is full.
+     */
+    override fun isFull(): Boolean {
+        return teamBluePlayers.size >= arena.maxPlayersPerTeam && teamRedPlayers.size >= arena.maxPlayersPerTeam
     }
 
     /**
