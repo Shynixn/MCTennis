@@ -79,6 +79,10 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     exclude("org/**")
 }
 
+tasks.register("printVersion") {
+    println(this.project.version)
+}
+
 tasks.register("languageFile", Exec::class.java) {
     val kotlinSrcFolder = project.sourceSets.toList()[0].allJava.srcDirs.first { e -> e.endsWith("kotlin") }
     val languageKotlinFile = kotlinSrcFolder.resolve("com/github/shynixn/mctennis/MCTennisLanguage.kt")
