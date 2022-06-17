@@ -227,9 +227,9 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (joinResult == JoinResult.SUCCESS_BLUE) {
-            player.sendMessage(MCTennisLanguage.joinedTeamSuccessMessage.format(game.arena.blueTeamMeta.name))
+            player.sendMessage(MCTennisLanguage.joinedTeamSuccessMessage)
         } else if (joinResult == JoinResult.SUCCESS_RED) {
-            player.sendMessage(MCTennisLanguage.joinedTeamSuccessMessage.format(game.arena.redTeamMeta.name))
+            player.sendMessage(MCTennisLanguage.joinedTeamSuccessMessage)
         }
     }
 

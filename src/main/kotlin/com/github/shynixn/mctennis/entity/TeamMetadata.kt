@@ -6,11 +6,6 @@ import com.github.shynixn.mcutils.common.Vector3d
 
 class TeamMetadata {
     /**
-     * Team displayName.
-     */
-    var name: String = ""
-
-    /**
      * Right upper corner.
      */
     @JsonProperty("corner1")
