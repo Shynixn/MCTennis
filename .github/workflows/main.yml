@@ -14,7 +14,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  Build:
     runs-on: ubuntu-latest
 
     steps:
@@ -51,5 +51,16 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}.jar
           asset_name: MCTennis.jar
-          asset_content_type: application/jar         
-      
+          asset_content_type: application/jar     
+          
+  Wiki:
+    runs-on: ubuntu-latest
+    if: "contains(github.ref, 'main')"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create Wiki
+        uses: Shynixn/sphinx-rdt-wiki-action@v1.0.0
+        with:
+          source-dir: "docs/source"
+          target-dir: "docs/build"
+          github-secret: ${{ secrets.GITHUB_TOKEN }}      
