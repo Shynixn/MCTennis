@@ -18,9 +18,10 @@ repositories {
 }
 
 dependencies {
-    // Compile Onl
+    // Compile Only
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.9.2")
+    compileOnly("org.geysermc:geyser-api:2.0.4-SNAPSHOT")
 
     // Plugin.yml Shade dependencies
     compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.2.0")
@@ -30,8 +31,6 @@ dependencies {
     compileOnly("com.fasterxml.jackson.core:jackson-databind:2.2.3")
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
     compileOnly("com.google.code.gson:gson:2.8.6")
-
-    compileOnly(files("C:\\temp\\plugins\\Geyser-Spigot.jar"))
 
     // Custom dependencies
     implementation("com.github.shynixn.mcutils:common:1.0.14")
