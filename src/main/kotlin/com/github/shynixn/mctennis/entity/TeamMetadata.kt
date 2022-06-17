@@ -28,7 +28,7 @@ class TeamMetadata {
      * All  player spawnpoints.
      */
     @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))
-    var spawnpoints = arrayListOf(Vector3d())
+    var spawnpoints = arrayListOf(Vector3d("world"))
 
     /**
      * Spawnpoint in the team lobby.

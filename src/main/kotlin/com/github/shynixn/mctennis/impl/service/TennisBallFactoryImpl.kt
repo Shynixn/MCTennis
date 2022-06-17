@@ -1,10 +1,8 @@
 package com.github.shynixn.mctennis.impl.service
 
-import com.github.shynixn.mctennis.contract.SoundService
-import com.github.shynixn.mctennis.contract.TennisBall
-import com.github.shynixn.mctennis.contract.TennisBallFactory
-import com.github.shynixn.mctennis.contract.TennisGame
+import com.github.shynixn.mctennis.contract.*
 import com.github.shynixn.mctennis.entity.TennisBallSettings
+import com.github.shynixn.mctennis.enumeration.VisibilityType
 import com.github.shynixn.mctennis.impl.TennisBallImpl
 import com.github.shynixn.mcutils.common.toVector3d
 import com.github.shynixn.mcutils.physicobject.api.MathComponentSettings
@@ -18,9 +16,11 @@ import org.bukkit.plugin.Plugin
 class TennisBallFactoryImpl @Inject constructor(
     private val physicObjectService: PhysicObjectService,
     private val plugin: Plugin,
-    private val soundService: SoundService
+    private val soundService: SoundService,
+    private val bedrockService: BedrockService
 ) :
     TennisBallFactory {
+
     /**
      * Create a new tennis ball.
      */
@@ -52,21 +52,70 @@ class TennisBallFactoryImpl @Inject constructor(
         val armorStandEntityId = physicObjectService.createNewEntityId()
         val slimeEntityId = physicObjectService.createNewEntityId()
 
-        val armorstandEntityComponent = if (settings.isArmorstandVisible) {
-            ArmorstandEntityComponent(mathPhysicComponent, playerComponent, armorStandEntityId)
-        } else {
-            null
+        val armorstandEntityComponent = when (settings.armorstandVisibility) {
+            VisibilityType.BEDROCK -> {
+                ArmorstandEntityComponent(mathPhysicComponent, playerComponent, armorStandEntityId, bedrockService.javaPlayers)
+            }
+            VisibilityType.JAVA -> {
+                ArmorstandEntityComponent(mathPhysicComponent, playerComponent, armorStandEntityId,  bedrockService.bedRockPlayers)
+            }
+            VisibilityType.ALL -> {
+                ArmorstandEntityComponent(mathPhysicComponent, playerComponent, armorStandEntityId, hashSetOf())
+            }
+            else -> {
+                null
+            }
         }
 
-        val slimeEntity =
-            SlimeEntityComponent(mathPhysicComponent, playerComponent, slimeEntityId, settings.clickHitBoxSize, false)
+        val slimeEntityComponent = when (settings.slimeVisibility) {
+            VisibilityType.BEDROCK -> {
+                SlimeEntityComponent(
+                    mathPhysicComponent,
+                    playerComponent,
+                    slimeEntityId,
+                    settings.clickHitBoxSize,
+                    true,
+                    bedrockService.javaPlayers
+                )
+            }
+            VisibilityType.JAVA -> {
+                SlimeEntityComponent(
+                    mathPhysicComponent,
+                    playerComponent,
+                    slimeEntityId,
+                    settings.clickHitBoxSize,
+                    true,
+                    bedrockService.bedRockPlayers
+                )
+            }
+            VisibilityType.ALL -> {
+                SlimeEntityComponent(
+                    mathPhysicComponent,
+                    playerComponent,
+                    slimeEntityId,
+                    settings.clickHitBoxSize,
+                    true,
+                    hashSetOf()
+                )
+            }
+            else -> {
+                SlimeEntityComponent(
+                    mathPhysicComponent,
+                    playerComponent,
+                    slimeEntityId,
+                    settings.clickHitBoxSize,
+                    false,
+                    hashSetOf()
+                )
+            }
+        }
 
         val ball = TennisBallImpl(
             mathPhysicComponent,
             playerComponent,
             armorstandEntityComponent,
             spinComponent,
-            slimeEntity,
+            slimeEntityComponent,
             settings,
             plugin,
             soundService,

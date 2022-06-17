@@ -11,5 +11,10 @@ enum class PluginDependency(
     /**
      * PlaceHolderApi plugin.
      */
-    PLACEHOLDERAPI("PlaceholderAPI")
+    PLACEHOLDERAPI("PlaceholderAPI"),
+
+    /**
+     * Geyser
+     */
+    GEYSER_SPIGOT("Geyser-Spigot")
 }

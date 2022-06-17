@@ -91,8 +91,8 @@ class TennisBallImpl(
 
         plugin.launch {
             val prevDirection = player.eyeLocation.direction.toVector3d()
-            val kickVector = player.eyeLocation.direction.toVector3d().normalize().multiply(0.7)
-            kickVector.y += 0.25
+            val kickVector = player.eyeLocation.direction.toVector3d().normalize().multiply(settings.horizontalSpeedRelative)
+            kickVector.y += settings.verticalSpeedAbsolute
             setVelocity(kickVector)
             delay(250)
             spinComponent.setSpin(prevDirection, player.eyeLocation.direction.toVector3d())

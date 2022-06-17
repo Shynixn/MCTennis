@@ -286,7 +286,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
                 teamMeta.inventoryContents.map {
                     if (it != null) {
                         val configuration = YamlConfiguration()
-                        configuration.load(it)
+                        configuration.loadFromString(it)
                         configuration.getItemStack("item")
                     } else {
                         null
@@ -295,7 +295,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             player.inventory.setArmorContents(teamMeta.armorInventoryContents.map {
                 if (it != null) {
                     val configuration = YamlConfiguration()
-                    configuration.load(it)
+                    configuration.loadFromString(it)
                     configuration.getItemStack("item")
                 } else {
                     null
@@ -463,7 +463,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
      * to make their `close` methods idempotent.
 
      */
-    override fun dispose() {
+    override fun dispose(sendEvent: Boolean) {
         if (isDisposed) {
             return
         }
@@ -478,8 +478,10 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         isDisposed = true
         ball?.remove()
 
-        val gameEndEvent = GameEndEvent(this)
-        Bukkit.getPluginManager().callEvent(gameEndEvent)
+        if (sendEvent) {
+            val gameEndEvent = GameEndEvent(this)
+            Bukkit.getPluginManager().callEvent(gameEndEvent)
+        }
     }
 
     /**

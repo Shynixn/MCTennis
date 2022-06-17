@@ -3,6 +3,7 @@ package com.github.shynixn.mctennis
 import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingExecutor
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingTabCompleter
+import com.github.shynixn.mctennis.contract.BedrockService
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
@@ -55,6 +56,7 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         Bukkit.getPluginManager().registerEvents(resolve(GameListener::class.java), this)
         Bukkit.getPluginManager().registerEvents(resolve(TennisListener::class.java), this)
         Bukkit.getPluginManager().registerEvents(resolve(DoubleJumpListener::class.java), this)
+        Bukkit.getPluginManager().registerEvents(resolve(BedrockService::class.java), this)
 
         // Register CommandExecutors
         val configurationService = resolve(ConfigurationService::class.java)
@@ -72,6 +74,9 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
             val placeHolderApi = DependencyPlaceholderApiServiceImpl(this, resolve(GameService::class.java))
             placeHolderApi.registerListener()
             logger.log(Level.INFO, "Loaded dependency ${PluginDependency.PLACEHOLDERAPI.pluginName}.")
+        }
+        if (Bukkit.getPluginManager().getPlugin(PluginDependency.GEYSER_SPIGOT.pluginName) != null) {
+            logger.log(Level.INFO, "Loaded dependency ${PluginDependency.GEYSER_SPIGOT.pluginName}.")
         }
 
         val language = configurationService.findValue<String>("language")

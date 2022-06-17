@@ -31,11 +31,13 @@ dependencies {
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
     compileOnly("com.google.code.gson:gson:2.8.6")
 
+    compileOnly(files("C:\\temp\\plugins\\Geyser-Spigot.jar"))
+
     // Custom dependencies
     implementation("com.github.shynixn.mcutils:common:1.0.14")
     implementation("com.github.shynixn.mcutils:packet:1.0.16")
     implementation("com.github.shynixn.mcutils:arena:1.0.5")
-    implementation("com.github.shynixn.mcutils:ball:1.0.15")
+    implementation("com.github.shynixn.mcutils:ball:1.0.17")
 
     testImplementation(kotlin("test"))
 

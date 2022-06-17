@@ -1,9 +1,13 @@
 package com.github.shynixn.mctennis.entity
 
+import com.github.shynixn.mctennis.enumeration.VisibilityType
 import org.bukkit.Sound
 
 class TennisBallSettings {
     // Ground
+    var horizontalSpeedRelative: Double = 0.7
+
+    var verticalSpeedAbsolute: Double = 0.25
 
     // The object keeps 99% of its current speed after each tick.
     var groundResistanceRelative = 0.99
@@ -21,7 +25,7 @@ class TennisBallSettings {
     /**
      * Amount of positive acceleration in y direction is applied after each tick.
      */
-    var gravityAbsolute: Double = 0.03
+    var gravityAbsolute: Double = 0.02
 
     // The object keeps 99% of its current speed after each tick.
     var airResistanceRelative = 0.99
@@ -81,14 +85,14 @@ class TennisBallSettings {
     var clickCooldown: Int = 250
 
     /**
-     * Sets the slime visible or not.
+     * Slime visibility.
      */
-    var isSlimeVisible: Boolean = false
+    var slimeVisibility: VisibilityType = VisibilityType.BEDROCK
 
     /**
-     * Is the armorstand visible.
+     * Armorstand visiblity.
      */
-    var isArmorstandVisible: Boolean = true
+    var armorstandVisibility: VisibilityType = VisibilityType.JAVA
 
     /**
      * Sound played when hitting the ball.
@@ -107,6 +111,6 @@ class TennisBallSettings {
         it.name = Sound.BLOCK_STONE_HIT.toString()
         it.pitch = 2.0
         it.volume = 5.0
-        it.effectType =EffectTargetType.EVERYONE
+        it.effectType = EffectTargetType.EVERYONE
     }
 }

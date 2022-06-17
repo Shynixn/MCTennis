@@ -44,7 +44,7 @@ class GameServiceImpl @Inject constructor(
         // A game with the same arena name is currently running. Stop it and reboot it.
         val existingGame = getByName(arena.name)
         if (existingGame != null) {
-            existingGame.dispose()
+            existingGame.dispose(false)
             games.remove(existingGame)
             plugin.logger.log(Level.INFO, "Stopped game '" + arena.name + "'.")
         }
@@ -55,7 +55,7 @@ class GameServiceImpl @Inject constructor(
             tennisGameImpl.plugin = plugin
             tennisGameImpl.commandService = commandService
             games.add(tennisGameImpl)
-            plugin.logger.log(Level.INFO, "Booted game '" + arena.name + "'.")
+            plugin.logger.log(Level.INFO, "Started game '" + arena.name + "'.")
         } else {
             plugin.logger.log(Level.INFO, "Cannot boot game '" + arena.name + "' because it is not enabled.")
         }
@@ -99,7 +99,8 @@ class GameServiceImpl @Inject constructor(
      */
     override fun dispose() {
         for (game in games) {
-            game.dispose()
+            game.dispose(false)
+            plugin.logger.log(Level.INFO, "Stopped game '" +game.arena.name + "'.")
         }
 
         games.clear()

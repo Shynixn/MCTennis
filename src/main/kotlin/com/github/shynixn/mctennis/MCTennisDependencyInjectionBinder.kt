@@ -1,15 +1,10 @@
 package com.github.shynixn.mctennis
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.github.shynixn.mctennis.contract.CommandService
-import com.github.shynixn.mctennis.contract.GameService
-import com.github.shynixn.mctennis.contract.SoundService
-import com.github.shynixn.mctennis.contract.TennisBallFactory
+import com.github.shynixn.mctennis.contract.*
 import com.github.shynixn.mctennis.entity.TennisArena
-import com.github.shynixn.mctennis.impl.service.CommandServiceImpl
-import com.github.shynixn.mctennis.impl.service.TennisBallFactoryImpl
-import com.github.shynixn.mctennis.impl.service.GameServiceImpl
-import com.github.shynixn.mctennis.impl.service.SoundServiceImpl
+import com.github.shynixn.mctennis.enumeration.PluginDependency
+import com.github.shynixn.mctennis.impl.service.*
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
 import com.github.shynixn.mcutils.arena.impl.CachedArenaRepositoryImpl
@@ -23,6 +18,7 @@ import com.github.shynixn.mcutils.physicobject.impl.PhysicObjectServiceImpl
 import com.google.inject.AbstractModule
 import com.google.inject.Scopes
 import com.google.inject.TypeLiteral
+import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 
 class MCTennisDependencyInjectionBinder(private val plugin: MCTennisPlugin) : AbstractModule() {
@@ -52,5 +48,11 @@ class MCTennisDependencyInjectionBinder(private val plugin: MCTennisPlugin) : Ab
         bind(SoundService::class.java).to(SoundServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(CommandService::class.java).to(CommandServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(TennisBallFactory::class.java).to(TennisBallFactoryImpl::class.java).`in`(Scopes.SINGLETON)
+
+        if (Bukkit.getPluginManager().getPlugin(PluginDependency.GEYSER_SPIGOT.pluginName) != null) {
+            bind(BedrockService::class.java).to(DependencyGeyserServiceImpl::class.java).`in`(Scopes.SINGLETON)
+        }else{
+            bind(BedrockService::class.java).to(EmptyBedrockService::class.java).`in`(Scopes.SINGLETON)
+        }
     }
 }
