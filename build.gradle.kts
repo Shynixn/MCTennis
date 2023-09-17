@@ -24,8 +24,8 @@ dependencies {
     compileOnly("org.geysermc:geyser-api:2.0.4-SNAPSHOT")
 
     // Plugin.yml Shade dependencies
-    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.2.0")
-    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.2.0")
+    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.13.0")
+    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.13.0")
     compileOnly("com.google.inject:guice:5.0.1")
     compileOnly("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
     compileOnly("com.fasterxml.jackson.core:jackson-databind:2.2.3")
@@ -33,13 +33,11 @@ dependencies {
     compileOnly("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:1.0.14")
-    implementation("com.github.shynixn.mcutils:packet:1.0.16")
-    implementation("com.github.shynixn.mcutils:arena:1.0.5")
-    implementation("com.github.shynixn.mcutils:ball:1.0.17")
+    implementation("com.github.shynixn.mcutils:common:1.0.19")
+    implementation("com.github.shynixn.mcutils:packet:1.0.37")
+    implementation("com.github.shynixn.mcutils:arena:1.0.9")
 
-    testImplementation(kotlin("test"))
-
+    // Test
     testImplementation(kotlin("test"))
     testImplementation("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
     testImplementation("org.mockito:mockito-core:2.23.0")
@@ -74,7 +72,6 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
 
     destinationDir = File("C:\\temp\\plugins")
 
- //  TODO  relocate("com.github.shynixn.mcutils","com.github.shynixn.mctennis.mcutils")
     exclude("kotlin/**")
     exclude("org/**")
 }

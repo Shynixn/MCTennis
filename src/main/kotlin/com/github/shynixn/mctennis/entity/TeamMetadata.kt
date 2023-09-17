@@ -2,6 +2,7 @@ package com.github.shynixn.mctennis.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.github.shynixn.mcutils.common.CommandMeta
 import com.github.shynixn.mcutils.common.Vector3d
 
 class TeamMetadata {
@@ -30,6 +31,11 @@ class TeamMetadata {
      */
     @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))
     var lobbySpawnpoint: Vector3d = Vector3d("world")
+
+    /**
+     * Team Name
+     */
+    var name : String?  = null
 
     /**
      * ItemStacks during the game.

@@ -2,8 +2,8 @@ package com.github.shynixn.mctennis.impl.listener
 
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.contract.GameService
-import com.github.shynixn.mctennis.contract.SoundService
 import com.github.shynixn.mctennis.enumeration.GameState
+import com.github.shynixn.mcutils.common.SoundService
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toVector
 import com.github.shynixn.mcutils.common.toVector3d

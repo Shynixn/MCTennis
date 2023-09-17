@@ -1,16 +1,16 @@
 package com.github.shynixn.mctennis.impl
 
 import com.github.shynixn.mccoroutine.bukkit.launch
-import com.github.shynixn.mctennis.contract.SoundService
+import com.github.shynixn.mctennis.contract.PhysicObject
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TennisBallSettings
 import com.github.shynixn.mctennis.event.TennisBallBounceGroundEvent
+import com.github.shynixn.mctennis.impl.physic.*
+import com.github.shynixn.mcutils.common.SoundService
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
 import com.github.shynixn.mcutils.common.toVector3d
-import com.github.shynixn.mcutils.physicobject.api.PhysicObject
-import com.github.shynixn.mcutils.physicobject.api.component.*
 import kotlinx.coroutines.delay
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -19,8 +19,9 @@ import java.util.*
 
 class TennisBallImpl(
     private val physicsComponent: MathComponent,
+    private val bounceComponent: com.github.shynixn.mctennis.impl.physic.BounceComponent,
     private val playerComponent: PlayerComponent,
-    private val entityComponent: ArmorstandEntityComponent?, // Armorstand is optional.
+    private val entityComponent: com.github.shynixn.mctennis.impl.physic.ArmorstandEntityComponent?, // Armorstand is optional.
     private val spinComponent: SpinComponent,
     private val slimeEntityComponent: SlimeEntityComponent,
     private val settings: TennisBallSettings,
@@ -32,7 +33,7 @@ class TennisBallImpl(
     private var currentLocation = Vector3d()
 
     init {
-        physicsComponent.onGroundAsync.add { position, motion -> onTouchGround() }
+        bounceComponent.onGroundAsync.add { position, motion -> onTouchGround() }
     }
 
     /**
@@ -124,6 +125,7 @@ class TennisBallImpl(
     override fun tickMinecraft() {
         this.currentLocation = physicsComponent.position.clone()
         physicsComponent.tickMinecraft()
+        bounceComponent.tickMinecraft()
         playerComponent.tickMinecraft()
         entityComponent?.tickMinecraft()
         slimeEntityComponent.tickMinecraft()
@@ -134,6 +136,7 @@ class TennisBallImpl(
      */
     override fun tickAsync() {
         physicsComponent.tickAsync()
+        bounceComponent.tickAsync()
         playerComponent.tickAsync()
         entityComponent?.tickAsync()
         slimeEntityComponent.tickAsync()

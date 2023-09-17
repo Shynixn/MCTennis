@@ -2,7 +2,6 @@ package com.github.shynixn.mctennis.impl
 
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.MCTennisLanguage
-import com.github.shynixn.mctennis.contract.CommandService
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.contract.TennisGame
@@ -14,13 +13,13 @@ import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.LeaveResult
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.event.GameEndEvent
+import com.github.shynixn.mcutils.common.CommandService
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
 
 class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: TennisBallFactory) : TennisGame {
@@ -102,7 +101,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
 
     init {
         if (random.nextInt(100) < 50) {
-            //  servingTeam = Team.BLUE
+            // TODO: servingTeam = Team.BLUE
         }
     }
 

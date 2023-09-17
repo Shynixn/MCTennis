@@ -1,5 +1,8 @@
 package com.github.shynixn.mctennis.entity
 
+import com.github.shynixn.mcutils.common.EffectTargetType
+import com.github.shynixn.mcutils.common.SoundMeta
+
 class DoubleJumpMeta {
     /**
      * Is the double jump enabled.

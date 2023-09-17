@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.github.shynixn.mcutils.arena.api.Arena
+import com.github.shynixn.mcutils.common.CommandMeta
 import com.github.shynixn.mcutils.common.Vector3d
 
 @JsonPropertyOrder(value = arrayOf("name", "displayName", "enabled"))

@@ -1,14 +1,13 @@
 package com.github.shynixn.mctennis.impl.service
 
-import com.github.shynixn.mctennis.contract.CommandService
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
-import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.impl.exception.TennisArenaException
 import com.github.shynixn.mctennis.impl.TennisGameImpl
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
+import com.github.shynixn.mcutils.common.CommandService
 import com.google.inject.Inject
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin

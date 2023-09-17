@@ -11,8 +11,8 @@ import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.impl.exception.TennisArenaException
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
+import com.github.shynixn.mcutils.common.ChatColor
 import com.github.shynixn.mcutils.common.ConfigurationService
-import com.github.shynixn.mcutils.common.chat.ChatColor
 import com.github.shynixn.mcutils.common.reloadTranslation
 import com.github.shynixn.mcutils.common.translateChatColors
 import com.google.inject.Inject

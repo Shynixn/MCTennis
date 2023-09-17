@@ -2,7 +2,7 @@ package com.github.shynixn.mctennis.impl.listener
 
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.MCTennisLanguage
-import com.github.shynixn.mctennis.contract.SoundService
+import com.github.shynixn.mctennis.contract.PhysicObjectService
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TennisArena
@@ -11,7 +11,6 @@ import com.github.shynixn.mctennis.event.TennisBallBounceGroundEvent
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
 import com.github.shynixn.mcutils.packet.api.*
-import com.github.shynixn.mcutils.physicobject.api.PhysicObjectService
 import com.google.inject.Inject
 import kotlinx.coroutines.delay
 import org.bukkit.event.EventHandler

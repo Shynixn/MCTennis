@@ -1,6 +1,8 @@
 package com.github.shynixn.mctennis.entity
 
 import com.github.shynixn.mctennis.enumeration.VisibilityType
+import com.github.shynixn.mcutils.common.EffectTargetType
+import com.github.shynixn.mcutils.common.SoundMeta
 import org.bukkit.Sound
 
 class TennisBallSettings {

@@ -3,25 +3,19 @@ package com.github.shynixn.mctennis
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.shynixn.mctennis.contract.*
 import com.github.shynixn.mctennis.entity.TennisArena
-import com.github.shynixn.mctennis.enumeration.PluginDependency
+import com.github.shynixn.mctennis.impl.physic.PhysicObjectDispatcher
 import com.github.shynixn.mctennis.impl.service.*
 import com.github.shynixn.mcutils.arena.api.ArenaRepository
 import com.github.shynixn.mcutils.arena.api.CacheArenaRepository
 import com.github.shynixn.mcutils.arena.impl.CachedArenaRepositoryImpl
 import com.github.shynixn.mcutils.arena.impl.YamlFileArenaRepositoryImpl
-import com.github.shynixn.mcutils.common.ConfigurationService
-import com.github.shynixn.mcutils.common.ConfigurationServiceImpl
-import com.github.shynixn.mcutils.common.ItemService
-import com.github.shynixn.mcutils.common.ItemServiceImpl
-import com.github.shynixn.mcutils.physicobject.api.PhysicObjectService
-import com.github.shynixn.mcutils.physicobject.impl.PhysicObjectServiceImpl
+import com.github.shynixn.mcutils.common.*
 import com.google.inject.AbstractModule
 import com.google.inject.Scopes
 import com.google.inject.TypeLiteral
-import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 
-class MCTennisDependencyInjectionBinder(private val plugin: MCTennisPlugin) : AbstractModule() {
+class MCTennisDependencyInjectionBinder(private val plugin: MCTennisPlugin, private val physicObjectDispatcher: PhysicObjectDispatcher) : AbstractModule() {
     /**
      * Configures the business logic tree.
      */
@@ -41,18 +35,13 @@ class MCTennisDependencyInjectionBinder(private val plugin: MCTennisPlugin) : Ab
         bind(CacheArenaRepository::class.java).toInstance(cacheTennisArenaRepository)
 
         // Services
+        bind(PhysicObjectDispatcher::class.java).toInstance(physicObjectDispatcher)
         bind(ConfigurationService::class.java).toInstance(ConfigurationServiceImpl(plugin))
-        bind(PhysicObjectService::class.java).toInstance(PhysicObjectServiceImpl(plugin))
+        bind(PhysicObjectService::class.java).toInstance(PhysicObjectServiceImpl(plugin, physicObjectDispatcher))
         bind(ItemService::class.java).toInstance(ItemServiceImpl())
         bind(GameService::class.java).to(GameServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(SoundService::class.java).to(SoundServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(CommandService::class.java).to(CommandServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(TennisBallFactory::class.java).to(TennisBallFactoryImpl::class.java).`in`(Scopes.SINGLETON)
-
-        if (Bukkit.getPluginManager().getPlugin(PluginDependency.GEYSER_SPIGOT.pluginName) != null) {
-            bind(BedrockService::class.java).to(DependencyGeyserServiceImpl::class.java).`in`(Scopes.SINGLETON)
-        }else{
-            bind(BedrockService::class.java).to(EmptyBedrockService::class.java).`in`(Scopes.SINGLETON)
-        }
     }
 }

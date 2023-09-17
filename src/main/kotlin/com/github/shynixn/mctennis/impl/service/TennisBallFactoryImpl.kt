@@ -4,11 +4,9 @@ import com.github.shynixn.mctennis.contract.*
 import com.github.shynixn.mctennis.entity.TennisBallSettings
 import com.github.shynixn.mctennis.enumeration.VisibilityType
 import com.github.shynixn.mctennis.impl.TennisBallImpl
+import com.github.shynixn.mctennis.impl.physic.*
+import com.github.shynixn.mcutils.common.SoundService
 import com.github.shynixn.mcutils.common.toVector3d
-import com.github.shynixn.mcutils.physicobject.api.MathComponentSettings
-import com.github.shynixn.mcutils.physicobject.api.PhysicObjectService
-import com.github.shynixn.mcutils.physicobject.api.PlayerComponentSettings
-import com.github.shynixn.mcutils.physicobject.api.component.*
 import com.google.inject.Inject
 import org.bukkit.Location
 import org.bukkit.plugin.Plugin
@@ -28,16 +26,15 @@ class TennisBallFactoryImpl @Inject constructor(
         val mathComponentSettings = MathComponentSettings()
         mathComponentSettings.airResistanceAbsolute = settings.airResistanceAbsolute
         mathComponentSettings.airResistanceRelative = settings.airResistanceRelative
-        mathComponentSettings.groundBouncing = settings.groundBouncing
         mathComponentSettings.gravityAbsolute = settings.gravityAbsolute
         mathComponentSettings.groundResistanceAbsolute = settings.groundResistanceAbsolute
         mathComponentSettings.groundResistanceRelative = settings.groundResistanceRelative
         val mathPhysicComponent = MathComponent(location.toVector3d(), mathComponentSettings)
 
-        val playerComponentSettings = PlayerComponentSettings()
-        playerComponentSettings.renderDistanceBlocks = settings.renderDistanceBlocks
-        playerComponentSettings.renderVisibilityUpdateMs = settings.renderVisibilityUpdateMs
-        val playerComponent = PlayerComponent(mathPhysicComponent, playerComponentSettings)
+        val bounceComponent =
+            com.github.shynixn.mctennis.impl.physic.BounceComponent(mathPhysicComponent, settings.groundBouncing)
+
+        val playerComponent = PlayerComponent(mathPhysicComponent,settings.renderVisibilityUpdateMs, settings.renderDistanceBlocks )
 
         val spinComponent = SpinComponent(
             mathPhysicComponent,
@@ -54,13 +51,28 @@ class TennisBallFactoryImpl @Inject constructor(
 
         val armorstandEntityComponent = when (settings.armorstandVisibility) {
             VisibilityType.BEDROCK -> {
-                ArmorstandEntityComponent(mathPhysicComponent, playerComponent, armorStandEntityId, bedrockService.javaPlayers)
+                com.github.shynixn.mctennis.impl.physic.ArmorstandEntityComponent(
+                    mathPhysicComponent,
+                    playerComponent,
+                    armorStandEntityId,
+                    bedrockService.javaPlayers
+                )
             }
             VisibilityType.JAVA -> {
-                ArmorstandEntityComponent(mathPhysicComponent, playerComponent, armorStandEntityId,  bedrockService.bedRockPlayers)
+                com.github.shynixn.mctennis.impl.physic.ArmorstandEntityComponent(
+                    mathPhysicComponent,
+                    playerComponent,
+                    armorStandEntityId,
+                    bedrockService.bedRockPlayers
+                )
             }
             VisibilityType.ALL -> {
-                ArmorstandEntityComponent(mathPhysicComponent, playerComponent, armorStandEntityId, hashSetOf())
+                com.github.shynixn.mctennis.impl.physic.ArmorstandEntityComponent(
+                    mathPhysicComponent,
+                    playerComponent,
+                    armorStandEntityId,
+                    hashSetOf()
+                )
             }
             else -> {
                 null
@@ -112,6 +124,7 @@ class TennisBallFactoryImpl @Inject constructor(
 
         val ball = TennisBallImpl(
             mathPhysicComponent,
+            bounceComponent,
             playerComponent,
             armorstandEntityComponent,
             spinComponent,
