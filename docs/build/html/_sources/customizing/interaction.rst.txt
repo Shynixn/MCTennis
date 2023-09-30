@@ -76,6 +76,8 @@ For example, if you want to set the player to gamemode ``adventure`` during game
 
     joinCommands:
     - type: 'SERVER_PER_PLAYER'
+      command: 'lp user %player_name% parent add mctennis'
+    - type: 'SERVER_PER_PLAYER'
       command: 'gamemode adventure %player_name%
 
 Region Based Interactions
