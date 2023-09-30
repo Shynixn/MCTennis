@@ -33,9 +33,8 @@ dependencies {
     compileOnly("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:1.0.19")
-    implementation("com.github.shynixn.mcutils:packet:1.0.37")
-    implementation("com.github.shynixn.mcutils:arena:1.0.9")
+    implementation("com.github.shynixn.mcutils:common:1.0.25")
+    implementation("com.github.shynixn.mcutils:packet:1.0.53")
 
     // Test
     testImplementation(kotlin("test"))
@@ -72,6 +71,7 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
 
     destinationDir = File("C:\\temp\\plugins")
 
+    relocate("com.github.shynixn.mcutils", "com.github.shynixn.mctennis.mcutils")
     exclude("kotlin/**")
     exclude("org/**")
 }

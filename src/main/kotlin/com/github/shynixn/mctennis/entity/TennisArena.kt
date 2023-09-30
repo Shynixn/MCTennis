@@ -3,9 +3,9 @@ package com.github.shynixn.mctennis.entity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
-import com.github.shynixn.mcutils.arena.api.Arena
-import com.github.shynixn.mcutils.common.CommandMeta
 import com.github.shynixn.mcutils.common.Vector3d
+import com.github.shynixn.mcutils.common.arena.Arena
+import com.github.shynixn.mcutils.common.command.CommandMeta
 
 @JsonPropertyOrder(value = arrayOf("name", "displayName", "enabled"))
 class TennisArena : Arena {
@@ -52,7 +52,7 @@ class TennisArena : Arena {
     /**
      * Leave spawnpoint.
      */
-    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))
+    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty", "direction"))
     var leaveSpawnpoint: Vector3d = Vector3d("world")
 
     /**
@@ -74,11 +74,6 @@ class TennisArena : Arena {
      * Commands executed on player leave.
      */
     var leaveCommands: List<CommandMeta> = ArrayList()
-
-    /**
-     * Double Jump Meta.
-     */
-    var doubleJumpMeta = DoubleJumpMeta()
 
     @JsonProperty("ball")
     var ballSettings: TennisBallSettings = TennisBallSettings()

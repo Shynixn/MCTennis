@@ -23,5 +23,5 @@ Users
 Description                                                               Permission
 ========================================================================  ===============
 Allows to use the **/mctennis** command                                   mctennis.command
-Allows to play games                                                      mctennis.command.play
+Allows to play games                                                      mctennis.command.play.*
 ========================================================================  ===============

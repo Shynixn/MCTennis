@@ -1,11 +1,12 @@
 package com.github.shynixn.mctennis.impl.physic
 
-import com.github.shynixn.mctennis.contract.PhysicComponent
 import com.github.shynixn.mcutils.common.Vector3d
+import com.github.shynixn.mcutils.common.physic.PhysicComponent
 import com.github.shynixn.mcutils.common.vector
+import com.github.shynixn.mcutils.packet.api.BlockDirection
 
 class BounceComponent(
-    private val mathComponent: com.github.shynixn.mctennis.impl.physic.MathComponent,
+    private val mathComponent: MathComponent,
     /**
      * The bouncing modifiers when a physicObject hits the ground.
      */
@@ -21,9 +22,9 @@ class BounceComponent(
     var onGroundAsync: MutableList<(Vector3d, Vector3d) -> Unit> = arrayListOf()
 
     init {
-        mathComponent.onPrePositionChange.add { position, motion, rayTraceResult ->
+        mathComponent.onPrePositionChange.add { _, motion, rayTraceResult ->
             if (rayTraceResult.hitBlock) {
-                if (rayTraceResult.blockDirection == com.github.shynixn.mctennis.impl.physic.BlockDirection.UP) {
+                if (rayTraceResult.blockDirection == BlockDirection.UP) {
                     // Ground bounce.
                     this.currentBounce = calculateWallBounce(motion, rayTraceResult.blockDirection)
                 } else {
@@ -37,7 +38,7 @@ class BounceComponent(
         }
         mathComponent.onPostPositionChange.add { position, motion, rayTraceResult ->
             if (rayTraceResult.hitBlock) {
-                if (rayTraceResult.blockDirection == com.github.shynixn.mctennis.impl.physic.BlockDirection.UP) {
+                if (rayTraceResult.blockDirection == BlockDirection.UP) {
                     // Bouncing is above a threshold, actually bounce.
                     if (currentBounce.y > 0.1) {
                         // The ground needs to be corrected every time because the velocity is not always exactly perfect.
@@ -56,7 +57,7 @@ class BounceComponent(
     /**
      * Tick on async thread.
      */
-    override fun tickAsync() {
+    override fun tickPhysic() {
         // The bounce motion needs to be shown a few ticks later.
         if (bounceMotion != null) {
             if (bounceMotionCounter < 0) {
@@ -73,30 +74,30 @@ class BounceComponent(
      * Calculates the outgoing vector from the incoming vector and the wall block direction.
      */
     private fun calculateWallBounce(
-        incomingVector: Vector3d, blockDirection: com.github.shynixn.mctennis.impl.physic.BlockDirection
+        incomingVector: Vector3d, blockDirection: BlockDirection
     ): Vector3d {
         val normalVector = when (blockDirection) {
-            com.github.shynixn.mctennis.impl.physic.BlockDirection.WEST -> {
+            BlockDirection.WEST -> {
                 vector {
                     x = -1.0
                 }
             }
-            com.github.shynixn.mctennis.impl.physic.BlockDirection.EAST -> {
+            BlockDirection.EAST -> {
                 vector {
                     x = 1.0
                 }
             }
-            com.github.shynixn.mctennis.impl.physic.BlockDirection.NORTH -> {
+            BlockDirection.NORTH -> {
                 vector {
                     z = -1.0
                 }
             }
-            com.github.shynixn.mctennis.impl.physic.BlockDirection.SOUTH -> {
+            BlockDirection.SOUTH -> {
                 vector {
                     z = 1.0
                 }
             }
-            else -> if (blockDirection == com.github.shynixn.mctennis.impl.physic.BlockDirection.DOWN) {
+            else -> if (blockDirection == BlockDirection.DOWN) {
                 vector {
                     y = -1.0
                 }
@@ -110,7 +111,7 @@ class BounceComponent(
         val radianAngle = 2 * incomingVector.dot(normalVector)
         val outgoingVector = incomingVector.clone().subtract(normalVector.multiply(radianAngle))
 
-        if (blockDirection == com.github.shynixn.mctennis.impl.physic.BlockDirection.UP) {
+        if (blockDirection == BlockDirection.UP) {
             outgoingVector.y = outgoingVector.y * groundBouncing
         }
 

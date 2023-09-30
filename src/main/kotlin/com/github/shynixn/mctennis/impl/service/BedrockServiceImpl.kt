@@ -2,7 +2,7 @@ package com.github.shynixn.mctennis.impl.service
 
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.contract.BedrockService
-import com.github.shynixn.mctennis.impl.physic.PhysicObjectDispatcher
+import com.github.shynixn.mcutils.common.physic.PhysicObjectDispatcher
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -10,7 +10,8 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.Plugin
 
-class BedrockServiceImpl constructor(private val plugin: Plugin, private val physicDispatcher : PhysicObjectDispatcher) : BedrockService {
+class BedrockServiceImpl constructor(private val plugin: Plugin, private val physicDispatcher: PhysicObjectDispatcher) :
+    BedrockService {
     /**
      * All bedrock players.
      */
@@ -35,7 +36,7 @@ class BedrockServiceImpl constructor(private val plugin: Plugin, private val phy
 
         Bukkit.getPluginManager().registerEvents(this, plugin)
         if (Bukkit.getPluginManager().getPlugin("Geyser-Spigot") != null) {
-            geyserSpigotPlugin =  DependencyGeyserSpigotServiceImpl()
+            geyserSpigotPlugin = DependencyGeyserSpigotServiceImpl()
         }
     }
 

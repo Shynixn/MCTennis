@@ -1,6 +1,6 @@
 package com.github.shynixn.mctennis.impl.physic
 
-import com.github.shynixn.mctennis.contract.PhysicComponent
+import com.github.shynixn.mcutils.common.physic.PhysicComponent
 import com.github.shynixn.mcutils.common.toLocation
 import org.bukkit.Location
 import org.bukkit.entity.Player

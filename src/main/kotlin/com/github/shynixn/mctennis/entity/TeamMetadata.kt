@@ -2,34 +2,34 @@ package com.github.shynixn.mctennis.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.github.shynixn.mcutils.common.CommandMeta
 import com.github.shynixn.mcutils.common.Vector3d
+import com.github.shynixn.mcutils.common.command.CommandMeta
 
 class TeamMetadata {
     /**
      * Right upper corner.
      */
     @JsonProperty("corner1")
-    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))
+    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty", "direction"))
     var rightUpperCorner: Vector3d = Vector3d("world")
 
     /**
      * Left lower corner.
      */
     @JsonProperty("corner2")
-    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))
+    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty", "direction"))
     var leftLowerCorner: Vector3d = Vector3d("world")
 
     /**
      * All  player spawnpoints.
      */
-    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))
+    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty", "direction"))
     var spawnpoints = arrayListOf(Vector3d("world"))
 
     /**
      * Spawnpoint in the team lobby.
      */
-    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty"))
+    @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty", "direction"))
     var lobbySpawnpoint: Vector3d = Vector3d("world")
 
     /**

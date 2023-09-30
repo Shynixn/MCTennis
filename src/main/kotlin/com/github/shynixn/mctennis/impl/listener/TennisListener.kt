@@ -2,23 +2,29 @@ package com.github.shynixn.mctennis.impl.listener
 
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.MCTennisLanguage
-import com.github.shynixn.mctennis.contract.PhysicObjectService
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.event.TennisBallBounceGroundEvent
-import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.toLocation
-import com.github.shynixn.mcutils.packet.api.*
+import com.github.shynixn.mcutils.common.toVector3d
+import com.github.shynixn.mcutils.packet.api.EntityService
+import com.github.shynixn.mcutils.packet.api.EntityType
+import com.github.shynixn.mcutils.packet.api.PacketService
+import com.github.shynixn.mcutils.packet.api.packet.PacketOutEntityDestroy
+import com.github.shynixn.mcutils.packet.api.packet.PacketOutEntityMetadata
+import com.github.shynixn.mcutils.packet.api.packet.PacketOutEntitySpawn
 import com.google.inject.Inject
 import kotlinx.coroutines.delay
+import org.bukkit.Location
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 
 class TennisListener @Inject constructor(
-    private val physicObjectService: PhysicObjectService,
+    private val entityService: EntityService,
+    private val packetService: PacketService,
     private val plugin: Plugin
 ) : Listener {
     /**
@@ -96,34 +102,31 @@ class TennisListener @Inject constructor(
      * Print at score position.
      */
     private fun printMessageAtScorePosition(game: TennisGame, ball: TennisBall, message: String) {
-        val location = ball.getLocation().clone().addRelativeUp(-1.5).toLocation()
-        val entityId = physicObjectService.createNewEntityId()
-        val entitySpawnPacket = packetOutEntitySpawn {
-            this.entityId = entityId
-            this.entityType = EntityType.ARMOR_STAND
-            this.target = location
-        }
-        val entityMetaDataPacket = packetOutEntityMetadata {
-            this.entityId = entityId
-            this.customNameVisible = true
-            this.customname = message
-            this.isInvisible = true
-        }
+        val location = ball.getLocation().toVector3d().addRelativeUp(-1.5).toLocation()
+        val entityId = entityService.createNewEntityId()
         val players = game.getPlayers()
 
         for (player in players) {
-            player.sendPacket(entitySpawnPacket)
-            player.sendPacket(entityMetaDataPacket)
+            packetService.sendPacketOutEntitySpawn(player, PacketOutEntitySpawn().also {
+                it.entityId = entityId
+                it.entityType = EntityType.ARMOR_STAND
+                it.target = location
+            })
+
+            packetService.sendPacketOutEntityMetadata(player, PacketOutEntityMetadata().also {
+                it.entityId = entityId
+                it.customNameVisible = true
+                it.customname = message
+                it.isInvisible = true
+            })
         }
 
         plugin.launch {
             delay(2000)
-            val destroyPacket = packetOutEntityDestroy {
-                this.entityId = entityId
-            }
-
             for (player in players) {
-                player.sendPacket(destroyPacket)
+                packetService.sendPacketOutEntityDestroy(player, PacketOutEntityDestroy().also {
+                    it.entityIds = listOf(entityId)
+                })
             }
         }
     }
@@ -143,7 +146,7 @@ class TennisListener @Inject constructor(
      * Gets the team where the ball as hit the field.
      * e.g. ball has hit the ground on field of team blue -> returns team blue.
      */
-    private fun getHitTeamArea(vector3d: Vector3d, arena: TennisArena): Team? {
+    private fun getHitTeamArea(vector3d: Location, arena: TennisArena): Team? {
         if (vector3d.x < arena.redTeamMeta.rightUpperCorner.x && vector3d.x > arena.redTeamMeta.leftLowerCorner.x) {
             if (vector3d.z < arena.redTeamMeta.rightUpperCorner.z && vector3d.z > arena.redTeamMeta.leftLowerCorner.z) {
                 return Team.RED

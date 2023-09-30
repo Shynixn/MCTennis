@@ -1,15 +1,17 @@
 package com.github.shynixn.mctennis.impl.physic
 
-import com.github.shynixn.mctennis.contract.PhysicComponent
 import com.github.shynixn.mcutils.common.*
+import com.github.shynixn.mcutils.common.physic.PhysicComponent
 import com.github.shynixn.mcutils.packet.api.*
+import com.github.shynixn.mcutils.packet.api.packet.*
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.util.EulerAngle
 
 class ArmorstandEntityComponent(
-    physicsComponent: com.github.shynixn.mctennis.impl.physic.MathComponent,
-    private val playerComponent: com.github.shynixn.mctennis.impl.physic.PlayerComponent,
+    physicsComponent: MathComponent,
+    private val packetService: PacketService,
+    private val playerComponent: PlayerComponent,
     val entityId: Int,
     private var filteredPlayers: HashSet<Player>
 ) : PhysicComponent {
@@ -26,26 +28,27 @@ class ArmorstandEntityComponent(
             return
         }
 
-        val outer = this
-        player.sendPacket(packetOutEntitySpawn {
-            this.entityId = outer.entityId
-            this.entityType = EntityType.ARMOR_STAND
-            this.target = location
+        packetService.sendPacketOutEntitySpawn(player, PacketOutEntitySpawn().also {
+            it.entityId = this.entityId
+            it.entityType = EntityType.ARMOR_STAND
+            it.target = location
         })
+
         val itemStack = item {
             this.typeName = "PLAYER_HEAD"
             this.nbt =
                 "{SkullOwner:{Id:[I;1,1,1,1],Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZkYThhNzk3N2VjOTIxNGM1YjcwMWY5YWU3ZTE1NWI4ZWIyMWQxZDM3MTU5OGUxYjk4NzVjNGM4NWM2NWFlNiJ9fX0=\"}]}}}"
         }.toItemStack()
-        player.sendPacket(packetOutEntityEquipment {
-            this.entityId = outer.entityId
-            this.itemStack = itemStack
-            this.slot = ArmorSlotType.HELMET
+
+        packetService.sendPacketOutEntityEquipment(player, PacketOutEntityEquipment().also {
+            it.entityId = this.entityId
+            it.items = listOf(Pair(ArmorSlotType.HELMET, itemStack))
         })
-        player.sendPacket(packetOutEntityMetadata {
-            this.entityId = outer.entityId
-            this.isInvisible = true
-            this.isArmorstandSmall = true
+
+        packetService.sendPacketOutEntityMetadata(player, PacketOutEntityMetadata().also {
+            it.entityId = this.entityId
+            it.isInvisible = true
+            it.isArmorstandSmall = true
         })
     }
 
@@ -55,27 +58,27 @@ class ArmorstandEntityComponent(
         }
 
         val outer = this
-        player.sendPacket(packetOutEntityDestroy {
-            this.entityId = outer.entityId
+        packetService.sendPacketOutEntityDestroy(player, PacketOutEntityDestroy().also {
+            it.entityIds = listOf(outer.entityId)
         })
     }
 
     private fun onPositionChange(position: Vector3d, motion: Vector3d) {
         val players = playerComponent.visiblePlayers
-        val outer = this
 
         for (player in players) {
             if (filteredPlayers.contains(player)) {
                 continue
             }
 
-            player.sendPacket(packetOutEntityVelocity {
-                this.entityId = outer.entityId
-                this.target = motion.toVector()
+            packetService.sendPacketOutEntityVelocity(player, PacketOutEntityVelocity().also {
+                it.entityId = this.entityId
+                it.target = motion.toVector()
             })
-            player.sendPacket(packetOutEntityTeleport {
-                this.entityId = outer.entityId
-                this.target = position.clone().addRelativeDown(0.3).toLocation()
+
+            packetService.sendPacketOutEntityTeleport(player, PacketOutEntityTeleport().also {
+                it.entityId = this.entityId
+                it.target = position.clone().addRelativeDown(0.3).toLocation()
             })
         }
 
@@ -101,16 +104,15 @@ class ArmorstandEntityComponent(
         }
 
         val players = playerComponent.visiblePlayers
-        val outer = this
 
         for (player in players) {
             if (filteredPlayers.contains(player)) {
                 continue
             }
 
-            player.sendPacket(packetOutEntityMetadata {
-                this.entityId = outer.entityId
-                this.armorStandHeadRotation = EulerAngle(rotation, 0.0, 0.0)
+            packetService.sendPacketOutEntityMetadata(player, PacketOutEntityMetadata().also {
+                it.entityId = this.entityId
+                it.armorStandMainHandRotation = EulerAngle(rotation, 0.0, 0.0)
             })
         }
     }

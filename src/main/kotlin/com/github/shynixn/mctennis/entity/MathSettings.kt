@@ -1,6 +1,6 @@
-package com.github.shynixn.mctennis.impl.physic
+package com.github.shynixn.mctennis.entity
 
-class MathComponentSettings {
+class MathSettings {
     // Ground
 
     // The object keeps 99% of its current speed after each tick.
@@ -22,7 +22,6 @@ class MathComponentSettings {
     // Amount of negative acceleration is applied after each tick.
     // e.g. Reverse vector is created, normalized and multiplied by it.
     var airResistanceAbsolute = 0.0001
-
 
     /**
      * Sometimes the object needs a higher raytracing origin to be able to pass through objects better.

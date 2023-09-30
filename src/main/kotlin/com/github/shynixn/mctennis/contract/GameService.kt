@@ -1,7 +1,6 @@
 package com.github.shynixn.mctennis.contract
 
 import com.github.shynixn.mctennis.entity.TennisArena
-import com.github.shynixn.mctennis.impl.TennisGameImpl
 import org.bukkit.entity.Player
 
 interface GameService {
@@ -33,5 +32,5 @@ interface GameService {
     /**
      * Disposes all running games.
      */
-    fun dispose()
+    fun close()
 }

@@ -6,8 +6,8 @@ import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.impl.exception.TennisArenaException
 import com.github.shynixn.mctennis.impl.TennisGameImpl
-import com.github.shynixn.mcutils.arena.api.ArenaRepository
-import com.github.shynixn.mcutils.common.CommandService
+import com.github.shynixn.mcutils.common.arena.ArenaRepository
+import com.github.shynixn.mcutils.common.command.CommandService
 import com.google.inject.Inject
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
@@ -27,7 +27,7 @@ class GameServiceImpl @Inject constructor(
      * Reloads all games.
      */
     override suspend fun reloadAll() {
-        dispose()
+        close()
 
         val arenas = arenaRepository.getAll()
 
@@ -96,7 +96,7 @@ class GameServiceImpl @Inject constructor(
     /**
      * Disposes all running games.
      */
-    override fun dispose() {
+    override fun close() {
         for (game in games) {
             game.dispose(false)
             plugin.logger.log(Level.INFO, "Stopped game '" +game.arena.name + "'.")
@@ -128,7 +128,7 @@ class GameServiceImpl @Inject constructor(
             throw TennisArenaException(arena, "Set the first spawnpoint of team blue in arena ${arena.name}!")
         }
         if (arena.blueTeamMeta.leftLowerCorner.isEmpty()) {
-            throw TennisArenaException(arena, "Set the corner 1  of team blue in arena ${arena.name}!")
+            throw TennisArenaException(arena, "Set the corner 1 of team blue in arena ${arena.name}!")
         }
         if (arena.blueTeamMeta.rightUpperCorner.isEmpty()) {
             throw TennisArenaException(arena, "Set the corner 2 of team blue in arena ${arena.name}!")

@@ -4,18 +4,26 @@ import com.github.shynixn.mctennis.contract.*
 import com.github.shynixn.mctennis.entity.TennisBallSettings
 import com.github.shynixn.mctennis.enumeration.VisibilityType
 import com.github.shynixn.mctennis.impl.TennisBallImpl
+import com.github.shynixn.mctennis.entity.MathSettings
 import com.github.shynixn.mctennis.impl.physic.*
-import com.github.shynixn.mcutils.common.SoundService
+import com.github.shynixn.mcutils.common.physic.PhysicObjectService
+import com.github.shynixn.mcutils.common.sound.SoundService
 import com.github.shynixn.mcutils.common.toVector3d
+import com.github.shynixn.mcutils.packet.api.EntityService
+import com.github.shynixn.mcutils.packet.api.PacketService
+import com.github.shynixn.mcutils.packet.api.RayTracingService
 import com.google.inject.Inject
 import org.bukkit.Location
 import org.bukkit.plugin.Plugin
 
 class TennisBallFactoryImpl @Inject constructor(
     private val physicObjectService: PhysicObjectService,
+    private val entityService: EntityService,
     private val plugin: Plugin,
     private val soundService: SoundService,
-    private val bedrockService: BedrockService
+    private val bedrockService: BedrockService,
+    private val packetService: PacketService,
+    private val rayTracingService: RayTracingService,
 ) :
     TennisBallFactory {
 
@@ -23,18 +31,19 @@ class TennisBallFactoryImpl @Inject constructor(
      * Create a new tennis ball.
      */
     override fun createTennisBall(location: Location, game: TennisGame, settings: TennisBallSettings): TennisBall {
-        val mathComponentSettings = MathComponentSettings()
-        mathComponentSettings.airResistanceAbsolute = settings.airResistanceAbsolute
-        mathComponentSettings.airResistanceRelative = settings.airResistanceRelative
-        mathComponentSettings.gravityAbsolute = settings.gravityAbsolute
-        mathComponentSettings.groundResistanceAbsolute = settings.groundResistanceAbsolute
-        mathComponentSettings.groundResistanceRelative = settings.groundResistanceRelative
-        val mathPhysicComponent = MathComponent(location.toVector3d(), mathComponentSettings)
+        val mathSettings = MathSettings()
+        mathSettings.airResistanceAbsolute = settings.airResistanceAbsolute
+        mathSettings.airResistanceRelative = settings.airResistanceRelative
+        mathSettings.gravityAbsolute = settings.gravityAbsolute
+        mathSettings.groundResistanceAbsolute = settings.groundResistanceAbsolute
+        mathSettings.groundResistanceRelative = settings.groundResistanceRelative
+        val mathPhysicComponent = MathComponent(location.toVector3d(), mathSettings, rayTracingService)
 
         val bounceComponent =
-            com.github.shynixn.mctennis.impl.physic.BounceComponent(mathPhysicComponent, settings.groundBouncing)
+            BounceComponent(mathPhysicComponent, settings.groundBouncing)
 
-        val playerComponent = PlayerComponent(mathPhysicComponent,settings.renderVisibilityUpdateMs, settings.renderDistanceBlocks )
+        val playerComponent =
+            PlayerComponent(mathPhysicComponent, settings.renderVisibilityUpdateMs, settings.renderDistanceBlocks)
 
         val spinComponent = SpinComponent(
             mathPhysicComponent,
@@ -46,29 +55,32 @@ class TennisBallFactoryImpl @Inject constructor(
             settings.spinVertical
         )
 
-        val armorStandEntityId = physicObjectService.createNewEntityId()
-        val slimeEntityId = physicObjectService.createNewEntityId()
+        val armorStandEntityId = entityService.createNewEntityId()
+        val slimeEntityId = entityService.createNewEntityId()
 
         val armorstandEntityComponent = when (settings.armorstandVisibility) {
             VisibilityType.BEDROCK -> {
-                com.github.shynixn.mctennis.impl.physic.ArmorstandEntityComponent(
+                ArmorstandEntityComponent(
                     mathPhysicComponent,
+                    packetService,
                     playerComponent,
                     armorStandEntityId,
                     bedrockService.javaPlayers
                 )
             }
             VisibilityType.JAVA -> {
-                com.github.shynixn.mctennis.impl.physic.ArmorstandEntityComponent(
+                ArmorstandEntityComponent(
                     mathPhysicComponent,
+                    packetService,
                     playerComponent,
                     armorStandEntityId,
                     bedrockService.bedRockPlayers
                 )
             }
             VisibilityType.ALL -> {
-                com.github.shynixn.mctennis.impl.physic.ArmorstandEntityComponent(
+                ArmorstandEntityComponent(
                     mathPhysicComponent,
+                    packetService,
                     playerComponent,
                     armorStandEntityId,
                     hashSetOf()
@@ -84,6 +96,7 @@ class TennisBallFactoryImpl @Inject constructor(
                 SlimeEntityComponent(
                     mathPhysicComponent,
                     playerComponent,
+                    packetService,
                     slimeEntityId,
                     settings.clickHitBoxSize,
                     true,
@@ -94,6 +107,7 @@ class TennisBallFactoryImpl @Inject constructor(
                 SlimeEntityComponent(
                     mathPhysicComponent,
                     playerComponent,
+                    packetService,
                     slimeEntityId,
                     settings.clickHitBoxSize,
                     true,
@@ -104,6 +118,7 @@ class TennisBallFactoryImpl @Inject constructor(
                 SlimeEntityComponent(
                     mathPhysicComponent,
                     playerComponent,
+                    packetService,
                     slimeEntityId,
                     settings.clickHitBoxSize,
                     true,
@@ -114,6 +129,7 @@ class TennisBallFactoryImpl @Inject constructor(
                 SlimeEntityComponent(
                     mathPhysicComponent,
                     playerComponent,
+                    packetService,
                     slimeEntityId,
                     settings.clickHitBoxSize,
                     false,

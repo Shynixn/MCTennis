@@ -1,15 +1,20 @@
 package com.github.shynixn.mctennis.impl.physic
 
-import com.github.shynixn.mctennis.contract.PhysicComponent
+import com.github.shynixn.mctennis.entity.MathSettings
 import com.github.shynixn.mcutils.common.Vector3d
+import com.github.shynixn.mcutils.common.physic.PhysicComponent
 import com.github.shynixn.mcutils.common.toLocation
 import com.github.shynixn.mcutils.common.toVector
 import com.github.shynixn.mcutils.common.vector
+import com.github.shynixn.mcutils.packet.api.BlockDirection
+import com.github.shynixn.mcutils.packet.api.RayTraceResult
+import com.github.shynixn.mcutils.packet.api.RayTracingService
 import kotlin.math.abs
 import kotlin.math.atan2
 
 class MathComponent(
-     var position: Vector3d, private val settings: MathComponentSettings
+    var position: Vector3d, private val settings: MathSettings,
+    private val rayTracingService: RayTracingService
 ) : PhysicComponent {
     /**
      * Function being called when the position and motion are about to change.
@@ -33,7 +38,6 @@ class MathComponent(
 
     private var cachedTeleportTarget: Vector3d? = null
     private var lastRayTraceResult: RayTraceResult? = null
-    private val rayTracingService: RayTracingServiceImpl = RayTracingServiceImpl()
 
     /**
      * Gets if the object is currrently on ground.
@@ -92,14 +96,14 @@ class MathComponent(
     /**
      * Ticks the async thread.
      */
-    override fun tickAsync() {
+    override fun tickPhysic() {
         // Handle teleport.
         if (cachedTeleportTarget != null) {
             onPrePositionChange.forEach { e ->
                 e.invoke(
                     position,
                     motion,
-                    RayTraceResult(false, position, com.github.shynixn.mctennis.impl.physic.BlockDirection.SOUTH)
+                    RayTraceResult(false, position, BlockDirection.SOUTH)
                 )
             }
             motion = Vector3d(null, 0.0, 0.0, 0.0)
@@ -108,7 +112,7 @@ class MathComponent(
                 e.invoke(
                     position,
                     motion,
-                    RayTraceResult(false, position, com.github.shynixn.mctennis.impl.physic.BlockDirection.SOUTH)
+                    RayTraceResult(false, position, BlockDirection.SOUTH)
                 )
             }
             cachedTeleportTarget = null
@@ -126,7 +130,7 @@ class MathComponent(
         onPrePositionChange.forEach { e -> e.invoke(this.position, this.motion, rayTraceResult) }
 
         if (rayTraceResult.hitBlock) {
-            if (rayTraceResult.blockDirection == com.github.shynixn.mctennis.impl.physic.BlockDirection.UP) {
+            if (rayTraceResult.blockDirection == BlockDirection.UP) {
                 isOnGround = true
                 calculateObjectOnGround(rayTraceResult.targetPosition)
             } else {

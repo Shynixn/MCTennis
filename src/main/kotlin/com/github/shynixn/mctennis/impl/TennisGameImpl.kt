@@ -13,8 +13,8 @@ import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.LeaveResult
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.event.GameEndEvent
-import com.github.shynixn.mcutils.common.CommandService
 import com.github.shynixn.mcutils.common.Vector3d
+import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
 import org.bukkit.Bukkit

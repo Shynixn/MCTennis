@@ -3,17 +3,17 @@ package com.github.shynixn.mctennis
 import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingExecutor
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingTabCompleter
+import com.github.shynixn.mctennis.contract.BedrockService
 import com.github.shynixn.mctennis.contract.GameService
-import com.github.shynixn.mctennis.contract.PhysicObjectService
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
-import com.github.shynixn.mctennis.impl.listener.DoubleJumpListener
 import com.github.shynixn.mctennis.impl.listener.GameListener
+import com.github.shynixn.mctennis.impl.listener.PacketListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
-import com.github.shynixn.mctennis.impl.physic.PhysicObjectDispatcher
 import com.github.shynixn.mctennis.impl.service.DependencyPlaceholderApiServiceImpl
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.Version
+import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.common.reloadTranslation
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -22,12 +22,8 @@ import org.bukkit.ChatColor
 import java.util.logging.Level
 
 class MCTennisPlugin : SuspendingJavaPlugin() {
-    companion object {
-        val prefix: String = ChatColor.BLUE.toString() + "[MCTennis] " + ChatColor.WHITE
-    }
-
+    private val prefix: String = org.bukkit.ChatColor.BLUE.toString() + "[MCTennis] " + org.bukkit.ChatColor.WHITE
     private var injector: Injector? = null
-    private var physicObjectDispatcher = PhysicObjectDispatcher(this)
 
     /**
      * Called when this plugin is enabled.
@@ -37,12 +33,12 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         this.saveDefaultConfig()
 
         if (!Version.serverVersion.isCompatible(
-                Version.VERSION_1_18_R2,
+                Version.VERSION_1_20_R2,
             )
         ) {
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "================================================")
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "MCTennis does not support your server version")
-            Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "Install v" + Version.VERSION_1_18_R2.id + " - v" + Version.VERSION_1_18_R2.id)
+            Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "Install v" + Version.VERSION_1_20_R2.id + " - v" + Version.VERSION_1_20_R2.id)
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "Plugin gets now disabled!")
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "================================================")
             Bukkit.getPluginManager().disablePlugin(this)
@@ -50,13 +46,14 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         }
 
         // Guice
-        this.injector = Guice.createInjector(MCTennisDependencyInjectionBinder(this, physicObjectDispatcher))
+        this.injector = Guice.createInjector(MCTennisDependencyInjectionBinder(this))
         this.reloadConfig()
 
         // Register Listeners
         Bukkit.getPluginManager().registerEvents(resolve(GameListener::class.java), this)
         Bukkit.getPluginManager().registerEvents(resolve(TennisListener::class.java), this)
-        Bukkit.getPluginManager().registerEvents(resolve(DoubleJumpListener::class.java), this)
+        Bukkit.getPluginManager().registerEvents(resolve(PacketListener::class.java), this)
+        Bukkit.getPluginManager().registerEvents(resolve(BedrockService::class.java), this)
 
         // Register CommandExecutors
         val configurationService = resolve(ConfigurationService::class.java)
@@ -91,11 +88,10 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
      * Called when this plugin is disabled
      */
     override fun onDisable() {
-        val ballService = resolve(PhysicObjectService::class.java)
-        ballService.close()
+        val physicObjectService = resolve(PhysicObjectService::class.java)
+        physicObjectService.close()
         val gameService = resolve(GameService::class.java)
-        gameService.dispose()
-        physicObjectDispatcher.close()
+        gameService.close()
     }
 
     /**
@@ -108,6 +104,15 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
             return this.injector!!.getBinding(service).provider.get() as S
         } catch (e: Exception) {
             throw IllegalArgumentException("Service ${service.name} could not be resolved.", e)
+        }
+    }
+
+    private fun areVersionClassFilesFound(): Boolean {
+        try {
+            Class.forName("com.github.shynixn.mctennis.lib.com.github.shynixn.mcutils.packet.nms.v1_18_R1")
+            return true
+        } catch (e: ClassNotFoundException) {
+            return false
         }
     }
 }
