@@ -19,6 +19,12 @@ import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.common.physic.PhysicObjectServiceImpl
 import com.github.shynixn.mcutils.common.sound.SoundService
 import com.github.shynixn.mcutils.common.sound.SoundServiceImpl
+import com.github.shynixn.mcutils.packet.api.EntityService
+import com.github.shynixn.mcutils.packet.api.PacketService
+import com.github.shynixn.mcutils.packet.api.RayTracingService
+import com.github.shynixn.mcutils.packet.impl.service.EntityServiceImpl
+import com.github.shynixn.mcutils.packet.impl.service.PacketServiceImpl
+import com.github.shynixn.mcutils.packet.impl.service.RayTracingServiceImpl
 import com.google.inject.AbstractModule
 import com.google.inject.Scopes
 import com.google.inject.TypeLiteral
@@ -45,11 +51,14 @@ class MCTennisDependencyInjectionBinder(private val plugin: Plugin) : AbstractMo
 
         // Services
         val physicObjectDispatcher = PhysicObjectDispatcherImpl(plugin)
+        bind(EntityService::class.java).toInstance(EntityServiceImpl())
+        bind(RayTracingService::class.java).toInstance(RayTracingServiceImpl())
+        bind(PacketService::class.java).toInstance(PacketServiceImpl(plugin))
         bind(PhysicObjectDispatcher::class.java).toInstance(physicObjectDispatcher)
-        bind(BedrockService::class.java).to(BedrockServiceImpl::class.java)
         bind(ConfigurationService::class.java).toInstance(ConfigurationServiceImpl(plugin))
         bind(PhysicObjectService::class.java).toInstance(PhysicObjectServiceImpl(plugin, physicObjectDispatcher))
         bind(ItemService::class.java).toInstance(ItemServiceImpl())
+        bind(BedrockService::class.java).to(BedrockServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(GameService::class.java).to(GameServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(SoundService::class.java).toInstance(SoundServiceImpl(plugin))
         bind(CommandService::class.java).to(CommandServiceImpl::class.java).`in`(Scopes.SINGLETON)

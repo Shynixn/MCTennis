@@ -17,6 +17,9 @@ import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
+import net.md_5.bungee.api.ChatColor
+import net.md_5.bungee.api.ChatMessageType
+import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
@@ -326,14 +329,14 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
                 return
             }
 
-            if (teamBluePlayers.size == 0) {
-                //   winGame(Team.RED)
-                //   return
+            if (teamBluePlayers.size < arena.minPlayersPerTeam) {
+                winGame(Team.RED)
+                return
             }
 
-            if (teamRedPlayers.size == 0) {
-                //  winGame(Team.BLUE)
-                //  return
+            if (teamRedPlayers.size == arena.minPlayersPerTeam) {
+                winGame(Team.BLUE)
+                return
             }
 
             if (teamRedPlayers.size == 0 && teamBluePlayers.size == 0) {
@@ -345,7 +348,10 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
                 setBallForServingTeam(servingTeam)
             }
 
-            delay(1000L)
+            increasePunchPower()
+            delay(500L)
+            increasePunchPower()
+            delay(500L)
         }
 
         if (teamRedSetScore > teamBlueSetScore) {
@@ -360,6 +366,37 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
             } else {
                 winGame(null)
             }
+        }
+    }
+
+    private fun increasePunchPower() {
+        for (player in getPlayers()) {
+            val playerData = cachedData[player]
+
+            if (playerData == null) {
+                continue
+            }
+
+            if (player.isSneaking) {
+                if (playerData.wasSneaking) {
+                    playerData.currentPower += 1
+                } else {
+                    playerData.currentPower = 1
+                    playerData.wasSneaking = true
+                }
+            } else {
+                playerData.wasSneaking = false
+            }
+
+            val builder = StringBuilder()
+
+            for (i in 0 until playerData.currentPower) {
+                builder.append("█")
+            }
+
+            val textComponent = TextComponent(builder.toString())
+            textComponent.color = ChatColor.GREEN
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent)
         }
     }
 

@@ -99,7 +99,7 @@ class TennisBallFactoryImpl @Inject constructor(
                     packetService,
                     slimeEntityId,
                     settings.clickHitBoxSize,
-                    true,
+                    false,
                     bedrockService.javaPlayers
                 )
             }

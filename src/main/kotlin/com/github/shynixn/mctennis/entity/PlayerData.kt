@@ -12,4 +12,14 @@ class PlayerData {
      * Inventory armor cache.
      */
     var armorContents: Array<ItemStack?>? = null
+
+    /**
+     * Was the player sneaking.
+     */
+    var wasSneaking: Boolean = false
+
+    /**
+     * Power Index.
+     */
+    var currentPower: Int = 1
 }

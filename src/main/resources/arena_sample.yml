@@ -1,2 +1,118 @@
-name: 'Unique_Arena_Name'
-displayName: 'Stadion Arena'
+name: "game1"
+displayName: "My first game"
+enabled: true
+maxPlayersPerTeam: 1
+minPlayersPerTeam: 1
+timeToStart: 10
+gameTime: 300
+setsToWin: 3
+leaveSpawnpoint:
+  world: "world"
+  x: 1561.2791057927975
+  y: 4.0
+  z: -1603.4069517723626
+  yaw: 93.97332763671875
+  pitch: 41.39981460571289
+redTeamMeta:
+  spawnpoints:
+    - world: "world"
+      x: 1535.6455444055068
+      y: 4.0
+      z: -1625.6676413526743
+      yaw: -2.63690185546875
+      pitch: 29.39971160888672
+  lobbySpawnpoint:
+    world: "world"
+    x: 1555.7375512912465
+    y: 4.0
+    z: -1605.4890766536732
+    yaw: 94.4229736328125
+    pitch: 31.94972038269043
+  name: null
+  inventoryContents: []
+  armorInventoryContents: []
+  winCommands: []
+  looseCommands: []
+  drawCommands: []
+  corner1:
+    world: "world"
+    x: 1551.2994801663847
+    y: 4.0
+    z: -1604.679982141855
+    yaw: 0.212646484375
+    pitch: 49.49980545043945
+  corner2:
+    world: "world"
+    x: 1527.251214414003
+    y: 4.0
+    z: -1633.649521912621
+    yaw: -82.73858642578125
+    pitch: 44.999637603759766
+blueTeamMeta:
+  spawnpoints:
+    - world: "world"
+      x: 1544.955766880254
+      y: 4.0
+      z: -1579.5664397691075
+      yaw: 179.629150390625
+      pitch: 20.84996223449707
+  lobbySpawnpoint:
+    world: "world"
+    x: 1555.8452153139533
+    y: 4.0
+    z: -1601.1303545702003
+    yaw: 93.2117919921875
+    pitch: 38.39991760253906
+  name: null
+  inventoryContents: []
+  armorInventoryContents: []
+  winCommands: []
+  looseCommands: []
+  drawCommands: []
+  corner1:
+    world: "world"
+    x: 1551.589997819268
+    y: 4.0
+    z: -1573.1879027766895
+    yaw: -110.62744140625
+    pitch: 48.6000862121582
+  corner2:
+    world: "world"
+    x: 1527.4017460078576
+    y: 4.0
+    z: -1602.6071343393714
+    yaw: 85.5672607421875
+    pitch: 49.05009078979492
+joinCommands: []
+leaveCommands: []
+ball:
+  horizontalSpeedRelative: 0.7
+  verticalSpeedAbsolute: 0.25
+  groundResistanceRelative: 0.99
+  groundResistanceAbsolute: 1.0E-4
+  groundBouncing: 0.7
+  gravityAbsolute: 0.02
+  airResistanceRelative: 0.99
+  airResistanceAbsolute: 1.0E-4
+  renderVisibilityUpdateMs: 5000
+  renderDistanceBlocks: 70
+  clickHitBoxSize: 2
+  spinBaseMultiplier: 1.0
+  maximumSpinningVelocity: 0.08
+  spinMaximum: 60.0
+  spinMinimum: 0.0
+  spinDefault: 20.0
+  spinVertical: 0.6
+  clickCooldown: 250
+  slimeVisibility: "BEDROCK"
+  armorstandVisibility: "JAVA"
+  hitSound:
+    name: "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR"
+    volume: 5.0
+    pitch: 2.0
+    effectType: "EVERYONE"
+  bounceSound:
+    name: "BLOCK_STONE_HIT"
+    volume: 5.0
+    pitch: 2.0
+    effectType: "EVERYONE"

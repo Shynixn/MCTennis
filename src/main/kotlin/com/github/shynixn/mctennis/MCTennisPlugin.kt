@@ -15,6 +15,8 @@ import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.Version
 import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.common.reloadTranslation
+import com.github.shynixn.mcutils.packet.api.PacketInType
+import com.github.shynixn.mcutils.packet.api.PacketService
 import com.google.inject.Guice
 import com.google.inject.Injector
 import org.bukkit.Bukkit
@@ -49,6 +51,8 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         this.injector = Guice.createInjector(MCTennisDependencyInjectionBinder(this))
         this.reloadConfig()
 
+        resolve(PacketService::class.java).registerPacketListening(PacketInType.USEENTITY)
+
         // Register Listeners
         Bukkit.getPluginManager().registerEvents(resolve(GameListener::class.java), this)
         Bukkit.getPluginManager().registerEvents(resolve(TennisListener::class.java), this)
@@ -59,7 +63,6 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         val configurationService = resolve(ConfigurationService::class.java)
         val mcTennisCommandExecutor = resolve(MCTennisCommandExecutor::class.java)
         val mcTennisCommand = this.getCommand("mctennis")!!
-        mcTennisCommand.aliases = configurationService.findValue("commands.mctennis.aliases")
         mcTennisCommand.usage = configurationService.findValue("commands.mctennis.usage")
         mcTennisCommand.description = configurationService.findValue("commands.mctennis.description")
         mcTennisCommand.permissionMessage = configurationService.findValue("commands.mctennis.permission-message")

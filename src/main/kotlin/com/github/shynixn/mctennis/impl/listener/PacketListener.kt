@@ -5,10 +5,11 @@ import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.packet.api.InteractionType
 import com.github.shynixn.mcutils.packet.api.event.PacketEvent
 import com.github.shynixn.mcutils.packet.api.packet.PacketInInteractEntity
+import com.google.inject.Inject
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 
-class PacketListener(private val physicObjectApi: PhysicObjectService) : Listener {
+class PacketListener @Inject constructor(private val physicObjectApi: PhysicObjectService) : Listener {
     /**
      * Is called when a new packet arrives.
      */

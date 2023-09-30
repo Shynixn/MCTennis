@@ -13,8 +13,6 @@ language: "en_us"
 ############################
 commands:
   mctennis:
-    aliases:
-      - tennis
     usage: "[&9MCTennis&f] Use /mctennis help to see more info about the plugin."
     description: All commands for the MCTennis plugin.
     permission-message: You do not have permission.
