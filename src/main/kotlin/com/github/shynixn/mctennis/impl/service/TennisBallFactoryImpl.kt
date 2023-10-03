@@ -99,7 +99,6 @@ class TennisBallFactoryImpl @Inject constructor(
                     packetService,
                     slimeEntityId,
                     settings.clickHitBoxSize,
-                    false,
                     bedrockService.javaPlayers
                 )
             }
@@ -110,7 +109,6 @@ class TennisBallFactoryImpl @Inject constructor(
                     packetService,
                     slimeEntityId,
                     settings.clickHitBoxSize,
-                    true,
                     bedrockService.bedRockPlayers
                 )
             }
@@ -121,7 +119,6 @@ class TennisBallFactoryImpl @Inject constructor(
                     packetService,
                     slimeEntityId,
                     settings.clickHitBoxSize,
-                    true,
                     hashSetOf()
                 )
             }
@@ -132,7 +129,6 @@ class TennisBallFactoryImpl @Inject constructor(
                     packetService,
                     slimeEntityId,
                     settings.clickHitBoxSize,
-                    false,
                     hashSetOf()
                 )
             }

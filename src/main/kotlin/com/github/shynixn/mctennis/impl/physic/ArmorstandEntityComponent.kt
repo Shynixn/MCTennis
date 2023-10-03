@@ -116,11 +116,4 @@ class ArmorstandEntityComponent(
             })
         }
     }
-
-    /**
-     * Closes the component.
-     */
-    override fun close() {
-        filteredPlayers.clear()
-    }
 }

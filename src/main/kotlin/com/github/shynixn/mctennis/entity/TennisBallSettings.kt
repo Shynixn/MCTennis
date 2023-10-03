@@ -49,7 +49,7 @@ class TennisBallSettings {
     /**
      *  Size of the click hitBox.
      */
-    var clickHitBoxSize: Int = 2
+    var clickHitBoxSize: Int = 3
 
     /**
      * Base Multiplier for the speed when spinning.

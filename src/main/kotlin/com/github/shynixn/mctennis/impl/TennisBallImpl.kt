@@ -90,6 +90,8 @@ class TennisBallImpl(
 
         soundService.playSound(getLocation(), player, settings.hitSound)
         lastClick = current
+        game?.bounceCounter = 0
+        game?.lastHitPlayer = player
 
         plugin.launch {
             val prevDirection = player.eyeLocation.direction.toVector3d()

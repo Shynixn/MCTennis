@@ -15,13 +15,14 @@ repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
     maven("https://shynixn.github.io/m2/repository/mcutils")
+    maven("https://repo.opencollab.dev/main/")
 }
 
 dependencies {
     // Compile Only
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.9.2")
-    compileOnly("org.geysermc:geyser-api:2.0.4-SNAPSHOT")
+    compileOnly("org.geysermc.geyser:api:2.2.0-SNAPSHOT")
 
     // Plugin.yml Shade dependencies
     compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.13.0")

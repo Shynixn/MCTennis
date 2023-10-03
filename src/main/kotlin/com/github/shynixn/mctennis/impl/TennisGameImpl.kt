@@ -349,7 +349,7 @@ class TennisGameImpl(
                 return
             }
 
-            if (teamRedPlayers.size == arena.minPlayersPerTeam) {
+            if (teamRedPlayers.size < arena.minPlayersPerTeam) {
                 winGame(Team.BLUE)
                 return
             }

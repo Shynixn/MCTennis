@@ -41,10 +41,14 @@ class GameListener @Inject constructor(private val gameService: GameService, pri
         val game = gameService.getByPlayer(event.player) ?: return
 
         if (game.gameState == GameState.RUNNING_SERVING) {
-            val newLocation = event.from
-            newLocation.yaw = event.to!!.yaw
-            newLocation.pitch = event.to!!.pitch
-            player.teleport(newLocation)
+            val fromLocation = event.from
+            val toLocation = event.to ?: return
+
+            if (fromLocation.x != toLocation.x || fromLocation.y != toLocation.y || fromLocation.z != toLocation.z) {
+                fromLocation.yaw = event.to!!.yaw
+                fromLocation.pitch = event.to!!.pitch
+                player.teleport(fromLocation)
+            }
         }
     }
 }

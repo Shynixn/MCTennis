@@ -15,7 +15,6 @@ class SlimeEntityComponent(
     private val packetService: PacketService,
     val entityId: Int,
     private val slimeSize: Int,
-    private val isVisible: Boolean,
     var filteredPlayers: HashSet<Player>
     ) : PhysicComponent {
 
@@ -26,17 +25,13 @@ class SlimeEntityComponent(
     }
 
     private fun onPlayerSpawn(player: Player, location: Location) {
-        if (filteredPlayers.contains(player)) {
-            return
-        }
-
         packetService.sendPacketOutEntitySpawn(player, PacketOutEntitySpawn().also {
             it.entityId = this.entityId
             it.entityType = EntityType.SLIME
             it.target = location
         })
 
-        if (isVisible) {
+        if (!filteredPlayers.contains(player)) {
             packetService.sendPacketOutEntityMetadata(player, PacketOutEntityMetadata().also {
                 it.entityId = this.entityId
                 it.slimeSize = this.slimeSize
@@ -51,10 +46,6 @@ class SlimeEntityComponent(
     }
 
     private fun onPlayerRemove(player: Player) {
-        if (filteredPlayers.contains(player)) {
-            return
-        }
-
         packetService.sendPacketOutEntityDestroy(player, PacketOutEntityDestroy().also {
             it.entityIds = listOf(this.entityId)
         })
@@ -64,10 +55,6 @@ class SlimeEntityComponent(
         val players = playerComponent.visiblePlayers
 
         for (player in players) {
-            if (filteredPlayers.contains(player)) {
-                continue
-            }
-
             packetService.sendPacketOutEntityVelocity(player, PacketOutEntityVelocity().also {
                 it.entityId = this.entityId
                 it.target = motion.toVector()
@@ -78,12 +65,5 @@ class SlimeEntityComponent(
                 it.target = position.toLocation()
             })
         }
-    }
-
-    /**
-     * Closes the component.
-     */
-    override fun close() {
-       filteredPlayers.clear()
     }
 }

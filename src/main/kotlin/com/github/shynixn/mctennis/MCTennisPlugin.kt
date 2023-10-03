@@ -76,6 +76,10 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
             logger.log(Level.INFO, "Loaded dependency ${PluginDependency.PLACEHOLDERAPI.pluginName}.")
         }
 
+        if (Bukkit.getPluginManager().getPlugin(PluginDependency.GEYSER_SPIGOT.pluginName) != null) {
+            logger.log(Level.INFO, "Loaded dependency ${PluginDependency.GEYSER_SPIGOT.pluginName}.")
+        }
+
         val language = configurationService.findValue<String>("language")
         this.reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
         logger.log(Level.INFO, "Loaded language file $language.properties.")
@@ -91,6 +95,8 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
      * Called when this plugin is disabled
      */
     override fun onDisable() {
+        val packetService = resolve(PacketService::class.java)
+        packetService.close()
         val physicObjectService = resolve(PhysicObjectService::class.java)
         physicObjectService.close()
         val gameService = resolve(GameService::class.java)
