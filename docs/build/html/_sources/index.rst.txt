@@ -15,4 +15,5 @@ Contents
 .. toctree::
    gettingstarted/index
    customizing/index
+   faq/index
    support/index

@@ -42,7 +42,7 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="MCTennis 1.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Customizing" href="index.html"/>
-        <link rel="next" title="Support" href="../support/index.html"/>
+        <link rel="next" title="FAQ" href="../faq/index.html"/>
         <link rel="prev" title="Joining" href="join.html"/> 
 
   
@@ -108,6 +108,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../support/index.html">Support</a></li>
 </ul>
 
@@ -205,14 +206,15 @@ have to have the permission to the command. If you want to execute commands usin
 The most popular plugin <a class="reference external" href="https://www.spigotmc.org/resources/luckperms.28140/">LuckPerms</a> can be used for that.</p>
 <p><strong>1. Create a new group called mctennis</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">/luckperms</span> <span class="pre">creategroup</span> <span class="pre">mctennis</span></code></p>
-<p><strong>2. Create a common permission in the group</strong></p>
-<p><code class="docutils literal notranslate"><span class="pre">/luckperms</span> <span class="pre">group</span> <span class="pre">mctennis</span> <span class="pre">permission</span> <span class="pre">set</span> <span class="pre">mctennis.player</span></code></p>
-<p>This gives every player in the group <code class="docutils literal notranslate"><span class="pre">mctennis</span></code> the permission <code class="docutils literal notranslate"><span class="pre">mctennis.player</span></code>.</p>
-<p>The permission <code class="docutils literal notranslate"><span class="pre">mctennis.player</span></code> is useful for scoreboards, bossbars etc. later on, so it is highly
-recommend to add it.</p>
-<p><strong>3. Add all your permissions you want to allow or not allow during games to this group</strong></p>
-<p>You can use the web editor or the previous command.
-For example, do not allow destroying blocks while players are in this group.</p>
+<p><strong>2. Add all your permissions you want to allow or not allow during games to this group</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Examples are permissions to certain commands, scoreboards or bossbar plugins. This allows displaying
+scores only during MCTennis games.</p>
+</div>
+<p>You can use the web editor or the following command.
+As long as the players are inside that group, they can only do (e.g. not break blocks) and see (e.g. scoreboards) what you have configured.</p>
+<p><code class="docutils literal notranslate"><span class="pre">/luckperms</span> <span class="pre">group</span> <span class="pre">mctennis</span> <span class="pre">permission</span> <span class="pre">set</span> <span class="pre">&lt;permission&gt;</span></code></p>
 <p><strong>4. Add a new join command which adds the player to the group while he is in the match</strong></p>
 <p><strong>arena.yml</strong></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">joinCommands</span><span class="p">:</span><span class="w"></span>
@@ -254,7 +256,7 @@ For example, do not allow destroying blocks while players are in this group.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../support/index.html" class="btn btn-neutral float-right" title="Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../faq/index.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="join.html" class="btn btn-neutral" title="Joining" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

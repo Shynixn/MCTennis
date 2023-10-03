@@ -34,19 +34,15 @@ The most popular plugin `LuckPerms <https://www.spigotmc.org/resources/luckperms
 
 ``/luckperms creategroup mctennis``
 
-**2. Create a common permission in the group**
+**2. Add all your permissions you want to allow or not allow during games to this group**
 
-``/luckperms group mctennis permission set mctennis.player``
+.. note::  Examples are permissions to certain commands, scoreboards or bossbar plugins. This allows displaying
+    scores only during MCTennis games.
 
-This gives every player in the group ``mctennis`` the permission ``mctennis.player``.
+You can use the web editor or the following command.
+As long as the players are inside that group, they can only do (e.g. not break blocks) and see (e.g. scoreboards) what you have configured.
 
-The permission ``mctennis.player`` is useful for scoreboards, bossbars etc. later on, so it is highly
-recommend to add it.
-
-**3. Add all your permissions you want to allow or not allow during games to this group**
-
-You can use the web editor or the previous command.
-For example, do not allow destroying blocks while players are in this group.
+``/luckperms group mctennis permission set <permission>``
 
 **4. Add a new join command which adds the player to the group while he is in the match**
 
