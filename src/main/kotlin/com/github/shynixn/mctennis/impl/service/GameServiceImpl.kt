@@ -31,16 +31,9 @@ class GameServiceImpl @Inject constructor(
         close()
 
         val arenas = arenaRepository.getAll()
-        var counter = 0
 
         for (arena in arenas) {
-            if (!MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded && counter >= 1) {
-                plugin.logger.info("This version of MCTennis only supports one game. See release notes for details.")
-                return
-            }
-
             reload(arena)
-            counter++
         }
     }
 
@@ -58,6 +51,12 @@ class GameServiceImpl @Inject constructor(
 
         if (arena.isEnabled) {
             validateGame(arena)
+
+            if (!MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded && games.size >= 1) {
+                plugin.logger.info("This version of MCTennis only supports one game. See release notes for details.")
+                return
+            }
+
             val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory, plugin)
             tennisGameImpl.commandService = commandService
             games.add(tennisGameImpl)
