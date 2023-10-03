@@ -1,6 +1,9 @@
 package com.github.shynixn.mctennis.impl
 
+import com.github.shynixn.mccoroutine.bukkit.CoroutineTimings
 import com.github.shynixn.mccoroutine.bukkit.launch
+import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
+import com.github.shynixn.mccoroutine.bukkit.ticks
 import com.github.shynixn.mctennis.MCTennisLanguage
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisBallFactory
@@ -25,7 +28,11 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 
-class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: TennisBallFactory) : TennisGame {
+class TennisGameImpl(
+    override val arena: TennisArena,
+    val tennisBallFactory: TennisBallFactory,
+    private val plugin: Plugin
+) : TennisGame {
     companion object {
         private val random = java.util.Random()
     }
@@ -36,11 +43,6 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
      * Tennis ball.
      */
     private var ball: TennisBall? = null
-
-    /**
-     * Dependency.
-     */
-    lateinit var plugin: Plugin
 
     /**
      * Dependency.
@@ -105,6 +107,15 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
     init {
         if (random.nextInt(100) < 50) {
             // TODO: servingTeam = Team.BLUE
+        }
+        plugin.launch(plugin.minecraftDispatcher + object : CoroutineTimings() {}) {
+            while (!isDisposed) {
+                if (gameState == GameState.RUNNING_PLAYING || gameState == GameState.RUNNING_SERVING) {
+                    increasePunchPower()
+                }
+
+                delay(3.ticks)
+            }
         }
     }
 
@@ -348,10 +359,7 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
                 setBallForServingTeam(servingTeam)
             }
 
-            increasePunchPower()
-            delay(500L)
-            increasePunchPower()
-            delay(500L)
+            delay(20.ticks)
         }
 
         if (teamRedSetScore > teamBlueSetScore) {
@@ -379,18 +387,22 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
 
             if (player.isSneaking) {
                 if (playerData.wasSneaking) {
-                    playerData.currentPower += 1
+                    playerData.currentPower += 0.5
                 } else {
-                    playerData.currentPower = 1
+                    playerData.currentPower = 1.0
                     playerData.wasSneaking = true
                 }
             } else {
                 playerData.wasSneaking = false
             }
 
+            if (playerData.currentPower > 10.0) {
+                playerData.currentPower = 10.0
+            }
+
             val builder = StringBuilder()
 
-            for (i in 0 until playerData.currentPower) {
+            for (i in 0 until playerData.currentPower.toInt()) {
                 builder.append("█")
             }
 
@@ -535,6 +547,17 @@ class TennisGameImpl(override val arena: TennisArena, val tennisBallFactory: Ten
         players.addAll(teamBluePlayers)
         players.addAll(teamRedPlayers)
         return players
+    }
+
+    /**
+     * Gets the collected player data.
+     */
+    override fun getPlayerData(player: Player): PlayerData? {
+        if (cachedData.containsKey(player)) {
+            return cachedData[player]!!
+        }
+
+        return null
     }
 
     /**

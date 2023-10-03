@@ -253,12 +253,4 @@ class MathComponent(
 
         return angle
     }
-
-    /**
-     * Closes the component.
-     */
-    override fun close() {
-        this.onPostPositionChange.clear()
-        this.onPrePositionChange.clear()
-    }
 }

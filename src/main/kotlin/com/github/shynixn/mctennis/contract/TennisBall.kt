@@ -18,7 +18,7 @@ interface TennisBall {
     /**
      * Shoots the ball for the given player.
      */
-    fun shoot(player: Player)
+    fun shoot(player: Player, multiplier: Double)
 
     /**
      * Gets the location of the ball.

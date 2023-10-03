@@ -1,5 +1,6 @@
 package com.github.shynixn.mctennis.contract
 
+import com.github.shynixn.mctennis.entity.PlayerData
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.GameState
 import com.github.shynixn.mctennis.enumeration.JoinResult
@@ -84,6 +85,11 @@ interface TennisGame {
      * Gets all players.
      */
     fun getPlayers(): List<Player>
+
+    /**
+     * Gets the collected player data.
+     */
+    fun getPlayerData(player: Player): PlayerData?
 
     /**
      * Gets the tennis score.

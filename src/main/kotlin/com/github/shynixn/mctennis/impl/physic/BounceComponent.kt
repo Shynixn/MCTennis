@@ -117,11 +117,4 @@ class BounceComponent(
 
         return outgoingVector
     }
-
-    /**
-     * Closes the component.
-     */
-    override fun close() {
-        onGroundAsync.clear()
-    }
 }

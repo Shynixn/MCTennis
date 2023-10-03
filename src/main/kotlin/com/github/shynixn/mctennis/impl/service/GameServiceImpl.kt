@@ -50,8 +50,7 @@ class GameServiceImpl @Inject constructor(
 
         if (arena.isEnabled) {
             validateGame(arena)
-            val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory)
-            tennisGameImpl.plugin = plugin
+            val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory, plugin)
             tennisGameImpl.commandService = commandService
             games.add(tennisGameImpl)
             plugin.logger.log(Level.INFO, "Started game '" + arena.name + "'.")

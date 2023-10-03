@@ -76,7 +76,7 @@ class TennisBallImpl(
     /**
      * LeftClick on the physic object.
      */
-    override fun shoot(player: Player) {
+    override fun shoot(player: Player, multiplier: Double) {
         if (!allowActions) {
             return
         }
@@ -93,8 +93,9 @@ class TennisBallImpl(
 
         plugin.launch {
             val prevDirection = player.eyeLocation.direction.toVector3d()
+            val strengthMultiplier = 1.0 + (multiplier * 0.1)
             val kickVector =
-                player.eyeLocation.direction.toVector3d().normalize().multiply(settings.horizontalSpeedRelative)
+                player.eyeLocation.direction.toVector3d().normalize().multiply(settings.horizontalBaseMultiplier).multiply(strengthMultiplier)
             kickVector.y += settings.verticalSpeedAbsolute
             setVelocity(kickVector)
             delay(250)

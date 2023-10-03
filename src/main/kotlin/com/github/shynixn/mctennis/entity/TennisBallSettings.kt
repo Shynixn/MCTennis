@@ -7,7 +7,7 @@ import org.bukkit.Sound
 
 class TennisBallSettings {
     // Ground
-    var horizontalSpeedRelative: Double = 0.7
+    var horizontalBaseMultiplier: Double = 0.5
 
     var verticalSpeedAbsolute: Double = 0.25
 

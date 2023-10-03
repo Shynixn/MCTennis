@@ -112,7 +112,7 @@ class ArmorstandEntityComponent(
 
             packetService.sendPacketOutEntityMetadata(player, PacketOutEntityMetadata().also {
                 it.entityId = this.entityId
-                it.armorStandMainHandRotation = EulerAngle(rotation, 0.0, 0.0)
+                it.armorStandHeadRotation = EulerAngle(rotation, 0.0, 0.0)
             })
         }
     }

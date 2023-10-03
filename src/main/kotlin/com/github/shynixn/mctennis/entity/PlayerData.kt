@@ -21,5 +21,5 @@ class PlayerData {
     /**
      * Power Index.
      */
-    var currentPower: Int = 1
+    var currentPower: Double = 1.0
 }
