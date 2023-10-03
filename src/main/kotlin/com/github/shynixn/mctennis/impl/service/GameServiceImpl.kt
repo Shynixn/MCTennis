@@ -1,5 +1,6 @@
 package com.github.shynixn.mctennis.impl.service
 
+import com.github.shynixn.mctennis.MCTennisDependencyInjectionBinder
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TeamMetadata
@@ -30,9 +31,16 @@ class GameServiceImpl @Inject constructor(
         close()
 
         val arenas = arenaRepository.getAll()
+        var counter = 0
 
         for (arena in arenas) {
+            if (!MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded && counter >= 1) {
+                plugin.logger.info("This version of MCTennis only supports one game. See release notes for details.")
+                return
+            }
+
             reload(arena)
+            counter++
         }
     }
 
@@ -98,7 +106,7 @@ class GameServiceImpl @Inject constructor(
     override fun close() {
         for (game in games) {
             game.dispose(false)
-            plugin.logger.log(Level.INFO, "Stopped game '" +game.arena.name + "'.")
+            plugin.logger.log(Level.INFO, "Stopped game '" + game.arena.name + "'.")
         }
 
         games.clear()

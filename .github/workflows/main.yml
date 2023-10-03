@@ -26,9 +26,9 @@ jobs:
       - name: Build Java Application
         run: |
           chmod +x gradlew
-          ./gradlew build shadowJar
+          ./gradlew build pluginJars
           echo "RELEASE_VERSION=$(./gradlew -q printVersion)" >> $GITHUB_ENV
-          
+
       - name: Create Github Release
         if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
         id: create_release
@@ -42,17 +42,39 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Bukkit Release to Github
+      - name: Upload Latest Release to Github
         if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}.jar
-          asset_name: MCTennis.jar
-          asset_content_type: application/jar     
-          
+          asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}-latest.jar
+          asset_name: MCTennis-Latest.jar
+          asset_content_type: application/jar
+
+      - name: Upload Premium Release to Github
+        if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}-premium.jar
+          asset_name: MCTennis-Premium.jar
+          asset_content_type: application/jar
+
+      - name: Upload Legacy Premium Release to Github
+        if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}-legacy.jar
+          asset_name: MCTennis-Legacy-Premium.jar
+          asset_content_type: application/jar
+
   Wiki:
     runs-on: ubuntu-latest
     if: "contains(github.ref, 'main')"
@@ -63,4 +85,4 @@ jobs:
         with:
           source-dir: "docs/source"
           target-dir: "docs/build"
-          github-secret: ${{ secrets.GITHUB_TOKEN }}      
+          github-secret: ${{ secrets.GITHUB_TOKEN }}

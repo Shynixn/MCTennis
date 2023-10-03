@@ -115,13 +115,4 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
             throw IllegalArgumentException("Service ${service.name} could not be resolved.", e)
         }
     }
-
-    private fun areVersionClassFilesFound(): Boolean {
-        try {
-            Class.forName("com.github.shynixn.mctennis.lib.com.github.shynixn.mcutils.packet.nms.v1_18_R1")
-            return true
-        } catch (e: ClassNotFoundException) {
-            return false
-        }
-    }
 }

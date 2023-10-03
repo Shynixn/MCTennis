@@ -1,5 +1,6 @@
 package com.github.shynixn.mctennis.impl.service
 
+import com.github.shynixn.mctennis.MCTennisDependencyInjectionBinder
 import com.github.shynixn.mctennis.MCTennisLanguage
 import com.github.shynixn.mctennis.contract.DependencyPlaceholderApiService
 import com.github.shynixn.mctennis.contract.GameService
@@ -55,6 +56,11 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
      * @return result
      */
     override fun onPlaceholderRequest(player: Player?, s: String?): String? {
+        if (!MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded) {
+            plugin.logger.info("This version of MCTennis does not support placeholders. See release notes for details.")
+            return null
+        }
+
         if (s == null) {
             return null
         }

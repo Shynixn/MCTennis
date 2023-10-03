@@ -4,11 +4,11 @@ import java.io.*
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version ("1.6.10")
-    id("com.github.johnrengelman.shadow") version ("6.1.0")
+    id("com.github.johnrengelman.shadow") version ("7.0.0")
 }
 
 group = "com.github.shynixn"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -18,6 +18,10 @@ repositories {
     maven("https://repo.opencollab.dev/main/")
 }
 
+tasks.register("printVersion") {
+    println(version)
+}
+
 dependencies {
     // Compile Only
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
@@ -25,13 +29,13 @@ dependencies {
     compileOnly("org.geysermc.geyser:api:2.2.0-SNAPSHOT")
 
     // Plugin.yml Shade dependencies
-    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.13.0")
-    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.13.0")
-    compileOnly("com.google.inject:guice:5.0.1")
-    compileOnly("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
-    compileOnly("com.fasterxml.jackson.core:jackson-databind:2.2.3")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-    compileOnly("com.google.code.gson:gson:2.8.6")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.13.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.13.0")
+    implementation("com.google.inject:guice:5.0.1")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.2.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+    implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
     implementation("com.github.shynixn.mcutils:common:1.0.25")
@@ -67,14 +71,112 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+/**
+ * Include all but exclude debugging classes.
+ */
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     dependsOn("jar")
+    archiveName = "${baseName}-${version}-shadowjar.${extension}"
+    exclude("DebugProbesKt.bin")
+    exclude("module-info.class")
+}
 
-    destinationDir = File("C:\\temp\\plugins")
+/**
+ * Create all plugin jar files.
+ */
+tasks.register("pluginJars") {
+    dependsOn("pluginJarLatest")
+    dependsOn("pluginJarLegacy")
+    dependsOn("pluginJarPremium")
+}
 
-    relocate("com.github.shynixn.mcutils", "com.github.shynixn.mctennis.mcutils")
+/**
+ * Create legacy plugin jar file.
+ */
+tasks.register("relocateLegacyPluginJar", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
+    dependsOn("shadowJar")
+    from(zipTree(File("./build/libs/" + (tasks.getByName("shadowJar") as Jar).archiveName)))
+    archiveName = "${baseName}-${version}-legacy-relocate.${extension}"
+    relocate("com.github.shynixn.mcutils", "com.github.shynixn.mctennis.lib.com.github.shynixn.mcutils")
+    relocate("kotlin", "com.github.shynixn.mctennis.lib.kotlin")
+    relocate("org.intellij", "com.github.shynixn.mctennis.lib.org.intelli")
+    relocate("javax", "com.github.shynixn.mctennis.lib.javax")
+    relocate("kotlinx", "com.github.shynixn.mctennis.lib.kotlinx")
+    relocate("com.google", "com.github.shynixn.mctennis.lib.com.google")
+    relocate("com.fasterxml", "com.github.shynixn.mctennis.lib.com.fasterxml")
+    relocate("com.github.shynixn.mccoroutine", "com.github.shynixn.mctennis.lib.com.github.shynixn.mccoroutine")
+    exclude("plugin.yml")
+    rename("plugin-legacy.yml", "plugin.yml")
+}
+
+/**
+ * Create legacy plugin jar file.
+ */
+tasks.register("pluginJarLegacy", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
+    dependsOn("relocateLegacyPluginJar")
+    from(zipTree(File("./build/libs/" + (tasks.getByName("relocateLegacyPluginJar") as Jar).archiveName)))
+    archiveName = "${baseName}-${version}-legacy.${extension}"
+    // destinationDir = File("C:\\temp\\plugins")
+    exclude("com/github/shynixn/mcutils/**")
+    exclude("org/**")
+    exclude("kotlin/**")
+    exclude("kotlinx/**")
+    exclude("javax/**")
+    exclude("com/google/**")
+    exclude("com/github/shynixn/mccoroutine/**")
+    exclude("com/fasterxml/**")
+    exclude("plugin-legacy.yml")
+}
+
+/**
+ * Create legacy plugin jar file.
+ */
+tasks.register("relocatePluginJar", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
+    dependsOn("shadowJar")
+    from(zipTree(File("./build/libs/" + (tasks.getByName("shadowJar") as Jar).archiveName)))
+    archiveName = "${baseName}-${version}-relocate.${extension}"
+    relocate("com.github.shynixn.mcutils", "com.github.shynixn.mctennis.lib.com.github.shynixn.mcutils")
+}
+
+/**
+ * Create latest plugin jar file.
+ */
+tasks.register("pluginJarLatest", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
+    dependsOn("relocatePluginJar")
+    from(zipTree(File("./build/libs/" + (tasks.getByName("relocatePluginJar") as Jar).archiveName)))
+    archiveName = "${baseName}-${version}-latest.${extension}"
+    // destinationDir = File("C:\\temp\\plugins")
+
+    exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_8_R3/**")
+    exclude("com/github/shynixn/mcutils/**")
+    exclude("com/github/shynixn/mccoroutine/**")
     exclude("kotlin/**")
     exclude("org/**")
+    exclude("kotlinx/**")
+    exclude("javax/**")
+    exclude("com/google/**")
+    exclude("com/fasterxml/**")
+    exclude("plugin-legacy.yml")
+}
+
+/**
+ * Create premium plugin jar file.
+ */
+tasks.register("pluginJarPremium", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
+    dependsOn("relocatePluginJar")
+    from(zipTree(File("./build/libs/" + (tasks.getByName("relocatePluginJar") as Jar).archiveName)))
+    archiveName = "${baseName}-${version}-premium.${extension}"
+    // destinationDir = File("C:\\temp\\plugins")
+
+    exclude("com/github/shynixn/mcutils/**")
+    exclude("com/github/shynixn/mccoroutine/**")
+    exclude("kotlin/**")
+    exclude("org/**")
+    exclude("kotlinx/**")
+    exclude("javax/**")
+    exclude("com/google/**")
+    exclude("com/fasterxml/**")
+    exclude("plugin-legacy.yml")
 }
 
 tasks.register("languageFile") {
