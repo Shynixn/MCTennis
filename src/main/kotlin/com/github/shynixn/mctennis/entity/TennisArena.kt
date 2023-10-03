@@ -65,16 +65,6 @@ class TennisArena : Arena {
      */
     var blueTeamMeta: TeamMetadata = TeamMetadata()
 
-    /**
-     * Commands executed on player join.
-     */
-    var joinCommands: List<CommandMeta> = ArrayList()
-
-    /**
-     * Commands executed on player leave.
-     */
-    var leaveCommands: List<CommandMeta> = ArrayList()
-
     @JsonProperty("ball")
     var ballSettings: TennisBallSettings = TennisBallSettings()
 }

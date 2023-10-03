@@ -61,4 +61,14 @@ class TeamMetadata {
      * Commands executed on player raw.
      */
     var drawCommands: List<CommandMeta> = ArrayList()
+
+    /**
+     * Commands executed on player join.
+     */
+    var joinCommands: List<CommandMeta> = ArrayList()
+
+    /**
+     * Commands executed on player leave.
+     */
+    var leaveCommands: List<CommandMeta> = ArrayList()
 }

@@ -150,22 +150,28 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (args.size == 1 && args[0].equals(
-                "help", true
-            ) && sender.hasPermission(Permission.EDIT_GAME.permission)
-        ) {
-            sender.sendMessage("---------MCTennis---------")
-            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis create <name> <displayName>")
-            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis delete <name>")
-            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis toggle <name>")
-            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis list")
-            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis location <name> <type>")
-            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis inventory <name> <red/blue>")
-            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis armor <name> <red/blue>")
-            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis join <name>")
-            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis leave")
-            sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis reload")
-            sender.sendMessage("----------┌1/1┐----------")
+        if (args.size == 1 && args[0].equals("help", true)) {
+
+            if (sender.hasPermission(Permission.EDIT_GAME.permission)) {
+                sender.sendMessage("---------MCTennis---------")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis create <name> <displayName>")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis delete <name>")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis toggle <name>")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis list")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis location <name> <type>")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis inventory <name> <red/blue>")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis armor <name> <red/blue>")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis join <name>")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis leave")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis reload")
+                sender.sendMessage("----------┌1/1┐----------")
+            } else {
+                sender.sendMessage("---------MCTennis---------")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis join <name>")
+                sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis leave")
+                sender.sendMessage("----------┌1/1┐----------")
+            }
+
             return true
         }
 
@@ -268,13 +274,18 @@ class MCTennisCommandExecutor @Inject constructor(
     }
 
     private fun leaveGame(player: Player) {
+        var leftGame = false
+
         for (game in gameService.getAll()) {
             if (game.getPlayers().contains(player)) {
                 game.leave(player)
+                leftGame = true
             }
         }
 
-        player.sendMessage(MCTennisLanguage.leftGameMessage)
+        if (leftGame) {
+            player.sendMessage(MCTennisLanguage.leftGameMessage)
+        }
     }
 
     private suspend fun listArena(sender: CommandSender) {

@@ -156,10 +156,12 @@ class TennisGameImpl(
         val joinResult = if (targetTeam == Team.RED) {
             teamRedPlayers.add(player)
             player.teleport(arena.redTeamMeta.lobbySpawnpoint.toLocation())
+            commandService.executeCommands(listOf(player), arena.redTeamMeta.joinCommands)
             JoinResult.SUCCESS_RED
         } else {
             teamBluePlayers.add(player)
             player.teleport(arena.blueTeamMeta.lobbySpawnpoint.toLocation())
+            commandService.executeCommands(listOf(player), arena.blueTeamMeta.joinCommands)
             JoinResult.SUCCESS_BLUE
         }
 
@@ -176,7 +178,6 @@ class TennisGameImpl(
             }
         }
 
-        commandService.executeCommands(listOf(player), arena.joinCommands)
         return joinResult
     }
 
@@ -187,8 +188,6 @@ class TennisGameImpl(
         if (!cachedData.containsKey(player)) {
             return LeaveResult.NOT_IN_MATCH
         }
-
-        commandService.executeCommands(listOf(player), arena.leaveCommands)
 
         // Disable flying.
         player.isFlying = false
@@ -210,9 +209,11 @@ class TennisGameImpl(
         cachedData.remove(player)
         if (teamRedPlayers.contains(player)) {
             teamRedPlayers.remove(player)
+            commandService.executeCommands(listOf(player), arena.redTeamMeta.leaveCommands)
         }
         if (teamBluePlayers.contains(player)) {
             teamBluePlayers.remove(player)
+            commandService.executeCommands(listOf(player), arena.blueTeamMeta.leaveCommands)
         }
 
         return LeaveResult.SUCCESS
