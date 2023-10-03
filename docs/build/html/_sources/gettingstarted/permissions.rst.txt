@@ -13,15 +13,18 @@ These are the recommend permissions for administrators or moderators.
 =======================================================================   =======
 Description                                                               Permission
 =======================================================================   =======
-Allows to create, modify and delete games.                                mctennis.command.edit
+Allows to create, modify and delete games.                                mctennis.edit
 =======================================================================   =======
 
 Users
 ~~~~~
 
+These are the recommend permissions for users.
+
 ========================================================================  ===============
 Description                                                               Permission
 ========================================================================  ===============
 Allows to use the **/mctennis** command                                   mctennis.command
-Allows to play games                                                      mctennis.command.play.*
+Allows to join all games                                                  mctennis.join.*
+Allows to join a specific game                                            mctennis.join.<name>
 ========================================================================  ===============

@@ -12,8 +12,8 @@ The following items have to be installed in order to use MCTennis.
 
 **Paper or Spigot**
 
-> Spigot 1.18.2 - Latest ✔
-> Paper(Spigot) 1.18.2 - Latest  ✔
+> Spigot 1.20.2 - Latest ✔
+> Paper(Spigot) 1.20.2 - Latest  ✔
 > CraftBukkit ✘ (not compatible)
 > Sponge ✘ (not compatible)
 
