@@ -24,6 +24,8 @@ the match or leaves the match.
 .. note::  The type **SERVER_PER_PLAYER** executes commands using the SERVER level permission, which means players do not
     have to have the permission to the command. If you want to execute commands using the PLAYER level permission, use **PER_PLAYER**.
 
+.. note::  You need to configure this for each team. Each team can have its own join and leave commands.
+
 Permission Based Interactions
 ~~~~~~~~~~~~~~~~~~
 
