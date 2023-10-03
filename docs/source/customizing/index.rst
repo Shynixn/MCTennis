@@ -7,3 +7,4 @@ This section explains how games can be created and customized.
     game
     join
     interaction
+    placeholder

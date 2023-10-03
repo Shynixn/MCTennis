@@ -10,7 +10,5 @@ enum class PlaceHolder(val text: String) {
     GAME_ISTEAMBLUEPLAYER("isTeamBluePlayer"),
     GAME_RAWSCORETEAMRED("rawScoreTeamRed"),
     GAME_RAWSCORETEAMBLUE("rawScoreTeamRed"),
-    GAME_SCORE("score"),
-    GAME_SETSCORETEAMRED("setScoreTeamRed"),
-    GAME_SETSCORETEAMBLUE("setScoreTeamBlue"),
+    GAME_SCORE("score")
 }

@@ -106,12 +106,6 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
             if (parts[1].equals(PlaceHolder.GAME_SCORE.text, true)) {
                 return game.getScoreText()
             }
-            if (parts[1].equals(PlaceHolder.GAME_SETSCORETEAMRED.text, true)) {
-                return game.teamRedSetScore.toString()
-            }
-            if (parts[1].equals(PlaceHolder.GAME_SETSCORETEAMBLUE.text, true)) {
-                return game.teamBlueSetScore.toString()
-            }
         } catch (ignored: Exception) {
             ignored.printStackTrace()
         }
