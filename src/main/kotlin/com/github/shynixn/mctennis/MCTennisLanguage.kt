@@ -61,6 +61,9 @@ object MCTennisLanguage {
   /** &9Team Blue **/
   var winBlueTitle : String = "&9Team Blue"
 
+  /** [&9MCTennis&f] You do not have permission to join game %1$1s. **/
+  var noPermissionForGameMessage : String = "[&9MCTennis&f] You do not have permission to join game %1$1s."
+
   /** [&9MCTennis&f] Updated armor of game. **/
   var updatedArmorMessage : String = "[&9MCTennis&f] Updated armor of game."
 

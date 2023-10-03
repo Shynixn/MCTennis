@@ -42,7 +42,7 @@ class MCTennisCommandExecutor @Inject constructor(
     override suspend fun onCommand(
         sender: CommandSender, command: Command, label: String, args: Array<out String>
     ): Boolean {
-        if (args.size >= 3 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
+        if (args.size >= 3 && sender.hasPermission(Permission.EDIT_GAME.permission) && args[0].equals(
                 "create", true
             )
         ) {
@@ -57,7 +57,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (args.size == 2 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
+        if (args.size == 2 && sender.hasPermission(Permission.EDIT_GAME.permission) && args[0].equals(
                 "delete", true
             )
         ) {
@@ -66,7 +66,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (args.size == 1 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
+        if (args.size == 1 && sender.hasPermission(Permission.EDIT_GAME.permission) && args[0].equals(
                 "list", true
             )
         ) {
@@ -74,7 +74,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (sender is Player && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args.size == 3 && args[0].equals(
+        if (sender is Player && sender.hasPermission(Permission.EDIT_GAME.permission) && args.size == 3 && args[0].equals(
                 "inventory", true
             )
         ) {
@@ -84,7 +84,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (sender is Player && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args.size == 3 && args[0].equals(
+        if (sender is Player && sender.hasPermission(Permission.EDIT_GAME.permission) && args.size == 3 && args[0].equals(
                 "location", true
             )
         ) {
@@ -94,7 +94,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (sender.hasPermission(Permission.COMMAND_EDIT.permission) && args.size == 2 && args[0].equals(
+        if (sender.hasPermission(Permission.EDIT_GAME.permission) && args.size == 2 && args[0].equals(
                 "toggle", true
             )
         ) {
@@ -103,7 +103,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (sender is Player && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args.size == 3 && args[0].equals(
+        if (sender is Player && sender.hasPermission(Permission.EDIT_GAME.permission) && args.size == 3 && args[0].equals(
                 "armor", true
             )
         ) {
@@ -113,7 +113,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size >= 2 && args[0].equals(
+        if (sender is Player && args.size >= 2 && args[0].equals(
                 "join", true
             )
         ) {
@@ -136,7 +136,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return true
         }
 
-        if (args.size >= 1 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && args[0].equals(
+        if (args.size >= 1 && sender.hasPermission(Permission.EDIT_GAME.permission) && args[0].equals(
                 "reload", true
             )
         ) {
@@ -152,7 +152,7 @@ class MCTennisCommandExecutor @Inject constructor(
 
         if (args.size == 1 && args[0].equals(
                 "help", true
-            ) && sender.hasPermission(Permission.COMMAND_EDIT.permission)
+            ) && sender.hasPermission(Permission.EDIT_GAME.permission)
         ) {
             sender.sendMessage("---------MCTennis---------")
             sender.sendMessage(ChatColor.GRAY.toString() + "/mctennis create <name> <displayName>")
@@ -185,7 +185,7 @@ class MCTennisCommandExecutor @Inject constructor(
         sender: CommandSender, command: Command, alias: String, args: Array<out String>
     ): List<String> {
         if (args.size == 1) {
-            if (sender.hasPermission(Permission.COMMAND_EDIT.permission)) {
+            if (sender.hasPermission(Permission.EDIT_GAME.permission)) {
                 return arrayListOf(
                     "create",
                     "delete",
@@ -201,19 +201,17 @@ class MCTennisCommandExecutor @Inject constructor(
                 )
             }
 
-            if (sender.hasPermission(Permission.COMMAND_PLAYER.permission)) {
-                return arrayListOf("join", "leave")
-            }
+            return arrayListOf("join", "leave")
         }
 
-        if (args.size == 2 && sender.hasPermission(Permission.COMMAND_EDIT.permission) && (args[0].equals(
+        if (args.size == 2 && sender.hasPermission(Permission.EDIT_GAME.permission) && (args[0].equals(
                 "create", true
             ) || args[0].equals("delete", true) || args[0].equals("reload", true))
         ) {
             return arenaRepository.getAll().map { e -> e.name }
         }
 
-        if (sender is Player && sender.hasPermission(Permission.COMMAND_PLAYER.permission) && args.size >= 2 && (args[0].equals(
+        if (sender is Player && args.size >= 2 && (args[0].equals(
                 "join", true
             ))
         ) {
@@ -239,6 +237,11 @@ class MCTennisCommandExecutor @Inject constructor(
 
         if (game == null) {
             player.sendMessage(MCTennisLanguage.gameDoesNotExistMessage.format(name))
+            return
+        }
+
+        if (!player.hasPermission("mctennis.join.${game.arena.name}")) {
+            player.sendMessage(MCTennisLanguage.noPermissionForGameMessage.format(game.arena.name))
             return
         }
 

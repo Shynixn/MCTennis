@@ -78,6 +78,12 @@ For this, open the **plugins/MCTennis/arena/<name>.yml** file.
         z: 0.0
         yaw: 0.0
         pitch: 0.0
+      - world: "world"
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        yaw: 0.0
+        pitch: 0.0
 
 6. Set the playing area for team red
 ~~~~~~~~~~~~~~~~~~
@@ -134,6 +140,12 @@ For this, open the **plugins/MCTennis/arena/<name>.yml** file.
 
     blueTeamMeta:
       spawnpoints:
+      - world: "world"
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        yaw: 0.0
+        pitch: 0.0
       - world: "world"
         x: 0.0
         y: 0.0
