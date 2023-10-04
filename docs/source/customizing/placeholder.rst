@@ -15,6 +15,7 @@ Description                                                              Placeho
 ======================================================================   ====================================               ===================
 Marker if a player is in any MCTennis game or not.                       %mctennis_global_isInGame%                         true,false
 Marker if a game is enabled                                              %mctennis_<name>_isEnabled%                        true,false
+Marker if a game can be joined                                           %mctennis_<name>_isJoinAble%                       true,false
 Marker if a game is running                                              %mctennis_<name>_isRunning%                        true,false
 Displayname of a game                                                    %mctennis_<name>_displayName%                      My amazing game
 Marker if a player is part of team red                                   %mctennis_<name>_isTeamRedPlayer%                  true,false
