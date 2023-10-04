@@ -34,13 +34,26 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Loading MCTennis ...")
         this.saveDefaultConfig()
 
-        if (!Version.serverVersion.isCompatible(
-                Version.VERSION_1_20_R2,
+        val versions = if (MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded) {
+            listOf(
+                Version.VERSION_1_17_R1,
+                Version.VERSION_1_18_R1,
+                Version.VERSION_1_18_R2,
+                Version.VERSION_1_19_R1,
+                Version.VERSION_1_19_R2,
+                Version.VERSION_1_19_R3,
+                Version.VERSION_1_20_R1,
+                Version.VERSION_1_20_R2
             )
+        } else {
+            listOf(Version.VERSION_1_20_R2)
+        }
+
+        if (!Version.serverVersion.isCompatible(*versions.toTypedArray())
         ) {
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "================================================")
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "MCTennis does not support your server version")
-            Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "Install v" + Version.VERSION_1_20_R2.id + " - v" + Version.VERSION_1_20_R2.id)
+            Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "Install v" + versions[0].id + " - v" + versions[versions.size - 1].id)
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "Plugin gets now disabled!")
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "================================================")
             Bukkit.getPluginManager().disablePlugin(this)
@@ -95,6 +108,10 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
      * Called when this plugin is disabled
      */
     override fun onDisable() {
+        if (injector == null) {
+            return
+        }
+
         val packetService = resolve(PacketService::class.java)
         packetService.close()
         val physicObjectService = resolve(PhysicObjectService::class.java)

@@ -2,8 +2,8 @@ name: "game1"
 displayName: "My first game"
 enabled: true
 maxPlayersPerTeam: 1
-minPlayersPerTeam: 1
-timeToStart: 10
+minPlayersPerTeam: 0
+timeToStart: 5
 gameTime: 300
 setsToWin: 3
 leaveSpawnpoint:
@@ -16,11 +16,11 @@ leaveSpawnpoint:
 redTeamMeta:
   spawnpoints:
     - world: "world"
-      x: 1535.6455444055068
+      x: 1532.9931529158096
       y: 4.0
-      z: -1625.6676413526743
-      yaw: -2.63690185546875
-      pitch: 29.39971160888672
+      z: -1624.6068086444761
+      yaw: -12.677053451538086
+      pitch: -19.350162506103516
   lobbySpawnpoint:
     world: "world"
     x: 1555.7375512912465
@@ -34,6 +34,16 @@ redTeamMeta:
   winCommands: []
   looseCommands: []
   drawCommands: []
+  joinCommands:
+    - type: 'SERVER_PER_PLAYER'
+      command: 'say Hello %player_name% '
+    - type: 'SERVER_PER_PLAYER'
+      command: 'lp user %player_name% parent add mctennis'
+  leaveCommands:
+    - type: 'SERVER_PER_PLAYER'
+      command: 'say Bye %player_name% '
+    - type: 'SERVER_PER_PLAYER'
+      command: 'lp user %player_name% parent remove mctennis'
   corner1:
     world: "world"
     x: 1551.2994801663847
@@ -69,6 +79,16 @@ blueTeamMeta:
   winCommands: []
   looseCommands: []
   drawCommands: []
+  joinCommands:
+    - type: 'SERVER_PER_PLAYER'
+      command: 'say Hello %player_name% '
+    - type: 'SERVER_PER_PLAYER'
+      command: 'lp user %player_name% parent add mctennis'
+  leaveCommands:
+    - type: 'SERVER_PER_PLAYER'
+      command: 'say Bye %player_name% '
+    - type: 'SERVER_PER_PLAYER'
+      command: 'lp user %player_name% parent remove mctennis'
   corner1:
     world: "world"
     x: 1551.589997819268
@@ -83,10 +103,8 @@ blueTeamMeta:
     z: -1602.6071343393714
     yaw: 85.5672607421875
     pitch: 49.05009078979492
-joinCommands: []
-leaveCommands: []
 ball:
-  horizontalSpeedRelative: 0.7
+  horizontalBaseMultiplier: 0.6
   verticalSpeedAbsolute: 0.25
   groundResistanceRelative: 0.99
   groundResistanceAbsolute: 1.0E-4
@@ -96,7 +114,7 @@ ball:
   airResistanceAbsolute: 1.0E-4
   renderVisibilityUpdateMs: 5000
   renderDistanceBlocks: 70
-  clickHitBoxSize: 2
+  clickHitBoxSize: 3
   spinBaseMultiplier: 1.0
   maximumSpinningVelocity: 0.08
   spinMaximum: 60.0

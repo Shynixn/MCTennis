@@ -358,6 +358,14 @@ class MCTennisCommandExecutor @Inject constructor(
     }
 
     private suspend fun reloadArena(sender: CommandSender, name: String?) {
+        try {
+            arenaRepository.clearCache()
+        } catch (e: TennisArenaException) {
+            sender.sendMessage(fallBackPrefix + ChatColor.RED.toString() + "Failed to reload arenas.")
+            sender.sendMessage(fallBackPrefix + e.message)
+            return
+        }
+
         if (name == null) {
             plugin.reloadConfig()
             val language = configurationService.findValue<String>("language")
