@@ -1,22 +1,16 @@
 Installation
 =====================
 
-Required Installation
-~~~~~~~~~~~~~~~~~~~~~
+MCTennis-Latest.jar
+~~~~~~~~~~~~
 
-The following items have to be installed in order to use MCTennis.
+Java 17
 
-**Java**
+Spigot 1.20.2 / Paper(Spigot) 1.20.2
 
-> Java 8 - Java Latest
+MCTennis-Premium.jar
+~~~~~~~~~~~~
 
-**Paper or Spigot**
+Java 17
 
-> Spigot 1.20.2 - Latest ✔
-> Paper(Spigot) 1.20.2 - Latest  ✔
-> CraftBukkit ✘ (not compatible)
-> Sponge ✘ (not compatible)
-
-MCTennis
-
-> MCTennis.jar
+Spigot 1.17 - 1.20.2 / Paper(Spigot) 1.17 - 1.20.2
