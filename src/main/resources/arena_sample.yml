@@ -54,6 +54,9 @@ redTeamMeta:
   # Commands which are executed if the game ends in a draw.
   drawCommands: []
   # Commands which are executed when a player joins this team.
+  # Types are:
+  #  SERVER_PER_PLAYER (executes a command with server level permission)
+  #  PER_PLAYER (executes a command with player level permission)
   joinCommands:
     - type: 'SERVER_PER_PLAYER'
       command: 'say Hello %player_name% '
@@ -113,6 +116,9 @@ blueTeamMeta:
   # Commands which are executed if the game ends in a draw.
   drawCommands: []
   # Commands which are executed when a player joins this team.
+  # Types are:
+  #  SERVER_PER_PLAYER (executes a command with server level permission)
+  #  PER_PLAYER (executes a command with player level permission)
   joinCommands:
     - type: 'SERVER_PER_PLAYER'
       command: 'say Hello %player_name% '
