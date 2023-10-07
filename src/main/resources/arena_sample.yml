@@ -1,11 +1,20 @@
+# Unique identifier of a game
 name: "game1"
+# Arbitrary name which supports color codes and can be used as placeholder
 displayName: "My first game"
+# Is the game enabled or not.
 enabled: true
+# Maximum amount of players per team.
 maxPlayersPerTeam: 1
+# Minimum amount of players per team.
 minPlayersPerTeam: 0
+# Time in seconds until the lobby timer starts the game.
 timeToStart: 5
+# Time in seconds until the game stops.
 gameTime: 300
+# Amount of Tennis sets to play.
 setsToWin: 3
+# Spawnpoint of players who leave the game.
 leaveSpawnpoint:
   world: "world"
   x: 1561.2791057927975
@@ -14,6 +23,7 @@ leaveSpawnpoint:
   yaw: 93.97332763671875
   pitch: 41.39981460571289
 redTeamMeta:
+  # List of spawnpoints of the red team. You may add multiple ones.
   spawnpoints:
     - world: "world"
       x: 1532.9931529158096
@@ -21,6 +31,7 @@ redTeamMeta:
       z: -1624.6068086444761
       yaw: -12.677053451538086
       pitch: -19.350162506103516
+  # Spawnpoint of the lobby of the red team.
   lobbySpawnpoint:
     world: "world"
     x: 1555.7375512912465
@@ -28,22 +39,33 @@ redTeamMeta:
     z: -1605.4890766536732
     yaw: 94.4229736328125
     pitch: 31.94972038269043
+  # Unused
   name: null
+  # Inventory the player receives when joining this team.
+  # Should be set in game using the inventory sub command.
   inventoryContents: []
+  # Inventory the player receives when joining this team.
+  # Should be set in game using the armor sub command.
   armorInventoryContents: []
+  # Commands which are executed on the team who wins the match.
   winCommands: []
+  # Commands which are executed on the team who looses the match.
   looseCommands: []
+  # Commands which are executed if the game ends in a draw.
   drawCommands: []
+  # Commands which are executed when a player joins this team.
   joinCommands:
     - type: 'SERVER_PER_PLAYER'
       command: 'say Hello %player_name% '
     - type: 'SERVER_PER_PLAYER'
       command: 'lp user %player_name% parent add mctennis'
+  # Commands which are executed when a player leaves this team.
   leaveCommands:
     - type: 'SERVER_PER_PLAYER'
       command: 'say Bye %player_name% '
     - type: 'SERVER_PER_PLAYER'
       command: 'lp user %player_name% parent remove mctennis'
+  # Corner 1 of the playing area of the red team. The y axe is not used.
   corner1:
     world: "world"
     x: 1551.2994801663847
@@ -51,6 +73,7 @@ redTeamMeta:
     z: -1604.679982141855
     yaw: 0.212646484375
     pitch: 49.49980545043945
+  # Corner 2 of the playing area of the red team. The y axe is not used.
   corner2:
     world: "world"
     x: 1527.251214414003
@@ -59,6 +82,7 @@ redTeamMeta:
     yaw: -82.73858642578125
     pitch: 44.999637603759766
 blueTeamMeta:
+  # List of spawnpoints of the blue team. You may add multiple ones.
   spawnpoints:
     - world: "world"
       x: 1544.955766880254
@@ -66,6 +90,7 @@ blueTeamMeta:
       z: -1579.5664397691075
       yaw: 179.629150390625
       pitch: 20.84996223449707
+  # Spawnpoint of the lobby of the blue team.
   lobbySpawnpoint:
     world: "world"
     x: 1555.8452153139533
@@ -73,22 +98,33 @@ blueTeamMeta:
     z: -1601.1303545702003
     yaw: 93.2117919921875
     pitch: 38.39991760253906
+  # Unused
   name: null
+  # Inventory the player receives when joining this team.
+  # Should be set in game using the inventory sub command.
   inventoryContents: []
+  # Inventory the player receives when joining this team.
+  # Should be set in game using the armor sub command.
   armorInventoryContents: []
+  # Commands which are executed on the team who wins the match.
   winCommands: []
+  # Commands which are executed on the team who looses the match.
   looseCommands: []
+  # Commands which are executed if the game ends in a draw.
   drawCommands: []
+  # Commands which are executed when a player joins this team.
   joinCommands:
     - type: 'SERVER_PER_PLAYER'
       command: 'say Hello %player_name% '
     - type: 'SERVER_PER_PLAYER'
       command: 'lp user %player_name% parent add mctennis'
+  # Commands which are executed when a player leaves this team.
   leaveCommands:
     - type: 'SERVER_PER_PLAYER'
       command: 'say Bye %player_name% '
     - type: 'SERVER_PER_PLAYER'
       command: 'lp user %player_name% parent remove mctennis'
+  # Corner 1 of the playing area of the blue team. The y axe is not used.
   corner1:
     world: "world"
     x: 1551.589997819268
@@ -96,6 +132,7 @@ blueTeamMeta:
     z: -1573.1879027766895
     yaw: -110.62744140625
     pitch: 48.6000862121582
+  # Corner 2 of the playing area of the blue team. The y axe is not used.
   corner2:
     world: "world"
     x: 1527.4017460078576
@@ -104,31 +141,49 @@ blueTeamMeta:
     yaw: 85.5672607421875
     pitch: 49.05009078979492
 ball:
+  # The normalized velocity of the direction the ball is shot is multiplied by this value.
   horizontalBaseMultiplier: 0.6
+  # The vertical minimum value which is added to the normalized velocity.
   verticalSpeedAbsolute: 0.25
+  # Unused.
   groundResistanceRelative: 0.99
+  # Unused.
   groundResistanceAbsolute: 1.0E-4
+  # Bounce multiplier when the ball touches the groun.
   groundBouncing: 0.7
+  # Distance per tick the ball is moved towards the ground.
   gravityAbsolute: 0.02
+  # Multiplier of the speed of the ball in the air.
   airResistanceRelative: 0.99
+  # Absolute value which is reducing the speed of the ball in the air.
   airResistanceAbsolute: 1.0E-4
+  # How often the render distance of the ball is updated in ms.
   renderVisibilityUpdateMs: 5000
+  # How far the ball can be seen in blocks.
   renderDistanceBlocks: 70
+  # Click hitbox size of the ball.
   clickHitBoxSize: 3
+  # Spin properties.
   spinBaseMultiplier: 1.0
   maximumSpinningVelocity: 0.08
   spinMaximum: 60.0
   spinMinimum: 0.0
   spinDefault: 20.0
   spinVertical: 0.6
+  # Cooldown in Milliseconds how often the ball can be touched.
   clickCooldown: 250
+  # Flag if the slime hitbox should be shown on "BEDROCK", "JAVA" or "ALL".
   slimeVisibility: "BEDROCK"
+  # Flag if the armorstand ball should be shown on "BEDROCK", "JAVA" or "ALL".
+  # Note, Armorstand blocks are invisible on Bedrock, which is a limitation of bedrock itself.
   armorstandVisibility: "JAVA"
+  # Sound, which is played when a player hits the ball.
   hitSound:
     name: "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR"
     volume: 5.0
     pitch: 2.0
     effectType: "EVERYONE"
+    # Sound, which is played when the ball touches the ground.
   bounceSound:
     name: "BLOCK_STONE_HIT"
     volume: 5.0
