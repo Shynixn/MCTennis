@@ -19,7 +19,7 @@ repositories {
 }
 
 tasks.register("printVersion") {
-    println(version)
+     println(version)
 }
 
 dependencies {
