@@ -72,7 +72,7 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         Bukkit.getPluginManager().registerEvents(resolve(PacketListener::class.java), this)
         Bukkit.getPluginManager().registerEvents(resolve(BedrockService::class.java), this)
 
-        // Register CommandExecutors
+        // Register CommandExecutor
         val configurationService = resolve(ConfigurationService::class.java)
         val mcTennisCommandExecutor = resolve(MCTennisCommandExecutor::class.java)
         val mcTennisCommand = this.getCommand("mctennis")!!
