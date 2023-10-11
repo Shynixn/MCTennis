@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.shynixn"
-version = "1.0"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -149,7 +149,6 @@ tasks.register("pluginJarLatest", com.github.jengelman.gradle.plugins.shadow.tas
 
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_8_R3/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_9_R2/**")
-    exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_17_R1/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_18_R1/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_18_R2/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_19_R1/**")
