@@ -10,7 +10,7 @@ import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.impl.exception.TennisArenaException
 import com.github.shynixn.mcutils.common.*
-import com.github.shynixn.mcutils.common.arena.CacheArenaRepository
+import com.github.shynixn.mcutils.common.repository.CacheRepository
 import com.google.inject.Inject
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -22,7 +22,7 @@ import java.util.logging.Level
 import kotlin.streams.asSequence
 
 class MCTennisCommandExecutor @Inject constructor(
-    private val arenaRepository: CacheArenaRepository<TennisArena>,
+    private val arenaRepository: CacheRepository<TennisArena>,
     private val gameService: GameService,
     private val plugin: Plugin,
     private val configurationService: ConfigurationService

@@ -7,8 +7,8 @@ import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.impl.exception.TennisArenaException
 import com.github.shynixn.mctennis.impl.TennisGameImpl
-import com.github.shynixn.mcutils.common.arena.ArenaRepository
 import com.github.shynixn.mcutils.common.command.CommandService
+import com.github.shynixn.mcutils.common.repository.Repository
 import com.google.inject.Inject
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
@@ -17,7 +17,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 class GameServiceImpl @Inject constructor(
-    private val arenaRepository: ArenaRepository<TennisArena>,
+    private val arenaRepository: Repository<TennisArena>,
     private val tennisBallFactory: TennisBallFactory,
     private val plugin: Plugin,
     private val commandService: CommandService

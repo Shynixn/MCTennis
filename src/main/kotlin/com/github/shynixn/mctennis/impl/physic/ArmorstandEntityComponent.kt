@@ -13,7 +13,8 @@ class ArmorstandEntityComponent(
     private val packetService: PacketService,
     private val playerComponent: PlayerComponent,
     val entityId: Int,
-    private var filteredPlayers: HashSet<Player>
+    private var filteredPlayers: HashSet<Player>,
+    private val renderOffsetY : Double
 ) : PhysicComponent {
     private var rotation = 0.0
 
@@ -31,13 +32,13 @@ class ArmorstandEntityComponent(
         packetService.sendPacketOutEntitySpawn(player, PacketOutEntitySpawn().also {
             it.entityId = this.entityId
             it.entityType = EntityType.ARMOR_STAND
-            it.target = location
+            it.target = location.toVector3d().addRelativeUp(renderOffsetY).toLocation()
         })
 
         val itemStack = item {
             this.typeName = "PLAYER_HEAD"
             this.nbt =
-                "{SkullOwner:{Id:[I;1,1,1,1],Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZkYThhNzk3N2VjOTIxNGM1YjcwMWY5YWU3ZTE1NWI4ZWIyMWQxZDM3MTU5OGUxYjk4NzVjNGM4NWM2NWFlNiJ9fX0=\"}]}}}"
+                "{SkullOwner:{Id:[I;1,1,1,1],Name:\"TennisBall\",Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZkYThhNzk3N2VjOTIxNGM1YjcwMWY5YWU3ZTE1NWI4ZWIyMWQxZDM3MTU5OGUxYjk4NzVjNGM4NWM2NWFlNiJ9fX0=\"}]}}}"
         }.toItemStack()
 
         packetService.sendPacketOutEntityEquipment(player, PacketOutEntityEquipment().also {
@@ -78,7 +79,7 @@ class ArmorstandEntityComponent(
 
             packetService.sendPacketOutEntityTeleport(player, PacketOutEntityTeleport().also {
                 it.entityId = this.entityId
-                it.target = position.clone().addRelativeDown(0.3).toLocation()
+                it.target = position.clone().addRelativeUp(renderOffsetY).toLocation()
             })
         }
 

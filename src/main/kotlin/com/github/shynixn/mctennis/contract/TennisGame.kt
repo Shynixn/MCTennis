@@ -66,9 +66,9 @@ interface TennisGame {
 
     /**
      * Gets the team from a player.
-     * Throws an exception if the player isn't in this game.
+     * Returns null if the player is not in the game.
      */
-    fun getTeamFromPlayer(player: Player): Team
+    fun getTeamFromPlayer(player: Player): Team?
 
     /**
      * Lets the given player score a point for the given team.

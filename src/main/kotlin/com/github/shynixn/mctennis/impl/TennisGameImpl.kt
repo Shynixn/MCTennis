@@ -585,7 +585,7 @@ class TennisGameImpl(
      * Gets the team from a player.
      * Throws an exception if the player isn't in this game.
      */
-    override fun getTeamFromPlayer(player: Player): Team {
+    override fun getTeamFromPlayer(player: Player): Team? {
         if (teamBluePlayers.contains(player)) {
             return Team.BLUE
         }
@@ -594,7 +594,7 @@ class TennisGameImpl(
             return Team.RED
         }
 
-        throw RuntimeException("Team of ${player.name} not found!")
+        return null
     }
 
     /**
