@@ -53,7 +53,8 @@ class TennisListener @Inject constructor(
             return
         }
 
-        val team = game.getTeamFromPlayer(player)
+        val team = game.getTeamFromPlayer(player) ?: return
+
         val opponentTeam = getOppositeTeam(team)
 
         if (hitTeamArea == null) {

@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.github.shynixn.mcutils.common.Vector3d
-import com.github.shynixn.mcutils.common.arena.Arena
-import com.github.shynixn.mcutils.common.command.CommandMeta
+import com.github.shynixn.mcutils.common.repository.Element
 
 @JsonPropertyOrder(value = arrayOf("name", "displayName", "enabled"))
-class TennisArena : Arena {
+class TennisArena : Element {
     /**
      * Unique Identifier of the arena.
      */
@@ -17,12 +16,12 @@ class TennisArena : Arena {
     /**
      * Display Name of the arena.
      */
-    override var displayName: String = ""
+    var displayName: String = ""
 
     /**
      * Gets if the arena is enabled.
      */
-    override var isEnabled: Boolean = false
+    var isEnabled: Boolean = false
 
     /**
      * Max players per team.

@@ -37,6 +37,16 @@ class TennisBallSettings {
     var airResistanceAbsolute = 0.0001
 
     /**
+     * RayTraceOffset.
+     */
+    var rayTraceYOffset : Double = 0.0
+
+    /**
+     * Render offset.
+     */
+    var renderYOffset : Double = -0.3
+
+    /**
      * Render visibility updates.
      */
     var renderVisibilityUpdateMs: Int = 5000

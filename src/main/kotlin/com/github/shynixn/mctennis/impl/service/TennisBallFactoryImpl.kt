@@ -37,6 +37,7 @@ class TennisBallFactoryImpl @Inject constructor(
         mathSettings.gravityAbsolute = settings.gravityAbsolute
         mathSettings.groundResistanceAbsolute = settings.groundResistanceAbsolute
         mathSettings.groundResistanceRelative = settings.groundResistanceRelative
+        mathSettings.rayTraceYOffset = settings.rayTraceYOffset
         val mathPhysicComponent = MathComponent(location.toVector3d(), mathSettings, rayTracingService)
 
         val bounceComponent =
@@ -65,7 +66,8 @@ class TennisBallFactoryImpl @Inject constructor(
                     packetService,
                     playerComponent,
                     armorStandEntityId,
-                    bedrockService.javaPlayers
+                    bedrockService.javaPlayers,
+                    settings.renderYOffset
                 )
             }
             VisibilityType.JAVA -> {
@@ -74,7 +76,8 @@ class TennisBallFactoryImpl @Inject constructor(
                     packetService,
                     playerComponent,
                     armorStandEntityId,
-                    bedrockService.bedRockPlayers
+                    bedrockService.bedRockPlayers,
+                    settings.renderYOffset
                 )
             }
             VisibilityType.ALL -> {
@@ -83,7 +86,8 @@ class TennisBallFactoryImpl @Inject constructor(
                     packetService,
                     playerComponent,
                     armorStandEntityId,
-                    hashSetOf()
+                    hashSetOf(),
+                    settings.renderYOffset
                 )
             }
             else -> {
