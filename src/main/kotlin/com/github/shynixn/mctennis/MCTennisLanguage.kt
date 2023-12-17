@@ -1,29 +1,29 @@
 package com.github.shynixn.mctennis
 
 object MCTennisLanguage {
-  /** &9&l%1$1s **/
-  var scoreBlueTitle : String = "&9&l%1$1s"
-
   /** %2$1s scored for &cTeam Red. **/
   var scoreRedSubTitle : String = "%2$1s scored for &cTeam Red."
+
+  /** &9&l%1$1s **/
+  var scoreBlueTitle : String = "&9&l%1$1s"
 
   /** &cTeam Red **/
   var winRedTitle : String = "&cTeam Red"
 
+  /** [&9MCTennis&f] Game %1$1s already exists. **/
+  var gameAlreadyExistsMessage : String = "[&9MCTennis&f] Game %1$1s already exists."
+
   /** [&9MCTennis&f] Only location types lobbyRed, lobbyBlue, leave, spawnRed1, spawnBlue1, cornerRed1, cornerRed2, cornerBlue1, cornerBlue2 are known. For more locations, open the arena.yml. **/
   var locationTypeDoesNotExistMessage : String = "[&9MCTennis&f] Only location types lobbyRed, lobbyBlue, leave, spawnRed1, spawnBlue1, cornerRed1, cornerRed2, cornerBlue1, cornerBlue2 are known. For more locations, open the arena.yml."
 
-  /** [&9MCTennis&f] Game %1$1s already exists. **/
-  var gameAlreadyExistsMessage : String = "[&9MCTennis&f] Game %1$1s already exists."
+  /** [&9MCTennis&f] Game enable state was set to %1$1s. **/
+  var enabledArenaMessage : String = "[&9MCTennis&f] Game enable state was set to %1$1s."
 
   /** [&9MCTennis&f] Successfully joined team blue. **/
   var joinTeamBlueMessage : String = "[&9MCTennis&f] Successfully joined team blue."
 
   /** [&9MCTennis&f] Team %1$1s does not exist. **/
   var teamDoesNotExistMessage : String = "[&9MCTennis&f] Team %1$1s does not exist."
-
-  /** [&9MCTennis&f] Game enable state was set to %1$1s. **/
-  var enabledArenaMessage : String = "[&9MCTennis&f] Game enable state was set to %1$1s."
 
   /** &cTeam Red &ahas won this set **/
   var winSetRedSubTitle : String = "&cTeam Red &ahas won this set"
@@ -34,14 +34,14 @@ object MCTennisLanguage {
   /** %2$1s scored for &9Team Blue. **/
   var scoreBlueSubTitle : String = "%2$1s scored for &9Team Blue."
 
+  /** [&9MCTennis&f] Reloaded game %1$1s. **/
+  var reloadedGameMessage : String = "[&9MCTennis&f] Reloaded game %1$1s."
+
   /** [&9MCTennis&f] Successfully joined team red. **/
   var joinTeamRedMessage : String = "[&9MCTennis&f] Successfully joined team red."
 
   /** &9Team Blue &ahas won the match **/
   var winBlueSubTitle : String = "&9Team Blue &ahas won the match"
-
-  /** [&9MCTennis&f] Reloaded game %1$1s. **/
-  var reloadedGameMessage : String = "[&9MCTennis&f] Reloaded game %1$1s."
 
   /** [&9MCTennis&f] Left the game. **/
   var leftGameMessage : String = "[&9MCTennis&f] Left the game."
@@ -49,11 +49,11 @@ object MCTennisLanguage {
   /** [&9MCTennis&f] Reloaded all games. **/
   var reloadedAllGamesMessage : String = "[&9MCTennis&f] Reloaded all games."
 
-  /** [&9MCTennis&f] Game is already full. **/
-  var gameIsFullMessage : String = "[&9MCTennis&f] Game is already full."
-
   /** [&9MCTennis&f] Game %1$1s does not exist. **/
   var gameDoesNotExistMessage : String = "[&9MCTennis&f] Game %1$1s does not exist."
+
+  /** [&9MCTennis&f] Game is already full. **/
+  var gameIsFullMessage : String = "[&9MCTennis&f] Game is already full."
 
   /** [&9MCTennis&f] Deleted game %1$1s. **/
   var deletedGameMessage : String = "[&9MCTennis&f] Deleted game %1$1s."
@@ -76,11 +76,11 @@ object MCTennisLanguage {
   /** &c&l%1$1s **/
   var scoreRedTitle : String = "&c&l%1$1s"
 
-  /** &l2nd Bounce **/
-  var bounceSecondHologram : String = "&l2nd Bounce"
-
   /** &lOut **/
   var bounceOutHologram : String = "&lOut"
+
+  /** &l2nd Bounce **/
+  var bounceSecondHologram : String = "&l2nd Bounce"
 
   /** [&9MCTennis&f] Game start has been cancelled. **/
   var gameStartCancelledMessage : String = "[&9MCTennis&f] Game start has been cancelled."
@@ -112,11 +112,11 @@ object MCTennisLanguage {
   /** [&9MCTennis&f] Game has been cancelled. **/
   var gameCancelledMessage : String = "[&9MCTennis&f] Game has been cancelled."
 
-  /** &6&lReady? **/
-  var readyTitle : String = "&6&lReady?"
-
   /** &cTeam Red **/
   var winSetRedTitle : String = "&cTeam Red"
+
+  /** &6&lReady? **/
+  var readyTitle : String = "&6&lReady?"
 
   /** &fDraw **/
   var winDrawTitle : String = "&fDraw"
