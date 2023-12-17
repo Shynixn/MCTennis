@@ -39,7 +39,7 @@ jobs:
           body: "This release was automatically created by Github Actions. Please wait until the author manually sets the patchnotes for this release."
           tag_name: ${{ env.RELEASE_VERSION }}
           release_name: Release ${{ env.RELEASE_VERSION }}
-          draft: false
+          draft: true
           prerelease: false
 
       - name: Upload Latest Release to Github
@@ -62,17 +62,6 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}-premium.jar
           asset_name: MCTennis-Premium.jar
-          asset_content_type: application/jar
-
-      - name: Upload Legacy Premium Release to Github
-        if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}-legacy.jar
-          asset_name: MCTennis-Legacy-Premium.jar
           asset_content_type: application/jar
 
   Wiki:
