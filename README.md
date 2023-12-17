@@ -1,2 +1,28 @@
-# MCTennis
-A simple tennis plugin.
+# MCTennis  
+
+| branch | status                                                                                                                                 | download                                                                |
+|--------|----------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------| 
+| main   | [![Build Status](https://github.com/Shynixn/MCTennis/workflows/CI/badge.svg?branch=main)](https://github.com/Shynixn/MCTennis<br/>/actions) | [Download latest release](https://github.com/Shynixn/MCtennis/releases) |
+
+## Description
+
+MCTennis is a spigot plugin to play Tennis games in Minecraft.
+
+## Features
+
+* Playable Tennis Minigame
+* A moving TennisBall without any resource packs
+* Version support 1.17.R1 - 1.20.R3
+* Check out the [MCTennis-Spigot-Page](https://www.spigotmc.org/resources/12056/) to get more information.
+
+## Installation
+
+* Please check out the [MCTennis Documentation](https://shynixn.github.io/MCTennis/) for further information.
+
+## Pictures
+
+![alt tag](https://shynixn.github.io/MCTennis/source/_static/images/title.png)
+
+## Licence
+
+Licensed under the Apache License, Version 2.0 (the "License");
