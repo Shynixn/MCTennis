@@ -43,10 +43,11 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
                 Version.VERSION_1_19_R2,
                 Version.VERSION_1_19_R3,
                 Version.VERSION_1_20_R1,
-                Version.VERSION_1_20_R2
+                Version.VERSION_1_20_R2,
+                Version.VERSION_1_20_R3
             )
         } else {
-            listOf(Version.VERSION_1_20_R2)
+            listOf(Version.VERSION_1_20_R3)
         }
 
         if (!Version.serverVersion.isCompatible(*versions.toTypedArray())

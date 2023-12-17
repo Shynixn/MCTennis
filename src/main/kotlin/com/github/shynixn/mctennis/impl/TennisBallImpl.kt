@@ -97,7 +97,8 @@ class TennisBallImpl(
             val prevDirection = player.eyeLocation.direction.toVector3d()
             val strengthMultiplier = 1.0 + (multiplier * 0.1)
             val kickVector =
-                player.eyeLocation.direction.toVector3d().normalize().multiply(settings.horizontalBaseMultiplier).multiply(strengthMultiplier)
+                player.eyeLocation.direction.toVector3d().normalize().multiply(settings.horizontalBaseMultiplier)
+                    .multiply(strengthMultiplier)
             kickVector.y += settings.verticalSpeedAbsolute
             setVelocity(kickVector)
             delay(250)
@@ -115,12 +116,11 @@ class TennisBallImpl(
 
         if (game != null) {
             soundService.playSound(getLocation(), listOf(), game!!.arena.ballSettings.bounceSound)
-        }
-
-        val ball = this
-        plugin.launch {
-            val event = TennisBallBounceGroundEvent(ball, game!!)
-            Bukkit.getPluginManager().callEvent(event)
+            val ball = this
+            plugin.launch {
+                val event = TennisBallBounceGroundEvent(ball, game!!)
+                Bukkit.getPluginManager().callEvent(event)
+            }
         }
     }
 

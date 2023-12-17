@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.shynixn"
-version = "1.0.1"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
@@ -38,8 +38,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:1.0.38")
-    implementation("com.github.shynixn.mcutils:packet:1.0.56")
+    implementation("com.github.shynixn.mcutils:common:1.0.44")
+    implementation("com.github.shynixn.mcutils:packet:1.0.67")
 
     // Test
     testImplementation(kotlin("test"))
@@ -86,7 +86,6 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
  */
 tasks.register("pluginJars") {
     dependsOn("pluginJarLatest")
-    dependsOn("pluginJarLegacy")
     dependsOn("pluginJarPremium")
 }
 
