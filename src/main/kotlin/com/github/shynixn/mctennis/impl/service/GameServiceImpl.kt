@@ -9,6 +9,7 @@ import com.github.shynixn.mctennis.impl.exception.TennisArenaException
 import com.github.shynixn.mctennis.impl.TennisGameImpl
 import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.repository.Repository
+import com.github.shynixn.mcutils.sign.SignService
 import com.google.inject.Inject
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
@@ -20,7 +21,8 @@ class GameServiceImpl @Inject constructor(
     private val arenaRepository: Repository<TennisArena>,
     private val tennisBallFactory: TennisBallFactory,
     private val plugin: Plugin,
-    private val commandService: CommandService
+    private val commandService: CommandService,
+    private val signService: SignService
 ) : GameService {
     private val games = ArrayList<TennisGameImpl>()
 
@@ -47,6 +49,12 @@ class GameServiceImpl @Inject constructor(
             existingGame.dispose(false)
             games.remove(existingGame)
             plugin.logger.log(Level.INFO, "Stopped game '" + arena.name + "'.")
+        }
+
+        // Enable signs, if they are already added, the call does nothing.
+        for (sign in arena.signs) {
+            sign.tag = arena.name
+            signService.addSign(sign)
         }
 
         if (arena.isEnabled) {

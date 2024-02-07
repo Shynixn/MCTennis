@@ -3,8 +3,8 @@ package com.github.shynixn.mctennis.impl.listener
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mcutils.common.physic.PhysicObjectService
-import com.github.shynixn.mcutils.packet.api.InteractionType
 import com.github.shynixn.mcutils.packet.api.event.PacketEvent
+import com.github.shynixn.mcutils.packet.api.meta.enumeration.InteractionType
 import com.github.shynixn.mcutils.packet.api.packet.PacketInInteractEntity
 import com.google.inject.Inject
 import org.bukkit.event.EventHandler

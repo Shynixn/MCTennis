@@ -169,7 +169,7 @@ class TennisGameImpl(
         val playerData = PlayerData()
         cachedData[player] = playerData
 
-        if (teamBluePlayers.size >= arena.minPlayersPerTeam && teamRedPlayers.size >= arena.minPlayersPerTeam) {
+        if (teamBluePlayers.size >= arena.minPlayersPerTeam && teamRedPlayers.size >= arena.minPlayersPerTeam && teamRedPlayers.size + teamBluePlayers.size > 0) {
             if (gameState == GameState.LOBBY_IDLE) {
                 gameState = GameState.LOBBY_COUNTDOWN
                 plugin.launch {
@@ -401,8 +401,8 @@ class TennisGameImpl(
                 playerData.wasSneaking = false
             }
 
-            if (playerData.currentPower > 10.0) {
-                playerData.currentPower = 10.0
+            if (playerData.currentPower > 5.0) {
+                playerData.currentPower = 5.0
             }
 
             val builder = StringBuilder()

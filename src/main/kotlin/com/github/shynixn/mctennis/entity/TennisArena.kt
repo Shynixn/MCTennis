@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.repository.Element
+import com.github.shynixn.mcutils.sign.SignMeta
 
 @JsonPropertyOrder(value = arrayOf("name", "displayName", "enabled"))
 class TennisArena : Element {
@@ -31,7 +32,7 @@ class TennisArena : Element {
     /**
      * Min players per team.
      */
-    var minPlayersPerTeam: Int = 1
+    var minPlayersPerTeam: Int = 0
 
     /**
      * Time to start in seconds.
@@ -63,6 +64,11 @@ class TennisArena : Element {
      * BlueTeam.
      */
     var blueTeamMeta: TeamMetadata = TeamMetadata()
+
+    /**
+     * All signs.
+     */
+    var signs = ArrayList<SignMeta>()
 
     @JsonProperty("ball")
     var ballSettings: TennisBallSettings = TennisBallSettings()

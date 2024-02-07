@@ -10,8 +10,8 @@ import com.github.shynixn.mctennis.event.TennisBallBounceGroundEvent
 import com.github.shynixn.mcutils.common.toLocation
 import com.github.shynixn.mcutils.common.toVector3d
 import com.github.shynixn.mcutils.packet.api.EntityService
-import com.github.shynixn.mcutils.packet.api.EntityType
 import com.github.shynixn.mcutils.packet.api.PacketService
+import com.github.shynixn.mcutils.packet.api.meta.enumeration.EntityType
 import com.github.shynixn.mcutils.packet.api.packet.PacketOutEntityDestroy
 import com.github.shynixn.mcutils.packet.api.packet.PacketOutEntityMetadata
 import com.github.shynixn.mcutils.packet.api.packet.PacketOutEntitySpawn

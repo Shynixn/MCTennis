@@ -5,18 +5,19 @@ import com.github.shynixn.mccoroutine.bukkit.setSuspendingExecutor
 import com.github.shynixn.mccoroutine.bukkit.setSuspendingTabCompleter
 import com.github.shynixn.mctennis.contract.BedrockService
 import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mctennis.contract.PlaceHolderService
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
 import com.github.shynixn.mctennis.impl.listener.GameListener
 import com.github.shynixn.mctennis.impl.listener.PacketListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
-import com.github.shynixn.mctennis.impl.service.DependencyPlaceholderApiServiceImpl
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.Version
 import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.common.reloadTranslation
 import com.github.shynixn.mcutils.packet.api.PacketInType
 import com.github.shynixn.mcutils.packet.api.PacketService
+import com.github.shynixn.mcutils.sign.SignService
 import com.google.inject.Guice
 import com.google.inject.Injector
 import org.bukkit.Bukkit
@@ -50,8 +51,7 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
             listOf(Version.VERSION_1_20_R3)
         }
 
-        if (!Version.serverVersion.isCompatible(*versions.toTypedArray())
-        ) {
+        if (!Version.serverVersion.isCompatible(*versions.toTypedArray())) {
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "================================================")
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "MCTennis does not support your server version")
             Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "Install v" + versions[0].id + " - v" + versions[versions.size - 1].id)
@@ -74,35 +74,45 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
         Bukkit.getPluginManager().registerEvents(resolve(BedrockService::class.java), this)
 
         // Register CommandExecutor
-        val configurationService = resolve(ConfigurationService::class.java)
-        val mcTennisCommandExecutor = resolve(MCTennisCommandExecutor::class.java)
-        val mcTennisCommand = this.getCommand("mctennis")!!
-        mcTennisCommand.usage = configurationService.findValue("commands.mctennis.usage")
-        mcTennisCommand.description = configurationService.findValue("commands.mctennis.description")
-        mcTennisCommand.permissionMessage = configurationService.findValue("commands.mctennis.permission-message")
-        mcTennisCommand.setSuspendingExecutor(mcTennisCommandExecutor)
-        mcTennisCommand.setSuspendingTabCompleter(mcTennisCommandExecutor)
+        resolve(MCTennisCommandExecutor::class.java)
 
         // Register Dependencies
-        if (Bukkit.getPluginManager().getPlugin(PluginDependency.PLACEHOLDERAPI.pluginName) != null) {
-            val placeHolderApi = DependencyPlaceholderApiServiceImpl(this, resolve(GameService::class.java))
-            placeHolderApi.registerListener()
-            logger.log(Level.INFO, "Loaded dependency ${PluginDependency.PLACEHOLDERAPI.pluginName}.")
-        }
-
         if (Bukkit.getPluginManager().getPlugin(PluginDependency.GEYSER_SPIGOT.pluginName) != null) {
             logger.log(Level.INFO, "Loaded dependency ${PluginDependency.GEYSER_SPIGOT.pluginName}.")
         }
 
+        val cmd2 = resolve(MCTennisCommandExecutor::class.java)
+
+        // Load Language
+        val configurationService = resolve(ConfigurationService::class.java)
         val language = configurationService.findValue<String>("language")
         this.reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
         logger.log(Level.INFO, "Loaded language file $language.properties.")
 
+        // Load Games
         val gameService = resolve(GameService::class.java)
         gameService.reloadAll()
 
-        Bukkit.getServer()
-            .consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled MCTennis " + this.description.version + " by Shynixn")
+        // Load SignPlaceHolders
+        val placeHolderService = resolve(PlaceHolderService::class.java)
+        val signService = resolve(SignService::class.java)
+        signService.onPlaceHolderResolve = { signMeta, text ->
+            var resolvedText: String? = null
+
+            if (signMeta.tag != null) {
+                val game = gameService.getByName(signMeta.tag!!)
+                if (game != null) {
+                    resolvedText = placeHolderService.replacePlaceHolders(text, null, game)
+                }
+            }
+
+            if (resolvedText == null) {
+                resolvedText = placeHolderService.replacePlaceHolders(text)
+            }
+
+            resolvedText
+        }
+        Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled MCTennis " + this.description.version + " by Shynixn")
     }
 
     /**
