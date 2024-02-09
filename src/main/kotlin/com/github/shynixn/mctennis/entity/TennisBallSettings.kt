@@ -7,7 +7,7 @@ import org.bukkit.Sound
 
 class TennisBallSettings {
     // Ground
-    var horizontalBaseMultiplier: Double = 0.5
+    var horizontalBaseMultiplier: Double = 0.4
 
     var verticalSpeedAbsolute: Double = 0.25
 
@@ -21,7 +21,7 @@ class TennisBallSettings {
     /**
      * The bouncing modifiers when a physicObject hits the ground.
      */
-    var groundBouncing: Double = 0.7
+    var groundBouncing: Double = 0.8
 
     // Air
     /**

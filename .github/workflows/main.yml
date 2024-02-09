@@ -39,7 +39,7 @@ jobs:
           body: "This release was automatically created by Github Actions. Please wait until the author manually sets the patchnotes for this release."
           tag_name: ${{ env.RELEASE_VERSION }}
           release_name: Release ${{ env.RELEASE_VERSION }}
-          draft: false
+          draft: true
           prerelease: false
 
       - name: Upload Latest Release to Github
@@ -64,25 +64,31 @@ jobs:
           asset_name: MCTennis-Premium.jar
           asset_content_type: application/jar
 
-      - name: Upload Legacy Premium Release to Github
-        if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}-legacy.jar
-          asset_name: MCTennis-Legacy-Premium.jar
-          asset_content_type: application/jar
-
   Wiki:
     runs-on: ubuntu-latest
-    if: "contains(github.ref, 'main')"
+    if: "contains(github.ref, 'master')"
     steps:
       - uses: actions/checkout@v2
-      - name: Create Wiki
-        uses: Shynixn/sphinx-rdt-wiki-action@v1.0.0
+      - uses: actions/setup-java@v1
         with:
-          source-dir: "docs/source"
-          target-dir: "docs/build"
-          github-secret: ${{ secrets.GITHUB_TOKEN }}
+          java-version: '8'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          architecture: 'x64'
+
+      - name: Build Documentation
+        run: |
+          git pull
+          git config --global user.email "shynixn@email.com" && git config --global user.name "Shynixn CI Actions"
+          rm -rf docs/wiki/site
+          sudo apt-get install -y mkdocs
+          pip install mkdocs-material
+          pip install Pygments
+          cd docs/wiki
+          mkdocs build
+          cd ..
+          cd ..
+          git add docs
+          git commit --message "Automatic CI Documentation."
+          git push --quiet https://Shynixn:${{ secrets.GITHUB_TOKEN }}@github.com/Shynixn/MCTennis.git HEAD:master

@@ -3,6 +3,7 @@ package com.github.shynixn.mctennis
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.shynixn.mctennis.contract.*
 import com.github.shynixn.mctennis.entity.TennisArena
+import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.service.*
 import com.github.shynixn.mcutils.common.*
 import com.github.shynixn.mcutils.common.command.CommandService
@@ -25,10 +26,15 @@ import com.github.shynixn.mcutils.packet.api.RayTracingService
 import com.github.shynixn.mcutils.packet.impl.service.EntityServiceImpl
 import com.github.shynixn.mcutils.packet.impl.service.PacketServiceImpl
 import com.github.shynixn.mcutils.packet.impl.service.RayTracingServiceImpl
+import com.github.shynixn.mcutils.sign.SignService
+import com.github.shynixn.mcutils.sign.SignServiceImpl
 import com.google.inject.AbstractModule
+import com.google.inject.Provider
 import com.google.inject.Scopes
 import com.google.inject.TypeLiteral
+import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
+import java.util.logging.Level
 
 class MCTennisDependencyInjectionBinder(private val plugin: Plugin) : AbstractModule() {
     companion object {
@@ -62,6 +68,13 @@ class MCTennisDependencyInjectionBinder(private val plugin: Plugin) : AbstractMo
         bind(CacheRepository::class.java).toInstance(cacheTennisArenaRepository)
 
         // Services
+        bind(SignService::class.java).toInstance(
+            SignServiceImpl(
+                plugin,
+                CommandServiceImpl(),
+                MCTennisLanguage.noPermissionMessage
+            )
+        )
         val physicObjectDispatcher = PhysicObjectDispatcherImpl(plugin)
         bind(EntityService::class.java).toInstance(EntityServiceImpl())
         bind(RayTracingService::class.java).toInstance(RayTracingServiceImpl())
@@ -75,5 +88,13 @@ class MCTennisDependencyInjectionBinder(private val plugin: Plugin) : AbstractMo
         bind(SoundService::class.java).toInstance(SoundServiceImpl(plugin))
         bind(CommandService::class.java).to(CommandServiceImpl::class.java).`in`(Scopes.SINGLETON)
         bind(TennisBallFactory::class.java).to(TennisBallFactoryImpl::class.java).`in`(Scopes.SINGLETON)
+
+        if (Bukkit.getPluginManager().getPlugin(PluginDependency.PLACEHOLDERAPI.pluginName) != null) {
+            bind(PlaceHolderService::class.java).to(DependencyPlaceholderApiServiceImpl::class.java)
+                .`in`(Scopes.SINGLETON)
+            plugin.logger.log(Level.INFO, "Loaded dependency ${PluginDependency.PLACEHOLDERAPI.pluginName}.")
+        } else {
+            bind(PlaceHolderService::class.java).to(PlaceHolderServiceImpl::class.java).`in`(Scopes.SINGLETON)
+        }
     }
 }

@@ -1,12 +1,10 @@
 package com.github.shynixn.mctennis.impl.service
 
-import com.github.shynixn.mctennis.MCTennisDependencyInjectionBinder
-import com.github.shynixn.mctennis.MCTennisLanguage
-import com.github.shynixn.mctennis.contract.DependencyPlaceholderApiService
 import com.github.shynixn.mctennis.contract.GameService
-import com.github.shynixn.mctennis.enumeration.GameState
-import com.github.shynixn.mctennis.enumeration.PlaceHolder
+import com.github.shynixn.mctennis.contract.PlaceHolderService
+import com.github.shynixn.mctennis.contract.TennisGame
 import com.google.inject.Inject
+import me.clip.placeholderapi.PlaceholderAPI
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
@@ -14,13 +12,18 @@ import org.bukkit.plugin.Plugin
 class DependencyPlaceholderApiServiceImpl @Inject constructor(
     private val plugin: Plugin,
     private val gameService: GameService
-) : PlaceholderExpansion(), DependencyPlaceholderApiService {
+) : PlaceholderExpansion(), PlaceHolderService {
     private var registerd: Boolean = false
+    private val placeHolderService = PlaceHolderServiceImpl(gameService)
+
+    init {
+        this.registerListener()
+    }
 
     /**
      * Registers the placeholder hook if it is not already registered.
      */
-    override fun registerListener() {
+    fun registerListener() {
         if (!registerd) {
             this.register()
             registerd = true
@@ -55,67 +58,42 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
      * @param s      customText
      * @return result
      */
-    override fun onPlaceholderRequest(player: Player?, s: String?): String? {
-        if (!MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded) {
-            plugin.logger.info("This version of MCTennis does not support placeholders. See release notes for details.")
+    override fun onPlaceholderRequest(player: Player?, params: String?): String? {
+        if (params == null) {
             return null
         }
 
-        if (s == null) {
-            return null
+        val parts = params.split("_")
+        val finalPart = parts[parts.size - 1]
+        val newParams = parts.dropLast(1).joinToString("_")
+
+        val selectedGame = gameService.getByName(finalPart)
+        if (selectedGame != null) {
+            return replacePlaceHolders("%mctennis_${newParams}%", player, selectedGame)
         }
 
-        try {
-            val parts = s.split("_")
+        if (player != null) {
+            val selectedGame = gameService.getByPlayer(player)
 
-            if (parts[0].equals("global", true) && player != null) {
-                // All global placeholders.
-                if (parts[1].equals(PlaceHolder.PLAYER_ISINGAME.text, true)) {
-                    return (gameService.getByPlayer(player) != null).toString()
-                }
-            }
-            val game = if (parts[0].equals("currentGame", true) && player != null) {
-                val game = gameService.getByPlayer(player) ?: return null
-                game
+            if (selectedGame != null) {
+                return replacePlaceHolders(
+                    "%mctennis_${params}%",
+                    player,
+                    selectedGame
+                )
             } else {
-                val name = parts[0]
-                val game = gameService.getAll().firstOrNull { e -> e.arena.name.equals(name, true) }
-                    ?: return MCTennisLanguage.gameDoesNotExistMessage.format(name)
-                game
+                return replacePlaceHolders("%mctennis_${params}%", player, null)
             }
-
-            // All placeholders based on games.
-            if (parts[1].equals(PlaceHolder.GAME_ENABLED.text, true)) {
-                return game.arena.isEnabled.toString()
-            }
-            if (parts[1].equals(PlaceHolder.GAME_STARTED.text, true)) {
-                return (game.gameState == GameState.RUNNING_SERVING || game.gameState == GameState.RUNNING_PLAYING).toString()
-            }
-            if (parts[1].equals(PlaceHolder.GAME_JOINABLE.text, true)) {
-                return ((game.gameState == GameState.LOBBY_IDLE || game.gameState == GameState.LOBBY_COUNTDOWN) && !game.isFull()).toString()
-            }
-            if (parts[1].equals(PlaceHolder.GAME_DISPLAYNAME.text, true)) {
-                return game.arena.displayName
-            }
-            if (parts[1].equals(PlaceHolder.GAME_ISTEAMREDPLAYER.text, true)) {
-                return game.teamRedPlayers.contains(player).toString()
-            }
-            if (parts[1].equals(PlaceHolder.GAME_ISTEAMBLUEPLAYER.text, true)) {
-                return game.teamBluePlayers.contains(player).toString()
-            }
-            if (parts[1].equals(PlaceHolder.GAME_RAWSCORETEAMRED.text, true)) {
-                return game.teamRedScore.toString()
-            }
-            if (parts[1].equals(PlaceHolder.GAME_RAWSCORETEAMBLUE.text, true)) {
-                return game.teamBlueScore.toString()
-            }
-            if (parts[1].equals(PlaceHolder.GAME_SCORE.text, true)) {
-                return game.getScoreText()
-            }
-        } catch (ignored: Exception) {
-            ignored.printStackTrace()
         }
 
         return null
+    }
+
+    /**
+     * Replaces the placeholders.
+     */
+    override fun replacePlaceHolders(text: String, player: Player?, game: TennisGame?): String {
+        val replacedInput = placeHolderService.replacePlaceHolders(text, player, game)
+        return PlaceholderAPI.setPlaceholders(player, replacedInput)
     }
 }

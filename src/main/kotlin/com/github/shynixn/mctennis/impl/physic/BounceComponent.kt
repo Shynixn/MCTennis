@@ -3,7 +3,7 @@ package com.github.shynixn.mctennis.impl.physic
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.physic.PhysicComponent
 import com.github.shynixn.mcutils.common.vector
-import com.github.shynixn.mcutils.packet.api.BlockDirection
+import com.github.shynixn.mcutils.packet.api.meta.enumeration.BlockDirection
 
 class BounceComponent(
     private val mathComponent: MathComponent,

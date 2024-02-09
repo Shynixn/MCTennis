@@ -3,6 +3,8 @@ package com.github.shynixn.mctennis.impl.physic
 import com.github.shynixn.mcutils.common.*
 import com.github.shynixn.mcutils.common.physic.PhysicComponent
 import com.github.shynixn.mcutils.packet.api.*
+import com.github.shynixn.mcutils.packet.api.meta.enumeration.ArmorSlotType
+import com.github.shynixn.mcutils.packet.api.meta.enumeration.EntityType
 import com.github.shynixn.mcutils.packet.api.packet.*
 import org.bukkit.Location
 import org.bukkit.entity.Player
