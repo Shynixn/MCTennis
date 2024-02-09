@@ -91,4 +91,4 @@ jobs:
           cd ..
           git add docs
           git commit --message "Automatic CI Documentation."
-          git push --quiet https://Shynixn:${{ secrets.GITHUB_TOKEN }}@github.com/Shynixn/MCTennis.git HEAD:master
+          git push --quiet https://Shynixn:${{ secrets.GITHUB_TOKEN }}@github.com/Shynixn/MCTennis.git HEAD:main
