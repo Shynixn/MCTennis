@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Game &mdash; MCTennis 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MCTennis 1.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="Customizing" href="index.html"/>
+        <link rel="next" title="Joining" href="join.html"/>
+        <link rel="prev" title="Customizing" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MCTennis
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Customizing</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Game</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-new-game">1. Create a new game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#confirm-that-the-arena-has-been-created">2. Confirm that the arena has been created</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-the-leave-spawnpoint">3. Setting the leave spawnpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-the-lobby-spawnpoint-for-team-red">4. Set the lobby spawnpoint for team red</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-the-spawnpoints-for-team-red">5. Set the spawnpoints for team red</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-the-playing-area-for-team-red">6. Set the playing area for team red</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-the-lobby-spawnpoint-for-team-blue">4. Set the lobby spawnpoint for team blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-the-spawnpoints-for-team-blue">7. Set the spawnpoints for team blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-the-playing-area-for-team-blue">8. Set the playing area for team blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enable-the-game">9. Enable the game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changing-more-options">10. Changing more options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="join.html">Joining</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interaction.html">Interactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placeholder.html">PlaceHolders</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MCTennis</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Customizing</a> &raquo;</li>
+        
+      <li>Game</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/Shynixn/MCTennis/tree/master/docs/source/customizing/game.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="game">
+<h1>Game<a class="headerlink" href="#game" title="Permalink to this heading">¶</a></h1>
+<p>This page explains step by step to setup a new game.</p>
+<section id="create-a-new-game">
+<h2>1. Create a new game<a class="headerlink" href="#create-a-new-game" title="Permalink to this heading">¶</a></h2>
+<p>Execute the following command to create a new arena file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">create</span> <span class="pre">&lt;name&gt;</span> <span class="pre">&lt;displayName&gt;</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis create game1 My first game</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="confirm-that-the-arena-has-been-created">
+<h2>2. Confirm that the arena has been created<a class="headerlink" href="#confirm-that-the-arena-has-been-created" title="Permalink to this heading">¶</a></h2>
+<p>Execute the following command to list all games:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">list</span></code></p>
+<p>Output:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">game1 [My first game] [disabled]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>You can see that the arena is still disabled and cannot be joined yet.</p>
+</section>
+<section id="setting-the-leave-spawnpoint">
+<h2>3. Setting the leave spawnpoint<a class="headerlink" href="#setting-the-leave-spawnpoint" title="Permalink to this heading">¶</a></h2>
+<p>Move to the location where you want your players to respawn when they leave the tennis game.</p>
+<p>Execute the following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">location</span> <span class="pre">&lt;name&gt;</span> <span class="pre">leave</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis location game1 leave</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="set-the-lobby-spawnpoint-for-team-red">
+<h2>4. Set the lobby spawnpoint for team red<a class="headerlink" href="#set-the-lobby-spawnpoint-for-team-red" title="Permalink to this heading">¶</a></h2>
+<p>Executing the following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">location</span> <span class="pre">&lt;name&gt;</span> <span class="pre">lobbyRed</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis location game1 lobbyRed</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="set-the-spawnpoints-for-team-red">
+<h2>5. Set the spawnpoints for team red<a class="headerlink" href="#set-the-spawnpoints-for-team-red" title="Permalink to this heading">¶</a></h2>
+<p>Add the first spawnpoint by executing the following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">location</span> <span class="pre">&lt;name&gt;</span> <span class="pre">spawnRed1</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis location game1 spawnRed1</span><span class="w"></span>
+</pre></div>
+</div>
+<p>You can add multiple spawnpoints to create 2vs2 or 4vs4 matches.
+However, this can only be configured in the arena.yml file.
+For this, open the <strong>plugins/MCTennis/arena/&lt;name&gt;.yml</strong> file.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">redTeamMeta</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">spawnpoints</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">world</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;world&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">z</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">yaw</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pitch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">world</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;world&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">z</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">yaw</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pitch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="set-the-playing-area-for-team-red">
+<h2>6. Set the playing area for team red<a class="headerlink" href="#set-the-playing-area-for-team-red" title="Permalink to this heading">¶</a></h2>
+<img alt="../_images/fieldselection.png" src="../_images/fieldselection.png" />
+<p>When taking a look at this example field, the playing field of team red is defined by the two corners indicated by the 2 <strong>diamond blocks</strong>.</p>
+<p>Move to the first corner and execute the following</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">location</span> <span class="pre">&lt;name&gt;</span> <span class="pre">cornerRed1</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis location game1 cornerRed1</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Move to the second corner and execute the following</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">location</span> <span class="pre">&lt;name&gt;</span> <span class="pre">cornerRed2</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis location game1 cornerRed2</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="set-the-lobby-spawnpoint-for-team-blue">
+<h2>4. Set the lobby spawnpoint for team blue<a class="headerlink" href="#set-the-lobby-spawnpoint-for-team-blue" title="Permalink to this heading">¶</a></h2>
+<p>Executing the following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">location</span> <span class="pre">&lt;name&gt;</span> <span class="pre">lobbyBlue</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis location game1 lobbyBlue</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="set-the-spawnpoints-for-team-blue">
+<h2>7. Set the spawnpoints for team blue<a class="headerlink" href="#set-the-spawnpoints-for-team-blue" title="Permalink to this heading">¶</a></h2>
+<p>Add the first spawnpoint by executing the following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">location</span> <span class="pre">&lt;name&gt;</span> <span class="pre">spawnBlue1</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis location game1 spawnBlue1</span><span class="w"></span>
+</pre></div>
+</div>
+<p>You can add multiple spawnpoints to create 2vs2 or 4vs4 matches.
+However, this can only be configured in the arena.yml file.
+For this, open the <strong>plugins/MCTennis/arena/&lt;name&gt;.yml</strong> file.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">blueTeamMeta</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">spawnpoints</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">world</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;world&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">z</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">yaw</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pitch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">world</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;world&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">z</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">yaw</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pitch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="set-the-playing-area-for-team-blue">
+<h2>8. Set the playing area for team blue<a class="headerlink" href="#set-the-playing-area-for-team-blue" title="Permalink to this heading">¶</a></h2>
+<img alt="../_images/fieldselection.png" src="../_images/fieldselection.png" />
+<p>When taking a look at this example field, the playing field of team blue is defined by the two corners indicated by the 2 <strong>gold blocks</strong>.</p>
+<p>Move to the first corner and execute the following</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">location</span> <span class="pre">&lt;name&gt;</span> <span class="pre">cornerBlue1</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis location game1 cornerBlue1</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Move to the second corner and execute the following</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">location</span> <span class="pre">&lt;name&gt;</span> <span class="pre">cornerBlue2</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis location game1 cornerBlue2</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="enable-the-game">
+<h2>9. Enable the game<a class="headerlink" href="#enable-the-game" title="Permalink to this heading">¶</a></h2>
+<p>Once every location has been set, you can try to activate the game by executing the following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">toggle</span> <span class="pre">&lt;name&gt;</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/mctennis toggle game1</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Confirm that the game is listed as enabled.</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">list</span></code></p>
+<p>Output:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">game1 [My first game] [enabled]</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="changing-more-options">
+<h2>10. Changing more options<a class="headerlink" href="#changing-more-options" title="Permalink to this heading">¶</a></h2>
+<p>Further customization options can be found in the  <strong>plugins/MCTennis/arena/&lt;name&gt;.yml</strong> file.</p>
+<p>Execute the reload command to load your file changes.</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">reload</span> <span class="pre">&lt;name&gt;</span></code></p>
+</section>
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="join.html" class="btn btn-neutral float-right" title="Joining" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Customizing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022 - 2024, Shynixn.
+
+    </p>
+  </div>
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.1.0',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Joining &mdash; MCTennis 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MCTennis 1.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="Customizing" href="index.html"/>
+        <link rel="next" title="Interactions" href="interaction.html"/>
+        <link rel="prev" title="Game" href="game.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MCTennis
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Customizing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="game.html">Game</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Joining</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#command-signing">Command Signing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sign-joining">Sign Joining</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gui-joining">GUI Joining</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="interaction.html">Interactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placeholder.html">PlaceHolders</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MCTennis</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Customizing</a> &raquo;</li>
+        
+      <li>Joining</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/Shynixn/MCTennis/tree/master/docs/source/customizing/join.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="joining">
+<h1>Joining<a class="headerlink" href="#joining" title="Permalink to this heading">¶</a></h1>
+<p>There are multiple different ways, how you can configure joining games.
+MCTennis does not ship any specific way how you can join games but offers
+easy integration into other plugins.</p>
+<section id="command-signing">
+<h2>Command Signing<a class="headerlink" href="#command-signing" title="Permalink to this heading">¶</a></h2>
+<p>This way of joining works by executing the following command</p>
+<p><code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">join</span> <span class="pre">&lt;name&gt;</span></code></p>
+</section>
+<section id="sign-joining">
+<h2>Sign Joining<a class="headerlink" href="#sign-joining" title="Permalink to this heading">¶</a></h2>
+<p>This way of joining works by clicking on a sign to join a match.</p>
+<p>MCTennis does not have its own signs, but you can install sign plugins, which are able
+to execute commands on click.</p>
+<p>For example, you can use the plugin <a class="reference external" href="https://www.spigotmc.org/resources/command-signs.10512//">CommandSigns</a> to attach the command
+<code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">join</span> <span class="pre">&lt;name&gt;</span></code> to a particular sign. Combine it with plugins such as <a class="reference external" href="https://www.spigotmc.org/resources/colored-signs.31676/">Colored-Signs</a> to create
+fancy signs.</p>
+<p>MCTennis also offers placeholders using <a class="reference external" href="https://www.spigotmc.org/resources/placeholderapi.6245/">PlaceholderAPI</a>, which may be compatible to some sign plugins as well.</p>
+</section>
+<section id="gui-joining">
+<h2>GUI Joining<a class="headerlink" href="#gui-joining" title="Permalink to this heading">¶</a></h2>
+<p>This way of joining works by offering a game selection in a GUI.</p>
+<p>MCTennis does not have its own GUI, but you can install gui plugins, which are able to execute
+commands on click.</p>
+<p>For example, you can use the plugin <a class="reference external" href="https://www.spigotmc.org/resources/deluxemenus.11734/">DeluxeMenus</a> to attach the command
+<code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">join</span> <span class="pre">&lt;name&gt;</span></code> to a particular item in the GUI.</p>
+<p>MCTennis also offers placeholders using <a class="reference external" href="https://www.spigotmc.org/resources/placeholderapi.6245/">PlaceholderAPI</a>, which may be compatible to some gui plugins as well.</p>
+<p>The configuration below is an example configuration of DeluxeMenu, where we have got 1 EMERALD_BLOCK in the gui. When clicking
+on this block, the command <code class="docutils literal notranslate"><span class="pre">/mctennis</span> <span class="pre">join</span> <span class="pre">test1</span></code> is executed (change test1 to your arena name). Additionally, we check if the game
+is currently joinable using the placeholder <code class="docutils literal notranslate"><span class="pre">%mctennis_test1_isJoinAble%</span></code> (change test1 to your arena name) and only display it if it is joinable.</p>
+<p>A second item on the same slot is shown when the game is not joinable. Replace the placeholder here too.</p>
+<p><em>basics_menu.yml</em></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="s">&#39;joinmatch1&#39;</span><span class="p p-Indicator">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">priority</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">material</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EMERALD_BLOCK</span><span class="w"></span>
+<span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">slot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;lGame:</span><span class="nv"> </span><span class="s">%mctennis_test1_displayName%&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">lore</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;7Click</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">join</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">match.&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">view_requirement</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">requirements</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="nt">joinable</span><span class="p">:</span><span class="w"></span>
+<span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string equals</span><span class="w"></span>
+<span class="w">                    </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;%mctennis_test1_isJoinAble%&quot;</span><span class="w"></span>
+<span class="w">                    </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">left_click_commands</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;[player]</span><span class="nv"> </span><span class="s">mctennis</span><span class="nv"> </span><span class="s">join</span><span class="nv"> </span><span class="s">test1&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="s">&#39;fullmatch1&#39;</span><span class="p p-Indicator">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">priority</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="w">    </span><span class="nt">material</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STONE</span><span class="w"></span>
+<span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">slot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;lGame:</span><span class="nv"> </span><span class="s">%mctennis_test1_displayName%&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">view_requirement</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">requirements</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="nt">joinable</span><span class="p">:</span><span class="w"></span>
+<span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string equals</span><span class="w"></span>
+<span class="w">                    </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;%mctennis_test1_isJoinAble%&quot;</span><span class="w"></span>
+<span class="w">                    </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">lore</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;7Game</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">already</span><span class="nv"> </span><span class="s">full.&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="interaction.html" class="btn btn-neutral float-right" title="Interactions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="game.html" class="btn btn-neutral" title="Game" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022 - 2024, Shynixn.
+
+    </p>
+  </div>
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.1.0',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/documentation_options.js"></script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
