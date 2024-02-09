@@ -13,4 +13,6 @@ enum class PlaceHolder(val fullPlaceHolder: String) {
     GAME_STATE("%mctennis_game_state%"),
     GAME_STATE_DISPLAYNAME("%mctennis_game_stateDisplayName%"),
     PLAYER_ISINGAME("%mctennis_player_isInGame%"),
+    GAME_PLAYER_AMOUNT("%mctennis_game_players%"),
+    GAME_MAX_PLAYER_AMOUNT("%mctennis_game_maxPlayers%"),
 }

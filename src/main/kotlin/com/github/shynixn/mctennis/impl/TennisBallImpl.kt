@@ -6,16 +6,17 @@ import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TennisBallSettings
 import com.github.shynixn.mctennis.event.TennisBallBounceGroundEvent
 import com.github.shynixn.mctennis.impl.physic.*
-import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.physic.PhysicObject
 import com.github.shynixn.mcutils.common.sound.SoundService
 import com.github.shynixn.mcutils.common.toLocation
+import com.github.shynixn.mcutils.common.toVector
 import com.github.shynixn.mcutils.common.toVector3d
 import kotlinx.coroutines.delay
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
+import org.bukkit.util.Vector
 import java.util.*
 
 class TennisBallImpl(
@@ -62,8 +63,8 @@ class TennisBallImpl(
     /**
      * Sets the velocity in the world.
      */
-    override fun setVelocity(vector: Vector3d) {
-        physicsComponent.setVelocity(vector)
+    override fun setVelocity(vector: Vector) {
+        physicsComponent.setVelocity(vector.toVector3d())
     }
 
     /**
@@ -100,7 +101,7 @@ class TennisBallImpl(
                 player.eyeLocation.direction.toVector3d().normalize().multiply(settings.horizontalBaseMultiplier)
                     .multiply(strengthMultiplier)
             kickVector.y += settings.verticalSpeedAbsolute
-            setVelocity(kickVector)
+            setVelocity(kickVector.toVector())
             delay(250)
             spinComponent.setSpin(prevDirection, player.eyeLocation.direction.toVector3d())
         }

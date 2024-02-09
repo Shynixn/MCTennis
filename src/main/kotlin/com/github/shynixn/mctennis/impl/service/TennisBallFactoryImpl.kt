@@ -30,7 +30,7 @@ class TennisBallFactoryImpl @Inject constructor(
     /**
      * Create a new tennis ball.
      */
-    override fun createTennisBall(location: Location, game: TennisGame, settings: TennisBallSettings): TennisBall {
+    override fun createTennisBall(location: Location, settings: TennisBallSettings, game: TennisGame?): TennisBall {
         val mathSettings = MathSettings()
         mathSettings.airResistanceAbsolute = settings.airResistanceAbsolute
         mathSettings.airResistanceRelative = settings.airResistanceRelative

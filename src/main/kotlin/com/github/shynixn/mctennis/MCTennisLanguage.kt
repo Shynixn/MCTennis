@@ -43,8 +43,8 @@ object MCTennisLanguage {
   /** [&9MCTennis&f] Reloaded all games. **/
   var reloadedAllGamesMessage : String = "[&9MCTennis&f] Reloaded all games."
 
-  /** [&9MCTennis&f] **/
-  var joinSignLine1 : String = "[&9MCTennis&f]"
+  /** &f[&r&lMCTennis&r&f] **/
+  var joinSignLine1 : String = "&f[&r&lMCTennis&r&f]"
 
   /** %mctennis_game_stateDisplayName% **/
   var joinSignLine2 : String = "%mctennis_game_stateDisplayName%"
@@ -88,8 +88,8 @@ object MCTennisLanguage {
   /** [&9MCTennis&f] Created game %1$1s. **/
   var gameCreatedMessage : String = "[&9MCTennis&f] Created game %1$1s."
 
-  /** [&9MCTennis&f] **/
-  var leaveSignLine1 : String = "[&9MCTennis&f]"
+  /** &f[&r&lMCTennis&r&f] **/
+  var leaveSignLine1 : String = "&f[&r&lMCTennis&r&f]"
 
   /** &f&lLeave **/
   var leaveSignLine2 : String = "&f&lLeave"

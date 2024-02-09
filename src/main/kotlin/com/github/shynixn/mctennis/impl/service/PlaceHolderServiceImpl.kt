@@ -60,6 +60,12 @@ class PlaceHolderServiceImpl @Inject constructor(private val gameService: GameSe
                 MCTennisLanguage.gameStateJoinAble
             }
         }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_PLAYER_AMOUNT] = {g ->
+            (g.teamBluePlayers.size + g.teamRedPlayers.size).toString()
+        }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_MAX_PLAYER_AMOUNT] = {g ->
+            (g.arena.maxPlayersPerTeam*2).toString()
+        }
 
         // Game and Player
         gameAndPlayerHolderFunctions[PlaceHolder.GAME_ISTEAMBLUEPLAYER] =

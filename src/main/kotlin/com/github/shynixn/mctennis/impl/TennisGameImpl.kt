@@ -28,6 +28,7 @@ import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
+import org.bukkit.util.Vector
 
 class TennisGameImpl(
     override val arena: TennisArena,
@@ -425,12 +426,12 @@ class TennisGameImpl(
         val spawnpoint = teamMetaData.spawnpoints[0]
         val ballspawnpoint = spawnpoint.clone().addRelativeFront(2.0).addRelativeUp(0.5)
 
-        ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), this, arena.ballSettings)
+        ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), arena.ballSettings, this)
 
         delay(500)
         sendTitleMessageToPlayers(MCTennisLanguage.readyTitle, MCTennisLanguage.readySubTitle)
         delay(1500)
-        ball!!.setVelocity(Vector3d(x = 0.0, y = 0.2, z = 0.0))
+        ball!!.setVelocity(Vector(0.0, 0.2, 0.0))
         ball!!.allowActions = true
         gameState = GameState.RUNNING_PLAYING
 

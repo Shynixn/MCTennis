@@ -3,6 +3,7 @@ package com.github.shynixn.mctennis.contract
 import com.github.shynixn.mcutils.common.Vector3d
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import org.bukkit.util.Vector
 
 interface TennisBall {
     /**
@@ -13,7 +14,7 @@ interface TennisBall {
     /**
      * Sets the velocity of the tennis ball.
      */
-    fun setVelocity(vector: Vector3d)
+    fun setVelocity(vector: Vector)
 
     /**
      * Shoots the ball for the given player.

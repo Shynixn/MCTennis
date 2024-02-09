@@ -9,7 +9,7 @@ class TennisBallSettings {
     // Ground
     var horizontalBaseMultiplier: Double = 0.4
 
-    var verticalSpeedAbsolute: Double = 0.3
+    var verticalSpeedAbsolute: Double = 0.25
 
     // The object keeps 99% of its current speed after each tick.
     var groundResistanceRelative = 0.99

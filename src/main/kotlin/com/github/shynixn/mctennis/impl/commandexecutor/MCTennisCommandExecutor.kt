@@ -228,7 +228,7 @@ class MCTennisCommandExecutor @Inject constructor(
     }
 
     private suspend fun createArena(sender: CommandSender, name: String, displayName: String) {
-        if(arenaRepository.getAll().size > 0){
+        if (arenaRepository.getAll().size > 0) {
             sender.sendMessage(MCTennisLanguage.freeVersionMessage)
             return
         }
@@ -409,7 +409,11 @@ class MCTennisCommandExecutor @Inject constructor(
                         it.type = CommandType.PER_PLAYER
                     })
                 }
-                arena.signs.add(sign)
+
+                if (arena.signs.firstOrNull { e -> e.isSameSign(sign) } == null) {
+                    arena.signs.add(sign)
+                }
+
                 plugin.launch {
                     arenaRepository.save(arena)
                     gameService.reload(arena)
@@ -431,7 +435,11 @@ class MCTennisCommandExecutor @Inject constructor(
                         it.type = CommandType.PER_PLAYER
                     })
                 }
-                arena.signs.add(sign)
+
+                if (arena.signs.firstOrNull { e -> e.isSameSign(sign) } == null) {
+                    arena.signs.add(sign)
+                }
+
                 plugin.launch {
                     arenaRepository.save(arena)
                     gameService.reload(arena)

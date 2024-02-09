@@ -1,11 +1,11 @@
 package com.github.shynixn.mctennis
 
-import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
-import com.github.shynixn.mccoroutine.bukkit.setSuspendingExecutor
-import com.github.shynixn.mccoroutine.bukkit.setSuspendingTabCompleter
+import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.contract.BedrockService
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.PlaceHolderService
+import com.github.shynixn.mctennis.contract.TennisBallFactory
+import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
 import com.github.shynixn.mctennis.impl.listener.GameListener
@@ -15,23 +15,29 @@ import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.Version
 import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.common.reloadTranslation
+import com.github.shynixn.mcutils.common.repository.Repository
 import com.github.shynixn.mcutils.packet.api.PacketInType
 import com.github.shynixn.mcutils.packet.api.PacketService
 import com.github.shynixn.mcutils.sign.SignService
 import com.google.inject.Guice
 import com.google.inject.Injector
+import com.google.inject.Key
+import com.google.inject.TypeLiteral
+import kotlinx.coroutines.runBlocking
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.plugin.ServicePriority
+import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Level
 
-class MCTennisPlugin : SuspendingJavaPlugin() {
+class MCTennisPlugin : JavaPlugin() {
     private val prefix: String = org.bukkit.ChatColor.BLUE.toString() + "[MCTennis] " + org.bukkit.ChatColor.WHITE
     private var injector: Injector? = null
 
     /**
      * Called when this plugin is enabled.
      */
-    override suspend fun onEnableAsync() {
+    override fun onEnable() {
         Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Loading MCTennis ...")
         this.saveDefaultConfig()
 
@@ -81,38 +87,63 @@ class MCTennisPlugin : SuspendingJavaPlugin() {
             logger.log(Level.INFO, "Loaded dependency ${PluginDependency.GEYSER_SPIGOT.pluginName}.")
         }
 
-        val cmd2 = resolve(MCTennisCommandExecutor::class.java)
+        // Service dependencies
+        resolve(MCTennisCommandExecutor::class.java)
+        Bukkit.getServicesManager().register(
+            TennisBallFactory::class.java,
+            resolve(TennisBallFactory::class.java),
+            this,
+            ServicePriority.Normal
+        )
+        Bukkit.getServicesManager()
+            .register(GameService::class.java, resolve(GameService::class.java), this, ServicePriority.Normal)
 
-        // Load Language
-        val configurationService = resolve(ConfigurationService::class.java)
-        val language = configurationService.findValue<String>("language")
-        this.reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
-        logger.log(Level.INFO, "Loaded language file $language.properties.")
+        val plugin = this
+        runBlocking {
+            // Load Language
+            val configurationService = resolve(ConfigurationService::class.java)
+            val language = configurationService.findValue<String>("language")
+            reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
+            logger.log(Level.INFO, "Loaded language file $language.properties.")
 
-        // Load Games
-        val gameService = resolve(GameService::class.java)
-        gameService.reloadAll()
+            // Load Games
+            val gameService = resolve(GameService::class.java)
+            gameService.reloadAll()
 
-        // Load SignPlaceHolders
-        val placeHolderService = resolve(PlaceHolderService::class.java)
-        val signService = resolve(SignService::class.java)
-        signService.onPlaceHolderResolve = { signMeta, text ->
-            var resolvedText: String? = null
-
-            if (signMeta.tag != null) {
-                val game = gameService.getByName(signMeta.tag!!)
-                if (game != null) {
-                    resolvedText = placeHolderService.replacePlaceHolders(text, null, game)
+            // Load Signs
+            val placeHolderService = resolve(PlaceHolderService::class.java)
+            val signService = resolve(SignService::class.java)
+            val arenaService =
+                injector!!.getBinding(Key.get(object : TypeLiteral<Repository<TennisArena>>() {})).provider.get()
+            signService.onSignDestroy = { signMeta ->
+                plugin.launch {
+                    val arenas = arenaService.getAll()
+                    for (arena in arenas) {
+                        for (signToRemove in arena.signs.filter { e -> e.isSameSign(signMeta) }) {
+                            arena.signs.remove(signToRemove)
+                            arenaService.save(arena)
+                        }
+                    }
                 }
             }
+            signService.onPlaceHolderResolve = { signMeta, text ->
+                var resolvedText: String? = null
 
-            if (resolvedText == null) {
-                resolvedText = placeHolderService.replacePlaceHolders(text)
+                if (signMeta.tag != null) {
+                    val game = gameService.getByName(signMeta.tag!!)
+                    if (game != null) {
+                        resolvedText = placeHolderService.replacePlaceHolders(text, null, game)
+                    }
+                }
+
+                if (resolvedText == null) {
+                    resolvedText = placeHolderService.replacePlaceHolders(text)
+                }
+
+                resolvedText
             }
-
-            resolvedText
+            Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled MCTennis " + plugin.description.version + " by Shynixn")
         }
-        Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled MCTennis " + this.description.version + " by Shynixn")
     }
 
     /**
