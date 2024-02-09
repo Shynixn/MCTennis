@@ -58,11 +58,12 @@ class MCTennisPlugin : JavaPlugin() {
         }
 
         if (!Version.serverVersion.isCompatible(*versions.toTypedArray())) {
-            Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "================================================")
-            Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "MCTennis does not support your server version")
-            Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "Install v" + versions[0].id + " - v" + versions[versions.size - 1].id)
-            Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "Plugin gets now disabled!")
-            Bukkit.getServer().consoleSender.sendMessage(ChatColor.RED.toString() + "================================================")
+            logger.log(Level.SEVERE, "================================================")
+            logger.log(Level.SEVERE, "MCTennis does not support your server version")
+            logger.log(Level.SEVERE, "Install v" + versions[0].id + " - v" + versions[versions.size - 1].id)
+            logger.log(Level.SEVERE, "Need support for a particular version? Go to https://www.patreon.com/Shynixn")
+            logger.log(Level.SEVERE, "Plugin gets now disabled!")
+            logger.log(Level.SEVERE, "================================================")
             Bukkit.getPluginManager().disablePlugin(this)
             return
         }

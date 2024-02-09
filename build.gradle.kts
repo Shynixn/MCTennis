@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.shynixn"
-version = "1.1.0"
+version = "1.2.0"
 
 repositories {
     mavenCentral()
@@ -38,7 +38,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:1.0.57")
+    implementation("com.github.shynixn.mcutils:common:1.0.58")
     implementation("com.github.shynixn.mcutils:packet:1.0.75")
     implementation("com.github.shynixn.mcutils:sign:1.0.17")
 
