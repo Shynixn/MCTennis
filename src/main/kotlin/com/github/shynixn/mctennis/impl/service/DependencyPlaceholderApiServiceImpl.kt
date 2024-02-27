@@ -69,20 +69,20 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
 
         val selectedGame = gameService.getByName(finalPart)
         if (selectedGame != null) {
-            return replacePlaceHolders("%mctennis_${newParams}%", player, selectedGame)
+            return placeHolderService.replacePlaceHolders("%mctennis_${newParams}%", player, selectedGame)
         }
 
         if (player != null) {
-            val selectedGame = gameService.getByPlayer(player)
+            val otherGame = gameService.getByPlayer(player)
 
-            if (selectedGame != null) {
-                return replacePlaceHolders(
+            if (otherGame != null) {
+                return placeHolderService.replacePlaceHolders(
                     "%mctennis_${params}%",
                     player,
-                    selectedGame
+                    otherGame
                 )
             } else {
-                return replacePlaceHolders("%mctennis_${params}%", player, null)
+                return placeHolderService.replacePlaceHolders("%mctennis_${params}%", player, null)
             }
         }
 
