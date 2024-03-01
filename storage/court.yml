@@ -109,12 +109,12 @@ ball:
   slimeVisibility: "BEDROCK"
   armorstandVisibility: "JAVA"
   hitSound:
-    name: "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR"
+    name: "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,ENTITY_ZOMBIE_ATTACK_DOOR_WOOD,ZOMBIE_WOOD"
     volume: 5.0
     pitch: 2.0
     effectType: "EVERYONE"
   bounceSound:
-    name: "BLOCK_STONE_HIT"
+    name: "BLOCK_STONE_HIT,STEP_STONE"
     volume: 5.0
     pitch: 2.0
     effectType: "EVERYONE"

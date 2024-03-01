@@ -80,6 +80,8 @@ class MCTennisPlugin : JavaPlugin() {
             return
         }
 
+        logger.log(Level.INFO, "Loaded NMS version ${Version.serverVersion.bukkitId}.")
+
         // Guice
         this.injector = Guice.createInjector(MCTennisDependencyInjectionBinder(this))
         this.reloadConfig()

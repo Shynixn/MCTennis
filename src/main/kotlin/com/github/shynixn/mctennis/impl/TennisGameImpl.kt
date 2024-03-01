@@ -17,22 +17,22 @@ import com.github.shynixn.mctennis.enumeration.LeaveResult
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.event.GameEndEvent
 import com.github.shynixn.mctennis.event.GameStartEvent
-import com.github.shynixn.mcutils.common.Vector3d
+import com.github.shynixn.mcutils.common.ChatColor
+import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
-import net.md_5.bungee.api.ChatColor
-import net.md_5.bungee.api.ChatMessageType
-import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 import org.bukkit.util.Vector
+import java.util.logging.Level
 
 class TennisGameImpl(
     override val arena: TennisArena,
-    val tennisBallFactory: TennisBallFactory,
+    private val tennisBallFactory: TennisBallFactory,
+    private val chatMessageService: ChatMessageService,
     private val plugin: Plugin
 ) : TennisGame {
     companion object {
@@ -329,6 +329,8 @@ class TennisGameImpl(
      * Runs the game.
      */
     private suspend fun runGame() {
+        plugin.logger.log(Level.INFO, "Started game '" + arena.name + "'.")
+
         for (i in 0 until arena.gameTime) {
             val remaining = arena.gameTime - i
 
@@ -412,9 +414,7 @@ class TennisGameImpl(
                 builder.append("█")
             }
 
-            val textComponent = TextComponent(builder.toString())
-            textComponent.color = ChatColor.GREEN
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent)
+            chatMessageService.sendActionBarMessage(player, ChatColor.GREEN.toString() + builder.toString())
         }
     }
 
@@ -666,12 +666,12 @@ class TennisGameImpl(
         throw RuntimeException("Team $team not found!")
     }
 
-    private fun sendTitleMessageToPlayers(title: String, subTitle: String? = null) {
+    private fun sendTitleMessageToPlayers(title: String, subTitle: String) {
         for (player in teamRedPlayers) {
-            player.sendTitle(title, subTitle, 10, 70, 20)
+            chatMessageService.sendTitleMessage(player, title, subTitle, 10, 70, 20)
         }
         for (player in teamBluePlayers) {
-            player.sendTitle(title, subTitle, 10, 70, 20)
+            chatMessageService.sendTitleMessage(player, title, subTitle, 10, 70, 20)
         }
     }
 }

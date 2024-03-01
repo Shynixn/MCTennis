@@ -1,11 +1,16 @@
 package com.github.shynixn.mctennis
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.github.shynixn.mctennis.contract.*
+import com.github.shynixn.mctennis.contract.BedrockService
+import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mctennis.contract.PlaceHolderService
+import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.service.*
-import com.github.shynixn.mcutils.common.*
+import com.github.shynixn.mcutils.common.ConfigurationService
+import com.github.shynixn.mcutils.common.ConfigurationServiceImpl
+import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.command.CommandServiceImpl
 import com.github.shynixn.mcutils.common.item.ItemService
@@ -23,13 +28,13 @@ import com.github.shynixn.mcutils.common.sound.SoundServiceImpl
 import com.github.shynixn.mcutils.packet.api.EntityService
 import com.github.shynixn.mcutils.packet.api.PacketService
 import com.github.shynixn.mcutils.packet.api.RayTracingService
+import com.github.shynixn.mcutils.packet.impl.service.ChatMessageServiceImpl
 import com.github.shynixn.mcutils.packet.impl.service.EntityServiceImpl
 import com.github.shynixn.mcutils.packet.impl.service.PacketServiceImpl
 import com.github.shynixn.mcutils.packet.impl.service.RayTracingServiceImpl
 import com.github.shynixn.mcutils.sign.SignService
 import com.github.shynixn.mcutils.sign.SignServiceImpl
 import com.google.inject.AbstractModule
-import com.google.inject.Provider
 import com.google.inject.Scopes
 import com.google.inject.TypeLiteral
 import org.bukkit.Bukkit
@@ -77,6 +82,7 @@ class MCTennisDependencyInjectionBinder(private val plugin: Plugin) : AbstractMo
         )
         val physicObjectDispatcher = PhysicObjectDispatcherImpl(plugin)
         bind(EntityService::class.java).toInstance(EntityServiceImpl())
+        bind(ChatMessageService::class.java).toInstance(ChatMessageServiceImpl())
         bind(RayTracingService::class.java).toInstance(RayTracingServiceImpl())
         bind(PacketService::class.java).toInstance(PacketServiceImpl(plugin))
         bind(PhysicObjectDispatcher::class.java).toInstance(physicObjectDispatcher)
