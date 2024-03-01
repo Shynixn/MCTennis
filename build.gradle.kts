@@ -38,7 +38,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:1.0.64")
+    implementation("com.github.shynixn.mcutils:common:1.0.65")
     implementation("com.github.shynixn.mcutils:packet:1.0.86")
     implementation("com.github.shynixn.mcutils:sign:1.0.17")
 

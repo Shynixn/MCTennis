@@ -231,7 +231,7 @@ class MCTennisCommandExecutor @Inject constructor(
     }
 
     private suspend fun createArena(sender: CommandSender, name: String, displayName: String) {
-        if (arenaRepository.getAll().size > 0) {
+        if (arenaRepository.getAll().size > 0 && !MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded) {
             sender.sendMessage(MCTennisLanguage.freeVersionMessage)
             return
         }
