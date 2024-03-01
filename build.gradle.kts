@@ -38,8 +38,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:1.0.58")
-    implementation("com.github.shynixn.mcutils:packet:1.0.75")
+    implementation("com.github.shynixn.mcutils:common:1.0.61")
+    implementation("com.github.shynixn.mcutils:packet:1.0.82")
     implementation("com.github.shynixn.mcutils:sign:1.0.17")
 
     // Test
@@ -88,44 +88,7 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
 tasks.register("pluginJars") {
     dependsOn("pluginJarLatest")
     dependsOn("pluginJarPremium")
-}
-
-/**
- * Create legacy plugin jar file.
- */
-tasks.register("relocateLegacyPluginJar", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
-    dependsOn("shadowJar")
-    from(zipTree(File("./build/libs/" + (tasks.getByName("shadowJar") as Jar).archiveName)))
-    archiveName = "${baseName}-${version}-legacy-relocate.${extension}"
-    relocate("com.github.shynixn.mcutils", "com.github.shynixn.mctennis.lib.com.github.shynixn.mcutils")
-    relocate("kotlin", "com.github.shynixn.mctennis.lib.kotlin")
-    relocate("org.intellij", "com.github.shynixn.mctennis.lib.org.intelli")
-    relocate("javax", "com.github.shynixn.mctennis.lib.javax")
-    relocate("kotlinx", "com.github.shynixn.mctennis.lib.kotlinx")
-    relocate("com.google", "com.github.shynixn.mctennis.lib.com.google")
-    relocate("com.fasterxml", "com.github.shynixn.mctennis.lib.com.fasterxml")
-    relocate("com.github.shynixn.mccoroutine", "com.github.shynixn.mctennis.lib.com.github.shynixn.mccoroutine")
-    exclude("plugin.yml")
-    rename("plugin-legacy.yml", "plugin.yml")
-}
-
-/**
- * Create legacy plugin jar file.
- */
-tasks.register("pluginJarLegacy", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
-    dependsOn("relocateLegacyPluginJar")
-    from(zipTree(File("./build/libs/" + (tasks.getByName("relocateLegacyPluginJar") as Jar).archiveName)))
-    archiveName = "${baseName}-${version}-legacy.${extension}"
-    // destinationDir = File("C:\\temp\\plugins")
-    exclude("com/github/shynixn/mcutils/**")
-    exclude("org/**")
-    exclude("kotlin/**")
-    exclude("kotlinx/**")
-    exclude("javax/**")
-    exclude("com/google/**")
-    exclude("com/github/shynixn/mccoroutine/**")
-    exclude("com/fasterxml/**")
-    exclude("plugin-legacy.yml")
+    dependsOn("pluginJarLegacy")
 }
 
 /**
@@ -182,6 +145,49 @@ tasks.register("pluginJarPremium", com.github.jengelman.gradle.plugins.shadow.ta
     exclude("kotlinx/**")
     exclude("javax/**")
     exclude("com/google/**")
+    exclude("com/fasterxml/**")
+    exclude("plugin-legacy.yml")
+}
+
+/**
+ * Create legacy plugin jar file.
+ */
+tasks.register("relocateLegacyPluginJar", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
+    dependsOn("shadowJar")
+    from(zipTree(File("./build/libs/" + (tasks.getByName("shadowJar") as Jar).archiveName)))
+    archiveName = "${baseName}-${version}-legacy-relocate.${extension}"
+    relocate("com.github.shynixn.mcutils", "com.github.shynixn.mctennis.lib.com.github.shynixn.mcutils")
+    relocate("kotlin", "com.github.shynixn.mctennis.lib.kotlin")
+    relocate("org.intellij", "com.github.shynixn.mctennis.lib.org.intelli")
+    relocate("org.aopalliance", "com.github.shynixn.mctennis.lib.org.aopalliance")
+    relocate("org.checkerframework", "com.github.shynixn.mctennis.lib.org.checkerframework")
+    relocate("org.jetbrains", "com.github.shynixn.mctennis.lib.org.jetbrains")
+    relocate("org.slf4j", "com.github.shynixn.mctennis.lib.org.slf4j")
+    relocate("javax.annotation", "com.github.shynixn.mctennis.lib.javax.annotation")
+    relocate("javax.inject", "com.github.shynixn.mctennis.lib.javax.inject")
+    relocate("kotlinx.coroutines", "com.github.shynixn.mctennis.lib.kotlinx.coroutines")
+    relocate("com.google", "com.github.shynixn.mctennis.lib.com.google")
+    relocate("com.fasterxml", "com.github.shynixn.mctennis.lib.com.fasterxml")
+    relocate("com.github.shynixn.mccoroutine", "com.github.shynixn.mctennis.lib.com.github.shynixn.mccoroutine")
+    exclude("plugin.yml")
+    rename("plugin-legacy.yml", "plugin.yml")
+}
+
+/**
+ * Create legacy plugin jar file.
+ */
+tasks.register("pluginJarLegacy", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
+    dependsOn("relocateLegacyPluginJar")
+    from(zipTree(File("./build/libs/" + (tasks.getByName("relocateLegacyPluginJar") as Jar).archiveName)))
+    archiveName = "${baseName}-${version}-legacy.${extension}"
+    // destinationDir = File("C:\\temp\\plugins")
+    exclude("com/github/shynixn/mcutils/**")
+    exclude("org/**")
+    exclude("kotlin/**")
+    exclude("kotlinx/**")
+    exclude("javax/**")
+    exclude("com/google/**")
+    exclude("com/github/shynixn/mccoroutine/**")
     exclude("com/fasterxml/**")
     exclude("plugin-legacy.yml")
 }
