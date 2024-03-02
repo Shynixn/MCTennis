@@ -38,9 +38,10 @@ class ArmorstandEntityComponent(
         })
 
         val itemStack = item {
-            this.typeName = "PLAYER_HEAD"
+            this.typeName = "PLAYER_HEAD,397"
+            this.durability = 3
             this.nbt =
-                "{SkullOwner:{Id:[I;1,1,1,1],Name:\"TennisBall\",Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZkYThhNzk3N2VjOTIxNGM1YjcwMWY5YWU3ZTE1NWI4ZWIyMWQxZDM3MTU5OGUxYjk4NzVjNGM4NWM2NWFlNiJ9fX0=\"}]}}}"
+                "{SkullOwner:{Name:\"MCTennis\",Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZkYThhNzk3N2VjOTIxNGM1YjcwMWY5YWU3ZTE1NWI4ZWIyMWQxZDM3MTU5OGUxYjk4NzVjNGM4NWM2NWFlNiJ9fX0=\"}]}}}"
         }.toItemStack()
 
         packetService.sendPacketOutEntityEquipment(player, PacketOutEntityEquipment().also {

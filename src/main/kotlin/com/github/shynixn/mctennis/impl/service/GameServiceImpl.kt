@@ -7,6 +7,7 @@ import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.impl.exception.TennisArenaException
 import com.github.shynixn.mctennis.impl.TennisGameImpl
+import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.repository.Repository
 import com.github.shynixn.mcutils.sign.SignService
@@ -22,7 +23,8 @@ class GameServiceImpl @Inject constructor(
     private val tennisBallFactory: TennisBallFactory,
     private val plugin: Plugin,
     private val commandService: CommandService,
-    private val signService: SignService
+    private val signService: SignService,
+    private val chatMessageService: ChatMessageService
 ) : GameService {
     private val games = ArrayList<TennisGameImpl>()
 
@@ -61,14 +63,14 @@ class GameServiceImpl @Inject constructor(
             validateGame(arena)
 
             if (!MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded && games.size >= 1) {
-                plugin.logger.info("This version of MCTennis only supports one game. See release notes for details.")
+                plugin.logger.info("Failed to boot game ${arena.name}. This version of MCTennis only supports one game. See release notes for details.")
                 return
             }
 
-            val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory, plugin)
+            val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory, chatMessageService, plugin)
             tennisGameImpl.commandService = commandService
             games.add(tennisGameImpl)
-            plugin.logger.log(Level.INFO, "Started game '" + arena.name + "'.")
+            plugin.logger.log(Level.INFO, "Game '" + arena.name + "' is ready.")
         } else {
             plugin.logger.log(Level.INFO, "Cannot boot game '" + arena.name + "' because it is not enabled.")
         }

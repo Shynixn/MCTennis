@@ -1,6 +1,7 @@
 package com.github.shynixn.mctennis.impl.commandexecutor
 
 import com.github.shynixn.mccoroutine.bukkit.launch
+import com.github.shynixn.mctennis.MCTennisDependencyInjectionBinder
 import com.github.shynixn.mctennis.MCTennisLanguage
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.entity.TeamMetadata
@@ -11,6 +12,7 @@ import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.impl.exception.TennisArenaException
 import com.github.shynixn.mcutils.common.*
+import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandBuilder
 import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.mcutils.common.command.CommandType
@@ -30,7 +32,8 @@ class MCTennisCommandExecutor @Inject constructor(
     private val gameService: GameService,
     private val plugin: Plugin,
     private val configurationService: ConfigurationService,
-    private val signService: SignService
+    private val signService: SignService,
+    chatMessageService: ChatMessageService
 ) {
     private val fallBackPrefix: String =
         org.bukkit.ChatColor.BLUE.toString() + "[MCTennis] " + org.bukkit.ChatColor.WHITE
@@ -135,7 +138,7 @@ class MCTennisCommandExecutor @Inject constructor(
     }
 
     init {
-        val mcCart = CommandBuilder(plugin, "mctennis") {
+        val mcCart = CommandBuilder(plugin, "mctennis", chatMessageService) {
             usage(MCTennisLanguage.commandUsage.translateChatColors())
             description(MCTennisLanguage.commandDescription)
             aliases(plugin.config.getStringList("commands.mctennis.aliases"))
@@ -228,7 +231,7 @@ class MCTennisCommandExecutor @Inject constructor(
     }
 
     private suspend fun createArena(sender: CommandSender, name: String, displayName: String) {
-        if (arenaRepository.getAll().size > 0) {
+        if (arenaRepository.getAll().size > 0 && !MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded) {
             sender.sendMessage(MCTennisLanguage.freeVersionMessage)
             return
         }
@@ -313,7 +316,16 @@ class MCTennisCommandExecutor @Inject constructor(
             }
         }
 
-        val game = gameService.getByName(name)!!
+        val game = gameService.getByName(name)
+
+        if (game == null) {
+            if (MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded) {
+                player.sendMessage(MCTennisLanguage.gameDoesNotExistMessage.format(name))
+            } else {
+                player.sendMessage(MCTennisLanguage.freeVersionMessage)
+            }
+            return
+        }
 
         if (!player.hasPermission("mctennis.join.${game.arena.name}")) {
             player.sendMessage(MCTennisLanguage.noPermissionForGameMessage.format(game.arena.name))

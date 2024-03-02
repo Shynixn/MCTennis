@@ -64,6 +64,17 @@ jobs:
           asset_name: MCTennis-Premium.jar
           asset_content_type: application/jar
 
+      - name: Upload Legacy Release to Github
+        if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}-legacy.jar
+          asset_name: MCTennis-Legacy.jar
+          asset_content_type: application/jar
+
   Wiki:
     runs-on: ubuntu-latest
     if: "contains(github.ref, 'main')"

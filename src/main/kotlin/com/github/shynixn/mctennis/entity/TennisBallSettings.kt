@@ -3,7 +3,6 @@ package com.github.shynixn.mctennis.entity
 import com.github.shynixn.mctennis.enumeration.VisibilityType
 import com.github.shynixn.mcutils.common.EffectTargetType
 import com.github.shynixn.mcutils.common.sound.SoundMeta
-import org.bukkit.Sound
 
 class TennisBallSettings {
     // Ground
@@ -110,7 +109,7 @@ class TennisBallSettings {
      * Sound played when hitting the ball.
      */
     var hitSound: SoundMeta = SoundMeta().also {
-        it.name = "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR"
+        it.name = "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,ENTITY_ZOMBIE_ATTACK_DOOR_WOOD,ZOMBIE_WOOD"
         it.pitch = 2.0
         it.volume = 5.0
         it.effectType = EffectTargetType.EVERYONE
@@ -120,7 +119,7 @@ class TennisBallSettings {
      * Sound played when bouncing on ground.
      */
     var bounceSound: SoundMeta = SoundMeta().also {
-        it.name = Sound.BLOCK_STONE_HIT.toString()
+        it.name = "BLOCK_STONE_HIT,STEP_STONE"
         it.pitch = 2.0
         it.volume = 5.0
         it.effectType = EffectTargetType.EVERYONE

@@ -17,11 +17,15 @@ MCTennis is a spigot plugin to play tennis games in Minecraft.
 
 ### MCTennis-Latest
 
-* Java 17 
+* Java 17 - Java Latest
 * Spigot 1.20.4
-
 
 ### MCTennis-Premium
 
-* Java 17
-* Spigot 1.17-1.20.4
+* Java 17 - Java Latest
+* Spigot 1.17 - 1.20.4
+
+### MCTennis-Legacy
+
+* Java 8 - 17
+* Spigot 1.8.8 - 1.20.4

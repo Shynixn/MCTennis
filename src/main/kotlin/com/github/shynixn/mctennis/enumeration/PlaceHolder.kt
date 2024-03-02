@@ -8,7 +8,7 @@ enum class PlaceHolder(val fullPlaceHolder: String) {
     GAME_ISTEAMREDPLAYER("%mctennis_game_isTeamRedPlayer%"),
     GAME_ISTEAMBLUEPLAYER("%mctennis_game_isTeamBluePlayer%"),
     GAME_RAWSCORETEAMRED("%mctennis_game_rawScoreTeamRed%"),
-    GAME_RAWSCORETEAMBLUE("%mctennis_game_rawScoreTeamRed%"),
+    GAME_RAWSCORETEAMBLUE("%mctennis_game_rawScoreTeamBlue%"),
     GAME_SCORE("%mctennis_game_score%"),
     GAME_STATE("%mctennis_game_state%"),
     GAME_STATE_DISPLAYNAME("%mctennis_game_stateDisplayName%"),

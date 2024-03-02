@@ -12,7 +12,7 @@ MCTennis is a spigot plugin to play Tennis games in Minecraft.
 
 * Playable Tennis Minigame
 * A moving TennisBall without any resource packs
-* Version support 1.17.R1 - 1.20.R3
+* Version support 1.8.R3 - 1.20.R3
 * Check out the [MCTennis-Spigot-Page](https://www.spigotmc.org/resources/12056/) to get more information.
 
 ## Installation

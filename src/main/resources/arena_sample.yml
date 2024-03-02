@@ -185,13 +185,13 @@ ball:
   armorstandVisibility: "JAVA"
   # Sound, which is played when a player hits the ball.
   hitSound:
-    name: "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR"
+    name: "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,ENTITY_ZOMBIE_ATTACK_DOOR_WOOD,ZOMBIE_WOOD"
     volume: 5.0
     pitch: 2.0
     effectType: "EVERYONE"
     # Sound, which is played when the ball touches the ground.
   bounceSound:
-    name: "BLOCK_STONE_HIT"
+    name: "BLOCK_STONE_HIT,STEP_STONE"
     volume: 5.0
     pitch: 2.0
     effectType: "EVERYONE"
