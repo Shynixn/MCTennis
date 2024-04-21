@@ -9,14 +9,14 @@ In order to customize the experience to fit the needs of your server, you can se
 ```yaml
 joinCommands:
 - type: 'SERVER_PER_PLAYER'
-  command: 'say Hello %player_name% '
+  command: 'say Hello %mctennis_player_name% '
 - type: 'SERVER_PER_PLAYER'
-  command: 'experience add %player_name% 1'
+  command: 'experience add %mctennis_player_name% 1'
 leaveCommands:
 - type: 'SERVER_PER_PLAYER'
-  command: 'say Bye %player_name% '
+  command: 'say Bye %mctennis_player_name% '
 - type: 'SERVER_PER_PLAYER'
-  command: 'experience add %player_name% 1'
+  command: 'experience add %mctennis_player_name% 1'
 ```
 
 The type SERVER_PER_PLAYER executes commands using the SERVER level permission, which means players do not have to have the permission to the command. If you want to execute commands using the PLAYER level permission, use PER_PLAYER.
@@ -47,7 +47,7 @@ You can use the web editor or the following command. As long as the players are 
 ```yaml
 joinCommands:
 - type: 'SERVER_PER_PLAYER'
-  command: 'lp user %player_name% parent add mctennis'
+  command: 'lp user %mctennis_player_name% parent add mctennis'
 ```
 
 #### Add a new leave command which removes the player from the group when he quits the match
@@ -57,7 +57,7 @@ joinCommands:
 ```yaml
 leaveCommands:
   - type: 'SERVER_PER_PLAYER'
-    command: 'lp user %player_name% parent remove mctennis'
+    command: 'lp user %mctennis_player_name% parent remove mctennis'
 ```
 
 #### Set the player to certain states
@@ -67,9 +67,9 @@ For example, if you want to set the player to gamemode adventure during games, a
 ```yaml
 joinCommands:
 - type: 'SERVER_PER_PLAYER'
-  command: 'lp user %player_name% parent add mctennis'
+  command: 'lp user %mctennis_player_name% parent add mctennis'
 - type: 'SERVER_PER_PLAYER'
-  command: 'gamemode adventure %player_name%
+  command: 'gamemode adventure %mctennis_player_name%
 ```
 
 ## Region Based Interactions
