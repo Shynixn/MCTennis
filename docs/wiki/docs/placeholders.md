@@ -19,10 +19,17 @@ The following placeholders are available in MCTennis and can also be used via Pl
 | %mctennis_game_stateDisplayName% | State of the game with color codes             |
 | %mctennis_game_players%          | Current amount of players in the game          |
 | %mctennis_game_maxPlayers%       | Max amount of players who can join this game   |
+| %mctennis_ball_locationWorld%    | Name of the world the ball has spawned         |
+| %mctennis_ball_locationX%        | X coordinate location of the ball              |
+| %mctennis_ball_locationY%        | Y coordinate location of the ball              |
+| %mctennis_ball_locationZ%        | Z coordinate location of the ball              |
+| %mctennis_ball_locationYaw%      | Yaw rotation of the ball                       |
+| %mctennis_ball_locationPitch%    | Pitch rotation of the ball                     |
 
-| Player PlaceHolders | Description                                     |   
-|---------------------|-------------------------------------------------|
+| Player PlaceHolders        | Description                                     |   
+|----------------------------|-------------------------------------------------|
 | %mctennis_player_isInGame% | true if the player is in the game, false if not |
+| %mctennis_player_name%     | Name of the player                              |
 
 | Game and Player PlaceHolders     | Description                                      |   
 |----------------------------------|--------------------------------------------------|

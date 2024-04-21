@@ -1,7 +1,8 @@
 package com.github.shynixn.mctennis.impl.service
 
-import com.github.shynixn.mctennis.MCTennisDependencyInjectionBinder
+import com.github.shynixn.mctennis.MCTennisDependencyInjectionModule
 import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mctennis.contract.PlaceHolderService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
@@ -24,7 +25,8 @@ class GameServiceImpl @Inject constructor(
     private val plugin: Plugin,
     private val commandService: CommandService,
     private val signService: SignService,
-    private val chatMessageService: ChatMessageService
+    private val chatMessageService: ChatMessageService,
+    private val placeHolderService: PlaceHolderService
 ) : GameService {
     private val games = ArrayList<TennisGameImpl>()
 
@@ -62,13 +64,12 @@ class GameServiceImpl @Inject constructor(
         if (arena.isEnabled) {
             validateGame(arena)
 
-            if (!MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded && games.size >= 1) {
+            if (!MCTennisDependencyInjectionModule.areLegacyVersionsIncluded && games.size >= 1) {
                 plugin.logger.info("Failed to boot game ${arena.name}. This version of MCTennis only supports one game. See release notes for details.")
                 return
             }
 
-            val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory, chatMessageService, plugin)
-            tennisGameImpl.commandService = commandService
+            val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory, chatMessageService, plugin, commandService, placeHolderService)
             games.add(tennisGameImpl)
             plugin.logger.log(Level.INFO, "Game '" + arena.name + "' is ready.")
         } else {

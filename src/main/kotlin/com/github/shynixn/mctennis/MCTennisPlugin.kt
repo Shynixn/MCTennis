@@ -19,11 +19,6 @@ import com.github.shynixn.mcutils.common.repository.Repository
 import com.github.shynixn.mcutils.packet.api.PacketInType
 import com.github.shynixn.mcutils.packet.api.PacketService
 import com.github.shynixn.mcutils.sign.SignService
-import com.google.inject.Guice
-import com.google.inject.Injector
-import com.google.inject.Key
-import com.google.inject.TypeLiteral
-import kotlinx.coroutines.runBlocking
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.plugin.ServicePriority
@@ -32,7 +27,8 @@ import java.util.logging.Level
 
 class MCTennisPlugin : JavaPlugin() {
     private val prefix: String = org.bukkit.ChatColor.BLUE.toString() + "[MCTennis] " + org.bukkit.ChatColor.WHITE
-    private var injector: Injector? = null
+    private var isLoaded = false
+    private lateinit var module: MCTennisDependencyInjectionModule
 
     /**
      * Called when this plugin is enabled.
@@ -41,7 +37,7 @@ class MCTennisPlugin : JavaPlugin() {
         Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Loading MCTennis ...")
         this.saveDefaultConfig()
 
-        val versions = if (MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded) {
+        val versions = if (MCTennisDependencyInjectionModule.areLegacyVersionsIncluded) {
             listOf(
                 Version.VERSION_1_8_R3,
                 Version.VERSION_1_9_R2,
@@ -83,19 +79,20 @@ class MCTennisPlugin : JavaPlugin() {
         logger.log(Level.INFO, "Loaded NMS version ${Version.serverVersion.bukkitId}.")
 
         // Guice
-        this.injector = Guice.createInjector(MCTennisDependencyInjectionBinder(this))
+        this.module = MCTennisDependencyInjectionModule(this).build()
         this.reloadConfig()
 
-        resolve(PacketService::class.java).registerPacketListening(PacketInType.USEENTITY)
+        // Register Packet
+        module.getService<PacketService>().registerPacketListening(PacketInType.USEENTITY)
 
         // Register Listeners
-        Bukkit.getPluginManager().registerEvents(resolve(GameListener::class.java), this)
-        Bukkit.getPluginManager().registerEvents(resolve(TennisListener::class.java), this)
-        Bukkit.getPluginManager().registerEvents(resolve(PacketListener::class.java), this)
-        Bukkit.getPluginManager().registerEvents(resolve(BedrockService::class.java), this)
+        Bukkit.getPluginManager().registerEvents(module.getService<GameListener>(), this)
+        Bukkit.getPluginManager().registerEvents(module.getService<PacketListener>(), this)
+        Bukkit.getPluginManager().registerEvents(module.getService<TennisListener>(), this)
+        Bukkit.getPluginManager().registerEvents(module.getService<BedrockService>(), this)
 
         // Register CommandExecutor
-        resolve(MCTennisCommandExecutor::class.java)
+        module.getService<MCTennisCommandExecutor>()
 
         // Register Dependencies
         if (Bukkit.getPluginManager().getPlugin(PluginDependency.GEYSER_SPIGOT.pluginName) != null) {
@@ -103,33 +100,31 @@ class MCTennisPlugin : JavaPlugin() {
         }
 
         // Service dependencies
-        resolve(MCTennisCommandExecutor::class.java)
         Bukkit.getServicesManager().register(
             TennisBallFactory::class.java,
-            resolve(TennisBallFactory::class.java),
+            module.getService(),
             this,
             ServicePriority.Normal
         )
         Bukkit.getServicesManager()
-            .register(GameService::class.java, resolve(GameService::class.java), this, ServicePriority.Normal)
+            .register(GameService::class.java, module.getService(), this, ServicePriority.Normal)
 
         val plugin = this
-        runBlocking {
+        plugin.launch {
             // Load Language
-            val configurationService = resolve(ConfigurationService::class.java)
+            val configurationService = module.getService<ConfigurationService>()
             val language = configurationService.findValue<String>("language")
             reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
             logger.log(Level.INFO, "Loaded language file $language.properties.")
 
             // Load Games
-            val gameService = resolve(GameService::class.java)
+            val gameService = module.getService<GameService>()
             gameService.reloadAll()
 
             // Load Signs
-            val placeHolderService = resolve(PlaceHolderService::class.java)
-            val signService = resolve(SignService::class.java)
-            val arenaService =
-                injector!!.getBinding(Key.get(object : TypeLiteral<Repository<TennisArena>>() {})).provider.get()
+            val placeHolderService = module.getService<PlaceHolderService>()
+            val signService = module.getService<SignService>()
+            val arenaService = module.getService<Repository<TennisArena>>()
             signService.onSignDestroy = { signMeta ->
                 plugin.launch {
                     val arenas = arenaService.getAll()
@@ -157,6 +152,7 @@ class MCTennisPlugin : JavaPlugin() {
 
                 resolvedText
             }
+            isLoaded = true
             Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled MCTennis " + plugin.description.version + " by Shynixn")
         }
     }
@@ -165,28 +161,15 @@ class MCTennisPlugin : JavaPlugin() {
      * Called when this plugin is disabled
      */
     override fun onDisable() {
-        if (injector == null) {
+        if (!isLoaded) {
             return
         }
 
-        val packetService = resolve(PacketService::class.java)
+        val packetService = module.getService<PacketService>()
         packetService.close()
-        val physicObjectService = resolve(PhysicObjectService::class.java)
+        val physicObjectService = module.getService<PhysicObjectService>()
         physicObjectService.close()
-        val gameService = resolve(GameService::class.java)
+        val gameService = module.getService<GameService>()
         gameService.close()
-    }
-
-    /**
-     * Gets a business logic from the MCTennis plugin.
-     * All types in the service package can be accessed.
-     * Throws a [IllegalArgumentException] if the service could not be found.
-     */
-    private fun <S> resolve(service: Class<S>): S {
-        try {
-            return this.injector!!.getBinding(service).provider.get() as S
-        } catch (e: Exception) {
-            throw IllegalArgumentException("Service ${service.name} could not be resolved.", e)
-        }
     }
 }

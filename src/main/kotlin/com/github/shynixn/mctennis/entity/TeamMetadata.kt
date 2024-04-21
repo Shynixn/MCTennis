@@ -71,4 +71,9 @@ class TeamMetadata {
      * Commands executed on player leave.
      */
     var leaveCommands: List<CommandMeta> = ArrayList()
+
+    /**
+     * Commands which are executed every game tick.
+     */
+    var tickCommands: List<CommandMeta> = ArrayList()
 }

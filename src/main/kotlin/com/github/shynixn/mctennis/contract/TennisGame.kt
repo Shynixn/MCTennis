@@ -65,6 +65,11 @@ interface TennisGame {
     val servingTeam: Team
 
     /**
+     * Ball.
+     */
+    val ball: TennisBall?
+
+    /**
      * Gets the team from a player.
      * Returns null if the player is not in the game.
      */

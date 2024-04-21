@@ -1,7 +1,7 @@
 package com.github.shynixn.mctennis.impl.commandexecutor
 
 import com.github.shynixn.mccoroutine.bukkit.launch
-import com.github.shynixn.mctennis.MCTennisDependencyInjectionBinder
+import com.github.shynixn.mctennis.MCTennisDependencyInjectionModule
 import com.github.shynixn.mctennis.MCTennisLanguage
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.entity.TeamMetadata
@@ -231,7 +231,7 @@ class MCTennisCommandExecutor @Inject constructor(
     }
 
     private suspend fun createArena(sender: CommandSender, name: String, displayName: String) {
-        if (arenaRepository.getAll().size > 0 && !MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded) {
+        if (arenaRepository.getAll().size > 0 && !MCTennisDependencyInjectionModule.areLegacyVersionsIncluded) {
             sender.sendMessage(MCTennisLanguage.freeVersionMessage)
             return
         }
@@ -319,7 +319,7 @@ class MCTennisCommandExecutor @Inject constructor(
         val game = gameService.getByName(name)
 
         if (game == null) {
-            if (MCTennisDependencyInjectionBinder.areLegacyVersionsIncluded) {
+            if (MCTennisDependencyInjectionModule.areLegacyVersionsIncluded) {
                 player.sendMessage(MCTennisLanguage.gameDoesNotExistMessage.format(name))
             } else {
                 player.sendMessage(MCTennisLanguage.freeVersionMessage)

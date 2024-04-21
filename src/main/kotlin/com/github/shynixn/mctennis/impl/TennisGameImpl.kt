@@ -5,6 +5,7 @@ import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import com.github.shynixn.mccoroutine.bukkit.ticks
 import com.github.shynixn.mctennis.MCTennisLanguage
+import com.github.shynixn.mctennis.contract.PlaceHolderService
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.contract.TennisGame
@@ -19,6 +20,7 @@ import com.github.shynixn.mctennis.event.GameEndEvent
 import com.github.shynixn.mctennis.event.GameStartEvent
 import com.github.shynixn.mcutils.common.ChatColor
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
+import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
@@ -33,23 +35,16 @@ class TennisGameImpl(
     override val arena: TennisArena,
     private val tennisBallFactory: TennisBallFactory,
     private val chatMessageService: ChatMessageService,
-    private val plugin: Plugin
+    private val plugin: Plugin,
+    private val commandService: CommandService,
+    private val placeHolderService: PlaceHolderService
 ) : TennisGame {
-    companion object {
-        private val random = java.util.Random()
-    }
-
     private var isDisposed = false
 
     /**
      * Tennis ball.
      */
-    private var ball: TennisBall? = null
-
-    /**
-     * Dependency.
-     */
-    lateinit var commandService: CommandService
+    override var ball: TennisBall? = null
 
     /**
      * All Players.
@@ -107,9 +102,6 @@ class TennisGameImpl(
     override var servingTeam: Team = Team.RED
 
     init {
-        if (random.nextInt(100) < 50) {
-            // TODO: servingTeam = Team.BLUE
-        }
         plugin.launch(plugin.minecraftDispatcher + object : CoroutineTimings() {}) {
             while (!isDisposed) {
                 if (gameState == GameState.RUNNING_PLAYING || gameState == GameState.RUNNING_SERVING) {
@@ -157,12 +149,12 @@ class TennisGameImpl(
         val joinResult = if (targetTeam == Team.RED) {
             teamRedPlayers.add(player)
             player.teleport(arena.redTeamMeta.lobbySpawnpoint.toLocation())
-            commandService.executeCommands(listOf(player), arena.redTeamMeta.joinCommands)
+            executeCommandsWithPlaceHolder(listOf(player), arena.redTeamMeta.joinCommands)
             JoinResult.SUCCESS_RED
         } else {
             teamBluePlayers.add(player)
             player.teleport(arena.blueTeamMeta.lobbySpawnpoint.toLocation())
-            commandService.executeCommands(listOf(player), arena.blueTeamMeta.joinCommands)
+            executeCommandsWithPlaceHolder(listOf(player), arena.blueTeamMeta.joinCommands)
             JoinResult.SUCCESS_BLUE
         }
 
@@ -197,8 +189,7 @@ class TennisGameImpl(
         // Restore armor contents
         val playerData = cachedData[player]!!
         if (playerData.inventoryContents != null) {
-            player.inventory.contents =
-                playerData.inventoryContents!!.clone()
+            player.inventory.contents = playerData.inventoryContents!!.clone()
             player.inventory.setArmorContents(playerData.armorContents!!.clone())
             player.updateInventory()
         }
@@ -210,11 +201,11 @@ class TennisGameImpl(
         cachedData.remove(player)
         if (teamRedPlayers.contains(player)) {
             teamRedPlayers.remove(player)
-            commandService.executeCommands(listOf(player), arena.redTeamMeta.leaveCommands)
+            executeCommandsWithPlaceHolder(listOf(player), arena.redTeamMeta.leaveCommands)
         }
         if (teamBluePlayers.contains(player)) {
             teamBluePlayers.remove(player)
-            commandService.executeCommands(listOf(player), arena.blueTeamMeta.leaveCommands)
+            executeCommandsWithPlaceHolder(listOf(player), arena.blueTeamMeta.leaveCommands)
         }
 
         return LeaveResult.SUCCESS
@@ -298,16 +289,15 @@ class TennisGameImpl(
                 arena.redTeamMeta
             }
 
-            player.inventory.contents =
-                teamMeta.inventoryContents.map {
-                    if (it != null) {
-                        val configuration = YamlConfiguration()
-                        configuration.loadFromString(it)
-                        configuration.getItemStack("item")
-                    } else {
-                        null
-                    }
-                }.toTypedArray()
+            player.inventory.contents = teamMeta.inventoryContents.map {
+                if (it != null) {
+                    val configuration = YamlConfiguration()
+                    configuration.loadFromString(it)
+                    configuration.getItemStack("item")
+                } else {
+                    null
+                }
+            }.toTypedArray()
             player.inventory.setArmorContents(teamMeta.armorInventoryContents.map {
                 if (it != null) {
                     val configuration = YamlConfiguration()
@@ -362,9 +352,17 @@ class TennisGameImpl(
                 dispose()
                 return
             }
-
             if (gameState == GameState.RUNNING_SERVING) {
                 setBallForServingTeam(servingTeam)
+            }
+
+            val allPlayers = getPlayers()
+            executeCommandsWithPlaceHolder(allPlayers, arena.tickCommands)
+            executeCommandsWithPlaceHolder(teamBluePlayers, arena.blueTeamMeta.tickCommands)
+            executeCommandsWithPlaceHolder(teamRedPlayers, arena.redTeamMeta.tickCommands)
+
+            if (ball != null && !ball!!.isDead) {
+                executeCommandsWithPlaceHolder(allPlayers, arena.ballSettings.tickCommands)
             }
 
             delay(20.ticks)
@@ -490,18 +488,18 @@ class TennisGameImpl(
         when (team) {
             null -> {
                 sendTitleMessageToPlayers(MCTennisLanguage.winDrawTitle, MCTennisLanguage.winDrawSubTitle)
-                commandService.executeCommands(teamRedPlayers, arena.redTeamMeta.drawCommands)
-                commandService.executeCommands(teamBluePlayers, arena.blueTeamMeta.drawCommands)
+                executeCommandsWithPlaceHolder(teamRedPlayers, arena.redTeamMeta.drawCommands)
+                executeCommandsWithPlaceHolder(teamBluePlayers, arena.blueTeamMeta.drawCommands)
             }
             Team.RED -> {
                 sendTitleMessageToPlayers(MCTennisLanguage.winRedTitle, MCTennisLanguage.winRedSubTitle)
-                commandService.executeCommands(teamRedPlayers, arena.redTeamMeta.winCommands)
-                commandService.executeCommands(teamBluePlayers, arena.blueTeamMeta.looseCommands)
+                executeCommandsWithPlaceHolder(teamRedPlayers, arena.redTeamMeta.winCommands)
+                executeCommandsWithPlaceHolder(teamBluePlayers, arena.blueTeamMeta.looseCommands)
             }
             else -> {
                 sendTitleMessageToPlayers(MCTennisLanguage.winBlueTitle, MCTennisLanguage.winBlueSubTitle)
-                commandService.executeCommands(teamBluePlayers, arena.blueTeamMeta.winCommands)
-                commandService.executeCommands(teamRedPlayers, arena.redTeamMeta.looseCommands)
+                executeCommandsWithPlaceHolder(teamBluePlayers, arena.blueTeamMeta.winCommands)
+                executeCommandsWithPlaceHolder(teamRedPlayers, arena.redTeamMeta.looseCommands)
             }
         }
 
@@ -672,6 +670,16 @@ class TennisGameImpl(
         }
         for (player in teamBluePlayers) {
             chatMessageService.sendTitleMessage(player, title, subTitle, 10, 70, 20)
+        }
+    }
+
+    private fun executeCommandsWithPlaceHolder(players: List<Player>, commands: List<CommandMeta>) {
+        commandService.executeCommands(players, commands) { c, p ->
+            placeHolderService.replacePlaceHolders(
+                c,
+                p,
+                this
+            )
         }
     }
 }
