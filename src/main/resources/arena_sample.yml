@@ -22,6 +22,16 @@ leaveSpawnpoint:
   z: -1603.4069517723626
   yaw: 93.97332763671875
   pitch: 41.39981460571289
+# Commands which are executed every MCTennis game tick (1 tick per second, not the minecraft tick which is 20 ticks per second)
+# Types are:
+#  SERVER (executes a single command with server level permission)
+#  SERVER_PER_PLAYER (executes a command with server level permission)
+#  PER_PLAYER (executes a command with player level permission)
+tickCommands:
+  - type: 'SERVER'
+    command: '/say Hello There'
+    # Optional cooldown in minecraft ticks (20 ticks per seconds). This can be used to make some commands execute more times compared to others.
+    cooldown: 0
 redTeamMeta:
   # List of spawnpoints of the red team. You may add multiple ones.
   spawnpoints:
@@ -53,21 +63,31 @@ redTeamMeta:
   looseCommands: []
   # Commands which are executed if the game ends in a draw.
   drawCommands: []
+  # Commands which are executed every MCTennis game tick (1 tick per second, not the minecraft tick which is 20 ticks per second)
+  # Types are:
+  #  SERVER (executes a single command with server level permission)
+  #  SERVER_PER_PLAYER (executes a command with server level permission)
+  #  PER_PLAYER (executes a command with player level permission)
+  tickCommands:
+    - type: 'SERVER'
+      command: '/say Hello There'
+      # Optional cooldown in minecraft ticks (20 ticks per seconds). This can be used to make some commands execute more times compared to others.
+      cooldown: 0
   # Commands which are executed when a player joins this team.
   # Types are:
   #  SERVER_PER_PLAYER (executes a command with server level permission)
   #  PER_PLAYER (executes a command with player level permission)
   joinCommands:
     - type: 'SERVER_PER_PLAYER'
-      command: 'say Hello %player_name% '
+      command: '/say Hello %player_name% '
     - type: 'SERVER_PER_PLAYER'
-      command: 'lp user %player_name% parent add mctennis'
+      command: '/lp user %player_name% parent add mctennis'
   # Commands which are executed when a player leaves this team.
   leaveCommands:
     - type: 'SERVER_PER_PLAYER'
-      command: 'say Bye %player_name% '
+      command: '/say Bye %player_name% '
     - type: 'SERVER_PER_PLAYER'
-      command: 'lp user %player_name% parent remove mctennis'
+      command: '/lp user %player_name% parent remove mctennis'
   # Corner 1 of the playing area of the red team. The y axe is not used.
   corner1:
     world: "world"
@@ -115,21 +135,31 @@ blueTeamMeta:
   looseCommands: []
   # Commands which are executed if the game ends in a draw.
   drawCommands: []
+  # Commands which are executed every MCTennis game tick (1 tick per second, not the minecraft tick which is 20 ticks per second)
+  # Types are:
+  #  SERVER (executes a single command with server level permission)
+  #  SERVER_PER_PLAYER (executes a command with server level permission)
+  #  PER_PLAYER (executes a command with player level permission)
+  tickCommands:
+    - type: 'SERVER'
+      command: '/say Hello There'
+      # Optional cooldown in minecraft ticks (20 ticks per seconds). This can be used to make some commands execute more times compared to others.
+      cooldown: 0
   # Commands which are executed when a player joins this team.
   # Types are:
   #  SERVER_PER_PLAYER (executes a command with server level permission)
   #  PER_PLAYER (executes a command with player level permission)
   joinCommands:
     - type: 'SERVER_PER_PLAYER'
-      command: 'say Hello %player_name% '
+      command: '/say Hello %player_name% '
     - type: 'SERVER_PER_PLAYER'
-      command: 'lp user %player_name% parent add mctennis'
+      command: '/lp user %player_name% parent add mctennis'
   # Commands which are executed when a player leaves this team.
   leaveCommands:
     - type: 'SERVER_PER_PLAYER'
-      command: 'say Bye %player_name% '
+      command: '/say Bye %player_name% '
     - type: 'SERVER_PER_PLAYER'
-      command: 'lp user %player_name% parent remove mctennis'
+      command: '/lp user %player_name% parent remove mctennis'
   # Corner 1 of the playing area of the blue team. The y axe is not used.
   corner1:
     world: "world"
@@ -183,6 +213,17 @@ ball:
   # Flag if the armorstand ball should be shown on "BEDROCK", "JAVA" or "ALL".
   # Note, Armorstand blocks are invisible on Bedrock, which is a limitation of bedrock itself.
   armorstandVisibility: "JAVA"
+  # Commands which are executed every MCTennis game tick (1 tick per second, not the minecraft tick which is 20 ticks per second)
+  # Types are:
+  #  SERVER (executes a single command with server level permission)
+  #  SERVER_PER_PLAYER (executes a command with server level permission)
+  #  PER_PLAYER (executes a command with player level permission)
+  tickCommands:
+    - type: 'SERVER'
+      # Displays flame particles at the location of the ball.
+      command: '/particle minecraft:flame %mctennis_ball_locationX% %mctennis_ball_locationY% %mctennis_ball_locationZ% 0 0 0 0.1 50'
+      # Optional cooldown in minecraft ticks (20 ticks per seconds). This can be used to make some commands execute more times compared to others.
+      cooldown: 0
   # Sound, which is played when a player hits the ball.
   hitSound:
     name: "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,ENTITY_ZOMBIE_ATTACK_DOOR_WOOD,ZOMBIE_WOOD"

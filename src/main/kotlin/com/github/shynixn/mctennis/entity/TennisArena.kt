@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.github.shynixn.mcutils.common.Vector3d
+import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.mcutils.common.repository.Element
 import com.github.shynixn.mcutils.sign.SignMeta
 
@@ -69,6 +70,11 @@ class TennisArena : Element {
      * All signs.
      */
     var signs = ArrayList<SignMeta>()
+
+    /**
+     * Commands which are executed every game tick.
+     */
+    var tickCommands: List<CommandMeta> = ArrayList()
 
     @JsonProperty("ball")
     var ballSettings: TennisBallSettings = TennisBallSettings()

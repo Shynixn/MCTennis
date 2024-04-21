@@ -25,6 +25,7 @@ import com.github.shynixn.mcutils.common.repository.Repository
 import com.github.shynixn.mcutils.common.repository.YamlFileRepositoryImpl
 import com.github.shynixn.mcutils.common.sound.SoundService
 import com.github.shynixn.mcutils.common.sound.SoundServiceImpl
+import com.github.shynixn.mcutils.guice.DependencyInjectionModule
 import com.github.shynixn.mcutils.packet.api.EntityService
 import com.github.shynixn.mcutils.packet.api.PacketService
 import com.github.shynixn.mcutils.packet.api.RayTracingService
@@ -34,14 +35,11 @@ import com.github.shynixn.mcutils.packet.impl.service.PacketServiceImpl
 import com.github.shynixn.mcutils.packet.impl.service.RayTracingServiceImpl
 import com.github.shynixn.mcutils.sign.SignService
 import com.github.shynixn.mcutils.sign.SignServiceImpl
-import com.google.inject.AbstractModule
-import com.google.inject.Scopes
-import com.google.inject.TypeLiteral
 import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import java.util.logging.Level
 
-class MCTennisDependencyInjectionBinder(private val plugin: Plugin) : AbstractModule() {
+class MCTennisDependencyInjectionModule(private val plugin: Plugin) : DependencyInjectionModule() {
     companion object {
         val areLegacyVersionsIncluded: Boolean by lazy {
             try {
@@ -57,50 +55,44 @@ class MCTennisDependencyInjectionBinder(private val plugin: Plugin) : AbstractMo
      * Configures the business logic tree.
      */
     override fun configure() {
-        bind(Plugin::class.java).toInstance(plugin)
+        // Common
+        addService<Plugin>(plugin)
 
         // Repositories
-        val tennisArenaRepository = YamlFileRepositoryImpl<TennisArena>(
-            plugin,
+        val tennisArenaRepository = YamlFileRepositoryImpl<TennisArena>(plugin,
             "arena",
             listOf(Pair("arena_sample.yml", "arena_sample.yml")),
             listOf("arena_sample.yml"),
             object : TypeReference<TennisArena>() {})
         val cacheTennisArenaRepository = CachedRepositoryImpl(tennisArenaRepository)
-        bind(object : TypeLiteral<Repository<TennisArena>>() {}).toInstance(cacheTennisArenaRepository)
-        bind(object : TypeLiteral<CacheRepository<TennisArena>>() {}).toInstance(cacheTennisArenaRepository)
-        bind(Repository::class.java).toInstance(cacheTennisArenaRepository)
-        bind(CacheRepository::class.java).toInstance(cacheTennisArenaRepository)
+        addService<Repository<TennisArena>>(cacheTennisArenaRepository)
+        addService<CacheRepository<TennisArena>>(cacheTennisArenaRepository)
 
         // Services
-        bind(SignService::class.java).toInstance(
-            SignServiceImpl(
-                plugin,
-                CommandServiceImpl(),
-                MCTennisLanguage.noPermissionMessage
-            )
-        )
-        val physicObjectDispatcher = PhysicObjectDispatcherImpl(plugin)
-        bind(EntityService::class.java).toInstance(EntityServiceImpl())
-        bind(ChatMessageService::class.java).toInstance(ChatMessageServiceImpl())
-        bind(RayTracingService::class.java).toInstance(RayTracingServiceImpl())
-        bind(PacketService::class.java).toInstance(PacketServiceImpl(plugin))
-        bind(PhysicObjectDispatcher::class.java).toInstance(physicObjectDispatcher)
-        bind(ConfigurationService::class.java).toInstance(ConfigurationServiceImpl(plugin))
-        bind(PhysicObjectService::class.java).toInstance(PhysicObjectServiceImpl(plugin, physicObjectDispatcher))
-        bind(ItemService::class.java).toInstance(ItemServiceImpl())
-        bind(BedrockService::class.java).to(BedrockServiceImpl::class.java).`in`(Scopes.SINGLETON)
-        bind(GameService::class.java).to(GameServiceImpl::class.java).`in`(Scopes.SINGLETON)
-        bind(SoundService::class.java).toInstance(SoundServiceImpl(plugin))
-        bind(CommandService::class.java).to(CommandServiceImpl::class.java).`in`(Scopes.SINGLETON)
-        bind(TennisBallFactory::class.java).to(TennisBallFactoryImpl::class.java).`in`(Scopes.SINGLETON)
+        addService<SignService> {
+            SignServiceImpl(plugin, getService(), MCTennisLanguage.noPermissionMessage)
+        }
+        addService<PhysicObjectService> {
+            PhysicObjectServiceImpl(plugin, getService())
+        }
+        addService<CommandService>(CommandServiceImpl(plugin))
+        addService<PhysicObjectDispatcher>(PhysicObjectDispatcherImpl(plugin))
+        addService<ConfigurationService>(ConfigurationServiceImpl(plugin))
+        addService<SoundService>(SoundServiceImpl(plugin))
+        addService<PacketService>(PacketServiceImpl(plugin))
+        addService<ItemService>(ItemServiceImpl())
+        addService<EntityService, EntityServiceImpl>()
+        addService<ChatMessageService, ChatMessageServiceImpl>()
+        addService<RayTracingService, RayTracingServiceImpl>()
+        addService<BedrockService, BedrockServiceImpl>()
+        addService<GameService, GameServiceImpl>()
+        addService<TennisBallFactory, TennisBallFactoryImpl>()
 
         if (Bukkit.getPluginManager().getPlugin(PluginDependency.PLACEHOLDERAPI.pluginName) != null) {
-            bind(PlaceHolderService::class.java).to(DependencyPlaceholderApiServiceImpl::class.java)
-                .`in`(Scopes.SINGLETON)
+            addService<PlaceHolderService, DependencyPlaceholderApiServiceImpl>()
             plugin.logger.log(Level.INFO, "Loaded dependency ${PluginDependency.PLACEHOLDERAPI.pluginName}.")
         } else {
-            bind(PlaceHolderService::class.java).to(PlaceHolderServiceImpl::class.java).`in`(Scopes.SINGLETON)
+            addService<PlaceHolderService, PlaceHolderServiceImpl>()
         }
     }
 }

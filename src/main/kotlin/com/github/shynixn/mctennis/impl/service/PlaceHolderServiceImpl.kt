@@ -60,11 +60,53 @@ class PlaceHolderServiceImpl @Inject constructor(private val gameService: GameSe
                 MCTennisLanguage.gameStateJoinAble
             }
         }
-        gamePlayerHolderFunctions[PlaceHolder.GAME_PLAYER_AMOUNT] = {g ->
+        gamePlayerHolderFunctions[PlaceHolder.GAME_PLAYER_AMOUNT] = { g ->
             (g.teamBluePlayers.size + g.teamRedPlayers.size).toString()
         }
-        gamePlayerHolderFunctions[PlaceHolder.GAME_MAX_PLAYER_AMOUNT] = {g ->
-            (g.arena.maxPlayersPerTeam*2).toString()
+        gamePlayerHolderFunctions[PlaceHolder.GAME_MAX_PLAYER_AMOUNT] = { g ->
+            (g.arena.maxPlayersPerTeam * 2).toString()
+        }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_BALL_LOCATION_WORLD] = { g ->
+            if (g.ball != null && !g.ball!!.isDead) {
+                g.ball!!.getLocation().world!!.name
+            } else {
+                ""
+            }
+        }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_BALL_LOCATION_X] = { g ->
+            if (g.ball != null && !g.ball!!.isDead) {
+                g.ball!!.getLocation().x.toString()
+            } else {
+                "0"
+            }
+        }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_BALL_LOCATION_Y] = { g ->
+            if (g.ball != null && !g.ball!!.isDead) {
+                g.ball!!.getLocation().y.toString()
+            } else {
+                "-1000"
+            }
+        }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_BALL_LOCATION_Z] = { g ->
+            if (g.ball != null && !g.ball!!.isDead) {
+                g.ball!!.getLocation().z.toString()
+            } else {
+                "0"
+            }
+        }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_BALL_LOCATION_YAW] = { g ->
+            if (g.ball != null && !g.ball!!.isDead) {
+                g.ball!!.getLocation().yaw.toString()
+            } else {
+                "0"
+            }
+        }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_BALL_LOCATION_PITCH] = { g ->
+            if (g.ball != null && !g.ball!!.isDead) {
+                g.ball!!.getLocation().pitch.toString()
+            } else {
+                "0"
+            }
         }
 
         // Game and Player

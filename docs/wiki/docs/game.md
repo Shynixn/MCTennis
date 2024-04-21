@@ -162,7 +162,9 @@ game1 [My first game] [enabled]
 
 ### Changing more options
 
-Further customization options can be found in the plugins/MCTennis/arena/<name>.yml file.
+Further customization options can be found in the ``plugins/MCTennis/arena/<name>.yml`` file.
+
+The ``arena_sample.yml`` file contains explanations for each property.
 
 Execute the reload command to load your file changes.
 

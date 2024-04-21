@@ -2,6 +2,7 @@ package com.github.shynixn.mctennis.entity
 
 import com.github.shynixn.mctennis.enumeration.VisibilityType
 import com.github.shynixn.mcutils.common.EffectTargetType
+import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.mcutils.common.sound.SoundMeta
 
 class TennisBallSettings {
@@ -124,4 +125,9 @@ class TennisBallSettings {
         it.volume = 5.0
         it.effectType = EffectTargetType.EVERYONE
     }
+
+    /**
+     * Commands which are executed every game tick.
+     */
+    var tickCommands: List<CommandMeta> = ArrayList()
 }

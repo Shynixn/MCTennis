@@ -1,6 +1,5 @@
 package com.github.shynixn.mctennis.contract
 
-import com.github.shynixn.mcutils.common.Vector3d
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
@@ -10,6 +9,11 @@ interface TennisBall {
      * Allows clicking the ball.
      */
     var allowActions: Boolean
+
+    /**
+     * Checks if the ball is dead.
+     */
+    val isDead: Boolean
 
     /**
      * Sets the velocity of the tennis ball.
