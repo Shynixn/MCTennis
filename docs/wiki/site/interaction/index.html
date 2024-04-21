@@ -664,14 +664,14 @@
 <p><strong>arena.yml</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">joinCommands</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SERVER_PER_PLAYER&#39;</span>
-<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;say</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%player_name%</span><span class="nv"> </span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;say</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%mctennis_player_name%</span><span class="nv"> </span><span class="s">&#39;</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SERVER_PER_PLAYER&#39;</span>
-<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;experience</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">%player_name%</span><span class="nv"> </span><span class="s">1&#39;</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;experience</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">%mctennis_player_name%</span><span class="nv"> </span><span class="s">1&#39;</span>
 <span class="nt">leaveCommands</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SERVER_PER_PLAYER&#39;</span>
-<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;say</span><span class="nv"> </span><span class="s">Bye</span><span class="nv"> </span><span class="s">%player_name%</span><span class="nv"> </span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;say</span><span class="nv"> </span><span class="s">Bye</span><span class="nv"> </span><span class="s">%mctennis_player_name%</span><span class="nv"> </span><span class="s">&#39;</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SERVER_PER_PLAYER&#39;</span>
-<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;experience</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">%player_name%</span><span class="nv"> </span><span class="s">1&#39;</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;experience</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">%mctennis_player_name%</span><span class="nv"> </span><span class="s">1&#39;</span>
 </code></pre></div>
 <p>The type SERVER_PER_PLAYER executes commands using the SERVER level permission, which means players do not have to have the permission to the command. If you want to execute commands using the PLAYER level permission, use PER_PLAYER.</p>
 <p>You need to configure this for each team. Each team can have its own join and leave commands.</p>
@@ -690,21 +690,21 @@
 <p><strong>arena.yml</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">joinCommands</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SERVER_PER_PLAYER&#39;</span>
-<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;lp</span><span class="nv"> </span><span class="s">user</span><span class="nv"> </span><span class="s">%player_name%</span><span class="nv"> </span><span class="s">parent</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">mctennis&#39;</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;lp</span><span class="nv"> </span><span class="s">user</span><span class="nv"> </span><span class="s">%mctennis_player_name%</span><span class="nv"> </span><span class="s">parent</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">mctennis&#39;</span>
 </code></pre></div>
 <h4 id="add-a-new-leave-command-which-removes-the-player-from-the-group-when-he-quits-the-match">Add a new leave command which removes the player from the group when he quits the match</h4>
 <p><strong>arena.yml</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">leaveCommands</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SERVER_PER_PLAYER&#39;</span>
-<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;lp</span><span class="nv"> </span><span class="s">user</span><span class="nv"> </span><span class="s">%player_name%</span><span class="nv"> </span><span class="s">parent</span><span class="nv"> </span><span class="s">remove</span><span class="nv"> </span><span class="s">mctennis&#39;</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;lp</span><span class="nv"> </span><span class="s">user</span><span class="nv"> </span><span class="s">%mctennis_player_name%</span><span class="nv"> </span><span class="s">parent</span><span class="nv"> </span><span class="s">remove</span><span class="nv"> </span><span class="s">mctennis&#39;</span>
 </code></pre></div>
 <h4 id="set-the-player-to-certain-states">Set the player to certain states</h4>
 <p>For example, if you want to set the player to gamemode adventure during games, add another command called:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">joinCommands</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SERVER_PER_PLAYER&#39;</span>
-<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;lp</span><span class="nv"> </span><span class="s">user</span><span class="nv"> </span><span class="s">%player_name%</span><span class="nv"> </span><span class="s">parent</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">mctennis&#39;</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;lp</span><span class="nv"> </span><span class="s">user</span><span class="nv"> </span><span class="s">%mctennis_player_name%</span><span class="nv"> </span><span class="s">parent</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">mctennis&#39;</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SERVER_PER_PLAYER&#39;</span>
-<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;gamemode</span><span class="nv"> </span><span class="s">adventure</span><span class="nv"> </span><span class="s">%player_name%</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;gamemode</span><span class="nv"> </span><span class="s">adventure</span><span class="nv"> </span><span class="s">%mctennis_player_name%</span>
 </code></pre></div>
 <h2 id="region-based-interactions">Region Based Interactions</h2>
 <p>Another way to prohibit certain commands and actions during games is to use a region plugin to configure it.</p>
