@@ -6,6 +6,7 @@ import com.github.shynixn.mctennis.enumeration.VisibilityType
 import com.github.shynixn.mctennis.impl.TennisBallImpl
 import com.github.shynixn.mctennis.entity.MathSettings
 import com.github.shynixn.mctennis.impl.physic.*
+import com.github.shynixn.mcutils.common.item.ItemService
 import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.common.sound.SoundService
 import com.github.shynixn.mcutils.common.toVector3d
@@ -24,6 +25,7 @@ class TennisBallFactoryImpl @Inject constructor(
     private val bedrockService: BedrockService,
     private val packetService: PacketService,
     private val rayTracingService: RayTracingService,
+    private val itemService: ItemService
 ) :
     TennisBallFactory {
 
@@ -65,6 +67,8 @@ class TennisBallFactoryImpl @Inject constructor(
                     mathPhysicComponent,
                     packetService,
                     playerComponent,
+                    itemService,
+                    settings,
                     armorStandEntityId,
                     bedrockService.javaPlayers,
                     settings.renderYOffset
@@ -75,6 +79,8 @@ class TennisBallFactoryImpl @Inject constructor(
                     mathPhysicComponent,
                     packetService,
                     playerComponent,
+                    itemService,
+                    settings,
                     armorStandEntityId,
                     bedrockService.bedRockPlayers,
                     settings.renderYOffset
@@ -85,6 +91,8 @@ class TennisBallFactoryImpl @Inject constructor(
                     mathPhysicComponent,
                     packetService,
                     playerComponent,
+                    itemService,
+                    settings,
                     armorStandEntityId,
                     hashSetOf(),
                     settings.renderYOffset

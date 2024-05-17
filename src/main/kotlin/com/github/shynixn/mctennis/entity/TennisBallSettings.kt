@@ -3,9 +3,19 @@ package com.github.shynixn.mctennis.entity
 import com.github.shynixn.mctennis.enumeration.VisibilityType
 import com.github.shynixn.mcutils.common.EffectTargetType
 import com.github.shynixn.mcutils.common.command.CommandMeta
+import com.github.shynixn.mcutils.common.item.Item
 import com.github.shynixn.mcutils.common.sound.SoundMeta
 
 class TennisBallSettings {
+    /**
+     * Item.
+     */
+    var item: Item = Item().also {
+        it.typeName = "PLAYER_HEAD,397"
+        it.durability = 3
+        it.skinBase64 = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZkYThhNzk3N2VjOTIxNGM1YjcwMWY5YWU3ZTE1NWI4ZWIyMWQxZDM3MTU5OGUxYjk4NzVjNGM4NWM2NWFlNiJ9fX0="
+    }
+
     // Ground
     var horizontalBaseMultiplier: Double = 0.4
 

@@ -422,7 +422,7 @@ class TennisGameImpl(
         val teamMetaData = getTeamMetaFromTeam(team)
         // Spawnpoint 0 is always serving.
         val spawnpoint = teamMetaData.spawnpoints[0]
-        val ballspawnpoint = spawnpoint.clone().addRelativeFront(2.0).addRelativeUp(0.5)
+        val ballspawnpoint = spawnpoint.copy().addRelativeFront(2.0).addRelativeUp(0.5)
 
         ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), arena.ballSettings, this)
 
