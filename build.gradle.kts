@@ -14,8 +14,8 @@ repositories {
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
-    maven("https://shynixn.github.io/m2/repository/mcutils")
     maven("https://repo.opencollab.dev/main/")
+    maven(System.getenv("SHYNIXN_MCUTILS_REPOSITORY")) // All MCUTILS libraries are private and not OpenSource.
 }
 
 tasks.register("printVersion") {
@@ -38,10 +38,10 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:1.0.75")
-    implementation("com.github.shynixn.mcutils:guice:1.0.4")
-    implementation("com.github.shynixn.mcutils:packet:1.0.91")
-    implementation("com.github.shynixn.mcutils:sign:1.0.17")
+    implementation("com.github.shynixn.mcutils:common:2024.1")
+    implementation("com.github.shynixn.mcutils:guice:2024.2")
+    implementation("com.github.shynixn.mcutils:packet:2024.5")
+    implementation("com.github.shynixn.mcutils:sign:2024.2")
 
     // Test
     testImplementation(kotlin("test"))
