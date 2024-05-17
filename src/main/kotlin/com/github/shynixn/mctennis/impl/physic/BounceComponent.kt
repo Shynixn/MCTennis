@@ -2,7 +2,6 @@ package com.github.shynixn.mctennis.impl.physic
 
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.physic.PhysicComponent
-import com.github.shynixn.mcutils.common.vector
 import com.github.shynixn.mcutils.packet.api.meta.enumeration.BlockDirection
 
 class BounceComponent(
@@ -78,38 +77,38 @@ class BounceComponent(
     ): Vector3d {
         val normalVector = when (blockDirection) {
             BlockDirection.WEST -> {
-                vector {
-                    x = -1.0
+                Vector3d().also {
+                    it.x = -1.0
                 }
             }
             BlockDirection.EAST -> {
-                vector {
-                    x = 1.0
+                Vector3d().also {
+                    it.x = 1.0
                 }
             }
             BlockDirection.NORTH -> {
-                vector {
-                    z = -1.0
+                Vector3d().also{
+                    it.z = -1.0
                 }
             }
             BlockDirection.SOUTH -> {
-                vector {
-                    z = 1.0
+                Vector3d().also {
+                    it.z = 1.0
                 }
             }
             else -> if (blockDirection == BlockDirection.DOWN) {
-                vector {
-                    y = -1.0
+                Vector3d().also{
+                    it.y = -1.0
                 }
             } else {
-                vector {
-                    y = 1.0
+                Vector3d().also {
+                    it.y = 1.0
                 }
             }.normalize()
         }
 
         val radianAngle = 2 * incomingVector.dot(normalVector)
-        val outgoingVector = incomingVector.clone().subtract(normalVector.multiply(radianAngle))
+        val outgoingVector = incomingVector.copy().subtract(normalVector.multiply(radianAngle))
 
         if (blockDirection == BlockDirection.UP) {
             outgoingVector.y = outgoingVector.y * groundBouncing

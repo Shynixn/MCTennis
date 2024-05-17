@@ -5,7 +5,6 @@ import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.physic.PhysicComponent
 import com.github.shynixn.mcutils.common.toLocation
 import com.github.shynixn.mcutils.common.toVector
-import com.github.shynixn.mcutils.common.vector
 import com.github.shynixn.mcutils.packet.api.RayTraceResult
 import com.github.shynixn.mcutils.packet.api.RayTracingService
 import com.github.shynixn.mcutils.packet.api.meta.enumeration.BlockDirection
@@ -29,10 +28,10 @@ class MathComponent(
     /**
      * Origin coordinate to make relative rotations in the world.
      */
-    private val origin = vector {
-        x = 0.0
-        y = 0.0
-        z = -1.0
+    private val origin = Vector3d().also {
+        it.x = 0.0
+        it.y = 0.0
+        it.z = -1.0
     }.normalize()
    var motion: Vector3d = Vector3d(null, 0.0, 0.0, 0.0)
 
@@ -50,7 +49,7 @@ class MathComponent(
      */
     fun setVelocity(vector: Vector3d) {
         // Motion per step is the new motion.
-        this.motion = vector.clone()
+        this.motion = vector.copy()
         // Move the object a little up otherwise wallcollision of ground immediately cancel movement.
         //  this.position.y += 0.25
         // Correct the yaw of the object after bouncing.
@@ -154,7 +153,7 @@ class MathComponent(
      * Fixes the yaw value after a motion change.
      */
     fun fixYawMotion() {
-        this.position.yaw = getYawFromVector(origin, this.motion.clone().normalize()) * -1
+        this.position.yaw = getYawFromVector(origin, this.motion.copy().normalize()) * -1
         this.position.pitch = 0.0
     }
 
@@ -173,7 +172,7 @@ class MathComponent(
         this.motion = this.motion.multiply(settings.airResistanceRelative)
 
         // Reduces the motion absolute by a negative normalized value.
-        val reductionVector = this.motion.clone().normalize().multiply(settings.airResistanceAbsolute)
+        val reductionVector = this.motion.copy().normalize().multiply(settings.airResistanceAbsolute)
         reduceVectorIfBiggerZero(this.motion, reductionVector)
         fixMotionFloatingPoints()
 
@@ -198,7 +197,7 @@ class MathComponent(
         this.motion = this.motion.multiply(settings.groundResistanceRelative)
 
         // Reduces the motion absolute by a negative normalized value.
-        val reductionVector = this.motion.clone().normalize().multiply(settings.groundResistanceAbsolute)
+        val reductionVector = this.motion.copy().normalize().multiply(settings.groundResistanceAbsolute)
         reduceVectorIfBiggerZero(this.motion, reductionVector)
         fixMotionFloatingPoints()
     }

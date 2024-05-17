@@ -1,6 +1,8 @@
 package com.github.shynixn.mctennis.impl.physic
 
+import com.github.shynixn.mctennis.entity.TennisBallSettings
 import com.github.shynixn.mcutils.common.*
+import com.github.shynixn.mcutils.common.item.ItemService
 import com.github.shynixn.mcutils.common.physic.PhysicComponent
 import com.github.shynixn.mcutils.packet.api.*
 import com.github.shynixn.mcutils.packet.api.meta.enumeration.ArmorSlotType
@@ -14,6 +16,8 @@ class ArmorstandEntityComponent(
     physicsComponent: MathComponent,
     private val packetService: PacketService,
     private val playerComponent: PlayerComponent,
+    private val itemService: ItemService,
+    private val ballSettings: TennisBallSettings,
     val entityId: Int,
     private var filteredPlayers: HashSet<Player>,
     private val renderOffsetY : Double
@@ -37,12 +41,7 @@ class ArmorstandEntityComponent(
             it.target = location.toVector3d().addRelativeUp(renderOffsetY).toLocation()
         })
 
-        val itemStack = item {
-            this.typeName = "PLAYER_HEAD,397"
-            this.durability = 3
-            this.nbt =
-                "{SkullOwner:{Name:\"MCTennis\",Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZkYThhNzk3N2VjOTIxNGM1YjcwMWY5YWU3ZTE1NWI4ZWIyMWQxZDM3MTU5OGUxYjk4NzVjNGM4NWM2NWFlNiJ9fX0=\"}]}}}"
-        }.toItemStack()
+        val itemStack = itemService.toItemStack(ballSettings.item)
 
         packetService.sendPacketOutEntityEquipment(player, PacketOutEntityEquipment().also {
             it.entityId = this.entityId
@@ -82,7 +81,7 @@ class ArmorstandEntityComponent(
 
             packetService.sendPacketOutEntityTeleport(player, PacketOutEntityTeleport().also {
                 it.entityId = this.entityId
-                it.target = position.clone().addRelativeUp(renderOffsetY).toLocation()
+                it.target = position.copy().addRelativeUp(renderOffsetY).toLocation()
             })
         }
 

@@ -14,7 +14,6 @@ import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.command.CommandServiceImpl
 import com.github.shynixn.mcutils.common.item.ItemService
-import com.github.shynixn.mcutils.common.item.ItemServiceImpl
 import com.github.shynixn.mcutils.common.physic.PhysicObjectDispatcher
 import com.github.shynixn.mcutils.common.physic.PhysicObjectDispatcherImpl
 import com.github.shynixn.mcutils.common.physic.PhysicObjectService
@@ -29,14 +28,12 @@ import com.github.shynixn.mcutils.guice.DependencyInjectionModule
 import com.github.shynixn.mcutils.packet.api.EntityService
 import com.github.shynixn.mcutils.packet.api.PacketService
 import com.github.shynixn.mcutils.packet.api.RayTracingService
-import com.github.shynixn.mcutils.packet.impl.service.ChatMessageServiceImpl
-import com.github.shynixn.mcutils.packet.impl.service.EntityServiceImpl
-import com.github.shynixn.mcutils.packet.impl.service.PacketServiceImpl
-import com.github.shynixn.mcutils.packet.impl.service.RayTracingServiceImpl
+import com.github.shynixn.mcutils.packet.impl.service.*
 import com.github.shynixn.mcutils.sign.SignService
 import com.github.shynixn.mcutils.sign.SignServiceImpl
 import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
+import java.util.concurrent.Executor
 import java.util.logging.Level
 
 class MCTennisDependencyInjectionModule(private val plugin: Plugin) : DependencyInjectionModule() {
@@ -79,7 +76,8 @@ class MCTennisDependencyInjectionModule(private val plugin: Plugin) : Dependency
         addService<PhysicObjectDispatcher>(PhysicObjectDispatcherImpl(plugin))
         addService<ConfigurationService>(ConfigurationServiceImpl(plugin))
         addService<SoundService>(SoundServiceImpl(plugin))
-        addService<PacketService>(PacketServiceImpl(plugin))
+        addService<PacketService>(PacketServiceImpl(plugin
+        ) { command -> plugin.server.scheduler.runTask(plugin, command) })
         addService<ItemService>(ItemServiceImpl())
         addService<EntityService, EntityServiceImpl>()
         addService<ChatMessageService, ChatMessageServiceImpl>()

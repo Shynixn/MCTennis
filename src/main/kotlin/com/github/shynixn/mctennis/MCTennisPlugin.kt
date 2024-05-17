@@ -59,16 +59,17 @@ class MCTennisPlugin : JavaPlugin() {
                 Version.VERSION_1_19_R3,
                 Version.VERSION_1_20_R1,
                 Version.VERSION_1_20_R2,
-                Version.VERSION_1_20_R3
+                Version.VERSION_1_20_R3,
+                Version.VERSION_1_20_R4
             )
         } else {
-            listOf(Version.VERSION_1_20_R3)
+            listOf(Version.VERSION_1_20_R4)
         }
 
         if (!Version.serverVersion.isCompatible(*versions.toTypedArray())) {
             logger.log(Level.SEVERE, "================================================")
             logger.log(Level.SEVERE, "MCTennis does not support your server version")
-            logger.log(Level.SEVERE, "Install v" + versions[0].id + " - v" + versions[versions.size - 1].id)
+            logger.log(Level.SEVERE, "Install v" + versions[0].from + " - v" + versions[versions.size - 1].to)
             logger.log(Level.SEVERE, "Need support for a particular version? Go to https://www.patreon.com/Shynixn")
             logger.log(Level.SEVERE, "Plugin gets now disabled!")
             logger.log(Level.SEVERE, "================================================")
@@ -76,7 +77,7 @@ class MCTennisPlugin : JavaPlugin() {
             return
         }
 
-        logger.log(Level.INFO, "Loaded NMS version ${Version.serverVersion.bukkitId}.")
+        logger.log(Level.INFO, "Loaded NMS version ${Version.serverVersion}.")
 
         // Guice
         this.module = MCTennisDependencyInjectionModule(this).build()

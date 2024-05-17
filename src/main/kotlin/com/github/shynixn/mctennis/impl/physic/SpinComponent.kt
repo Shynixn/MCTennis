@@ -2,7 +2,6 @@ package com.github.shynixn.mctennis.impl.physic
 
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.physic.PhysicComponent
-import com.github.shynixn.mcutils.common.vector
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -56,15 +55,15 @@ class SpinComponent(
             return
         }
 
-        val addVector = vector {
-            this.x = -motion.z
-            this.z = motion.x
+        val addVector = Vector3d().also {
+            it.x = -motion.z
+            it.z = motion.x
         }.multiply(angularVelocity)
 
-        this.physicComponent.motion = vector {
-            x = motion.x + addVector.x
-            y = motion.y
-            z = motion.z + addVector.z
+        this.physicComponent.motion = Vector3d().also  {
+            it.x = motion.x + addVector.x
+            it.y = motion.y
+            it.z = motion.z + addVector.z
         }
 
         angularVelocity /= 2
