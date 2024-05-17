@@ -177,6 +177,17 @@ blueTeamMeta:
     yaw: 85.5672607421875
     pitch: 49.05009078979492
 ball:
+  item:
+    # TypeName the ball is represented. For version compatibility, multiple identifiers can be added by separating with a comma.
+    typeName: "minecraft:player_head,397"
+    # Optional durability tag.
+    durability: 3
+    # Optional NBT Tags in standard Minecraft NBT format. This works in versions below Minecraft 1.20.5.
+    nbt: '{SkullOwner:{Id:[I;-679733089,1513112343,-1218902292,1830955974],Name:"MCTennis",Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODlkZDI3MzRiMzk1NGJlMjU5ODIwNDBjNjM5Yzg3NjFhZDRjNDQ2YTM5MjE2ZmIxZjEyZGUyN2FmM2RlMDI3MiJ9fX0="}]}}}'
+    # Optional Data Components in Minecraft Data Component JSON format. This has replaced NBT since Minecraft 1.20.5. See https://minecraft.wiki/w/Data_component_format.
+    component: '{"minecraft:profile":{"properties":[{"name":"textures","value":"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODlkZDI3MzRiMzk1NGJlMjU5ODIwNDBjNjM5Yzg3NjFhZDRjNDQ2YTM5MjE2ZmIxZjEyZGUyN2FmM2RlMDI3MiJ9fX0="}]}}'
+    # Optional SkinBase64 tag. This overwrites any skin specified in nbt or component.
+    skinBase64: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODlkZDI3MzRiMzk1NGJlMjU5ODIwNDBjNjM5Yzg3NjFhZDRjNDQ2YTM5MjE2ZmIxZjEyZGUyN2FmM2RlMDI3MiJ9fX0='
   # The normalized velocity of the direction the ball is shot is multiplied by this value.
   horizontalBaseMultiplier: 0.6
   # The vertical minimum value which is added to the normalized velocity.

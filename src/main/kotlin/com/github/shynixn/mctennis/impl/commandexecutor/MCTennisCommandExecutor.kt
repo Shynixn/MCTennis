@@ -244,6 +244,8 @@ class MCTennisCommandExecutor @Inject constructor(
     }
 
     private suspend fun deleteArena(sender: CommandSender, arena: TennisArena) {
+        val runningGame = gameService.getAll().firstOrNull { e -> e.arena.name.equals(arena.name, true) }
+        runningGame?.dispose(false)
         arenaRepository.delete(arena)
         sender.sendMessage(MCTennisLanguage.deletedGameMessage.format(arena.name))
     }
