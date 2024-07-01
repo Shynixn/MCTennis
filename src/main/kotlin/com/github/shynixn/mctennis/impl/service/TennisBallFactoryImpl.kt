@@ -10,7 +10,6 @@ import com.github.shynixn.mcutils.common.item.ItemService
 import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.common.sound.SoundService
 import com.github.shynixn.mcutils.common.toVector3d
-import com.github.shynixn.mcutils.packet.api.EntityService
 import com.github.shynixn.mcutils.packet.api.PacketService
 import com.github.shynixn.mcutils.packet.api.RayTracingService
 import com.google.inject.Inject
@@ -19,7 +18,6 @@ import org.bukkit.plugin.Plugin
 
 class TennisBallFactoryImpl @Inject constructor(
     private val physicObjectService: PhysicObjectService,
-    private val entityService: EntityService,
     private val plugin: Plugin,
     private val soundService: SoundService,
     private val bedrockService: BedrockService,
@@ -58,8 +56,8 @@ class TennisBallFactoryImpl @Inject constructor(
             settings.spinVertical
         )
 
-        val armorStandEntityId = entityService.createNewEntityId()
-        val slimeEntityId = entityService.createNewEntityId()
+        val armorStandEntityId = packetService.getNextEntityId()
+        val slimeEntityId = packetService.getNextEntityId()
 
         val armorstandEntityComponent = when (settings.armorstandVisibility) {
             VisibilityType.BEDROCK -> {

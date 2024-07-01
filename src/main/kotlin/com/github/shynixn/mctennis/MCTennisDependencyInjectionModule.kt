@@ -1,6 +1,7 @@
 package com.github.shynixn.mctennis
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.contract.BedrockService
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.PlaceHolderService
@@ -10,6 +11,7 @@ import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.service.*
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.ConfigurationServiceImpl
+import com.github.shynixn.mcutils.common.CoroutineExecutor
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.command.CommandServiceImpl
@@ -25,7 +27,6 @@ import com.github.shynixn.mcutils.common.repository.YamlFileRepositoryImpl
 import com.github.shynixn.mcutils.common.sound.SoundService
 import com.github.shynixn.mcutils.common.sound.SoundServiceImpl
 import com.github.shynixn.mcutils.guice.DependencyInjectionModule
-import com.github.shynixn.mcutils.packet.api.EntityService
 import com.github.shynixn.mcutils.packet.api.PacketService
 import com.github.shynixn.mcutils.packet.api.RayTracingService
 import com.github.shynixn.mcutils.packet.impl.service.*
@@ -33,7 +34,6 @@ import com.github.shynixn.mcutils.sign.SignService
 import com.github.shynixn.mcutils.sign.SignServiceImpl
 import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
-import java.util.concurrent.Executor
 import java.util.logging.Level
 
 class MCTennisDependencyInjectionModule(private val plugin: Plugin) : DependencyInjectionModule() {
@@ -72,15 +72,19 @@ class MCTennisDependencyInjectionModule(private val plugin: Plugin) : Dependency
         addService<PhysicObjectService> {
             PhysicObjectServiceImpl(plugin, getService())
         }
-        addService<CommandService>(CommandServiceImpl(plugin))
+        addService<CommandService>(CommandServiceImpl(object : CoroutineExecutor {
+            override fun execute(f: suspend () -> Unit) {
+                plugin.launch {
+                    f.invoke()
+                }
+            }
+        }))
+        addService<ChatMessageService>(ChatMessageServiceImpl(plugin))
         addService<PhysicObjectDispatcher>(PhysicObjectDispatcherImpl(plugin))
         addService<ConfigurationService>(ConfigurationServiceImpl(plugin))
         addService<SoundService>(SoundServiceImpl(plugin))
-        addService<PacketService>(PacketServiceImpl(plugin
-        ) { command -> plugin.server.scheduler.runTask(plugin, command) })
+        addService<PacketService>(PacketServiceImpl(plugin))
         addService<ItemService>(ItemServiceImpl())
-        addService<EntityService, EntityServiceImpl>()
-        addService<ChatMessageService, ChatMessageServiceImpl>()
         addService<RayTracingService, RayTracingServiceImpl>()
         addService<BedrockService, BedrockServiceImpl>()
         addService<GameService, GameServiceImpl>()
