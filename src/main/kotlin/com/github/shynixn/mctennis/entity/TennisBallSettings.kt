@@ -12,7 +12,7 @@ class TennisBallSettings {
      */
     var item: Item = Item().also {
         it.typeName = "PLAYER_HEAD,397"
-        it.durability = 3
+        it.durability = "3"
         it.skinBase64 = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZkYThhNzk3N2VjOTIxNGM1YjcwMWY5YWU3ZTE1NWI4ZWIyMWQxZDM3MTU5OGUxYjk4NzVjNGM4NWM2NWFlNiJ9fX0="
     }
 

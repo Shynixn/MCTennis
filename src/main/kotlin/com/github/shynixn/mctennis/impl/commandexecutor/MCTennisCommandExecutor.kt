@@ -37,8 +37,15 @@ class MCTennisCommandExecutor @Inject constructor(
 ) {
     private val fallBackPrefix: String =
         org.bukkit.ChatColor.BLUE.toString() + "[MCTennis] " + org.bukkit.ChatColor.WHITE
-    private val arenaTabs: suspend () -> List<String> = {
+    private val arenaTabs: suspend (s : CommandSender) -> List<String> = {
         arenaRepository.getAll().map { e -> e.name }
+    }
+    private val coroutineExecutor = object : CoroutineExecutor {
+        override fun execute(f: suspend () -> Unit) {
+            plugin.launch {
+                f.invoke()
+            }
+        }
     }
 
     private val remainingStringValidator = object : Validator<String> {
@@ -47,7 +54,12 @@ class MCTennisCommandExecutor @Inject constructor(
         }
     }
     private val maxLengthValidator = object : Validator<String> {
-        override suspend fun validate(sender: CommandSender, prevArgs: List<Any>, argument: String): Boolean {
+        override suspend fun validate(
+            sender: CommandSender,
+            prevArgs: List<Any>,
+            argument: String,
+            openArgs: List<String>
+        ): Boolean {
             return argument.length < 20
         }
 
@@ -56,7 +68,12 @@ class MCTennisCommandExecutor @Inject constructor(
         }
     }
     private val gameMustNotExistValidator = object : Validator<String> {
-        override suspend fun validate(sender: CommandSender, prevArgs: List<Any>, argument: String): Boolean {
+        override suspend fun validate(
+            sender: CommandSender,
+            prevArgs: List<Any>,
+            argument: String,
+            openArgs: List<String>
+        ): Boolean {
             val existingArenas = arenaRepository.getAll()
             return existingArenas.firstOrNull { e -> e.name.equals(argument, true) } == null
         }
@@ -132,13 +149,18 @@ class MCTennisCommandExecutor @Inject constructor(
             return MCTennisLanguage.signTypeDoesNotExist
         }
 
-        override suspend fun validate(sender: CommandSender, prevArgs: List<Any>, argument: String): Boolean {
+        override suspend fun validate(
+            sender: CommandSender,
+            prevArgs: List<Any>,
+            argument: String,
+            openArgs: List<String>
+        ): Boolean {
             return argument.equals("join", true) || argument.equals("leave", true)
         }
     }
 
     init {
-        val mcCart = CommandBuilder(plugin, "mctennis", chatMessageService) {
+        val mcCart = CommandBuilder(plugin, coroutineExecutor, "mctennis", chatMessageService) {
             usage(MCTennisLanguage.commandUsage.translateChatColors())
             description(MCTennisLanguage.commandDescription)
             aliases(plugin.config.getStringList("commands.mctennis.aliases"))
@@ -146,77 +168,77 @@ class MCTennisCommandExecutor @Inject constructor(
             permissionMessage(MCTennisLanguage.noPermissionMessage.translateChatColors())
             subCommand("create") {
                 permission(Permission.EDIT_GAME)
-                execution().argument("name").validator(maxLengthValidator).validator(maxLengthValidator)
+                builder().argument("name").validator(maxLengthValidator).validator(maxLengthValidator)
                     .validator(gameMustNotExistValidator).tabs { listOf("<name>") }.argument("displayName")
                     .validator(remainingStringValidator).tabs { listOf("<displayName>") }
                     .execute { sender, name, displayName -> createArena(sender, name, displayName) }
             }
             subCommand("delete") {
                 permission(Permission.EDIT_GAME)
-                execution().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
+                builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .execute { sender, arena -> deleteArena(sender, arena) }
             }
             subCommand("list") {
                 permission(Permission.EDIT_GAME)
-                execution().execute { sender -> listArena(sender) }
+                builder().execute { sender -> listArena(sender) }
             }
             subCommand("toggle") {
                 permission(Permission.EDIT_GAME)
-                execution().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
+                builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .execute { sender, arena -> toggleGame(sender, arena) }
             }
             subCommand("join") {
                 noPermission()
-                execution().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
-                    .executePlayer(MCTennisLanguage.commandSenderHasToBePlayer) { sender, arena ->
+                builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
+                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { sender, arena ->
                         joinGame(
                             sender, arena.name
                         )
                     }.argument("team").validator(teamValidator).tabs { listOf("red", "blue") }
-                    .executePlayer(MCTennisLanguage.commandSenderHasToBePlayer) { sender, arena, team ->
+                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { sender, arena, team ->
                         joinGame(sender, arena.name, team)
                     }
             }
             subCommand("leave") {
                 noPermission()
-                execution().executePlayer(MCTennisLanguage.commandSenderHasToBePlayer) { sender -> leaveGame(sender) }
+                builder().executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { sender -> leaveGame(sender) }
             }
             helpCommand()
             subCommand("location") {
                 permission(Permission.EDIT_GAME)
-                execution().argument("name").validator(gameMustExistValidator).tabs { arenaTabs.invoke() }
+                builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("type").validator(locationTypeValidator).tabs { LocationType.values().map { e -> e.id } }
-                    .executePlayer(MCTennisLanguage.commandSenderHasToBePlayer) { player, arena, locationType ->
+                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { player, arena, locationType ->
                         setLocation(player, arena, locationType)
                     }
             }
             subCommand("inventory") {
                 permission(Permission.EDIT_GAME)
-                execution().argument("name").validator(gameMustExistValidator).tabs { arenaTabs.invoke() }
+                builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("team").validator(teamMetaValidator).tabs { listOf("red", "blue") }
-                    .executePlayer(MCTennisLanguage.commandSenderHasToBePlayer) { player, arena, meta ->
+                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { player, arena, meta ->
                         setInventory(player, arena, meta)
                     }
             }
             subCommand("armor") {
                 permission(Permission.EDIT_GAME)
-                execution().argument("name").validator(gameMustExistValidator).tabs { arenaTabs.invoke() }
+                builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("team").validator(teamMetaValidator).tabs { listOf("red", "blue") }
-                    .executePlayer(MCTennisLanguage.commandSenderHasToBePlayer) { player, arena, meta ->
+                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { player, arena, meta ->
                         setArmor(player, arena, meta)
                     }
             }
             subCommand("sign") {
                 permission(Permission.EDIT_GAME)
-                execution().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
+                builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("type").validator(signTypeValidator).tabs { listOf("join", "leave") }
-                    .executePlayer(MCTennisLanguage.commandSenderHasToBePlayer) { player, arena, signType ->
+                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { player, arena, signType ->
                         setSign(player, arena, signType)
                     }
             }
             subCommand("reload") {
                 permission(Permission.EDIT_GAME)
-                execution()
+                builder()
                     .execute { sender ->
                         reloadArena(sender, null)
                     }

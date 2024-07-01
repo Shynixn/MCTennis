@@ -9,7 +9,6 @@ import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.event.TennisBallBounceGroundEvent
 import com.github.shynixn.mcutils.common.toLocation
 import com.github.shynixn.mcutils.common.toVector3d
-import com.github.shynixn.mcutils.packet.api.EntityService
 import com.github.shynixn.mcutils.packet.api.PacketService
 import com.github.shynixn.mcutils.packet.api.meta.enumeration.EntityType
 import com.github.shynixn.mcutils.packet.api.packet.PacketOutEntityDestroy
@@ -23,7 +22,6 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 
 class TennisListener @Inject constructor(
-    private val entityService: EntityService,
     private val packetService: PacketService,
     private val plugin: Plugin
 ) : Listener {
@@ -104,7 +102,7 @@ class TennisListener @Inject constructor(
      */
     private fun printMessageAtScorePosition(game: TennisGame, ball: TennisBall, message: String) {
         val location = ball.getLocation().toVector3d().addRelativeUp(-1.5).toLocation()
-        val entityId = entityService.createNewEntityId()
+        val entityId = packetService.getNextEntityId()
         val players = game.getPlayers()
 
         for (player in players) {

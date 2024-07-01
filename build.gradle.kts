@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.shynixn"
-version = "1.5.0"
+version = "1.6.0"
 
 repositories {
     mavenCentral()
@@ -29,8 +29,8 @@ dependencies {
     compileOnly("org.geysermc.geyser:api:2.2.0-SNAPSHOT")
 
     // Plugin.yml Shade dependencies
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.15.0")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.15.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.17.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.17.0")
     implementation("com.google.inject:guice:5.0.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.2.3")
@@ -38,9 +38,9 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:2024.1")
+    implementation("com.github.shynixn.mcutils:common:2024.19")
     implementation("com.github.shynixn.mcutils:guice:2024.2")
-    implementation("com.github.shynixn.mcutils:packet:2024.5")
+    implementation("com.github.shynixn.mcutils:packet:2024.30")
     implementation("com.github.shynixn.mcutils:sign:2024.2")
 
     // Test
