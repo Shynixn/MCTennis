@@ -37,7 +37,7 @@ class MCTennisCommandExecutor @Inject constructor(
 ) {
     private val fallBackPrefix: String =
         org.bukkit.ChatColor.BLUE.toString() + "[MCTennis] " + org.bukkit.ChatColor.WHITE
-    private val arenaTabs: suspend (s : CommandSender) -> List<String> = {
+    private val arenaTabs: suspend (s: CommandSender) -> List<String> = {
         arenaRepository.getAll().map { e -> e.name }
     }
     private val coroutineExecutor = object : CoroutineExecutor {
@@ -190,25 +190,25 @@ class MCTennisCommandExecutor @Inject constructor(
             subCommand("join") {
                 noPermission()
                 builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
-                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { sender, arena ->
+                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { sender, arena ->
                         joinGame(
                             sender, arena.name
                         )
                     }.argument("team").validator(teamValidator).tabs { listOf("red", "blue") }
-                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { sender, arena, team ->
+                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { sender, arena, team ->
                         joinGame(sender, arena.name, team)
                     }
             }
             subCommand("leave") {
                 noPermission()
-                builder().executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { sender -> leaveGame(sender) }
+                builder().executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { sender -> leaveGame(sender) }
             }
             helpCommand()
             subCommand("location") {
                 permission(Permission.EDIT_GAME)
                 builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("type").validator(locationTypeValidator).tabs { LocationType.values().map { e -> e.id } }
-                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { player, arena, locationType ->
+                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { player, arena, locationType ->
                         setLocation(player, arena, locationType)
                     }
             }
@@ -216,7 +216,7 @@ class MCTennisCommandExecutor @Inject constructor(
                 permission(Permission.EDIT_GAME)
                 builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("team").validator(teamMetaValidator).tabs { listOf("red", "blue") }
-                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { player, arena, meta ->
+                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { player, arena, meta ->
                         setInventory(player, arena, meta)
                     }
             }
@@ -224,7 +224,7 @@ class MCTennisCommandExecutor @Inject constructor(
                 permission(Permission.EDIT_GAME)
                 builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("team").validator(teamMetaValidator).tabs { listOf("red", "blue") }
-                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { player, arena, meta ->
+                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { player, arena, meta ->
                         setArmor(player, arena, meta)
                     }
             }
@@ -232,7 +232,7 @@ class MCTennisCommandExecutor @Inject constructor(
                 permission(Permission.EDIT_GAME)
                 builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("type").validator(signTypeValidator).tabs { listOf("join", "leave") }
-                    .executePlayer({MCTennisLanguage.commandSenderHasToBePlayer}) { player, arena, signType ->
+                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { player, arena, signType ->
                         setSign(player, arena, signType)
                     }
             }
@@ -351,7 +351,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return
         }
 
-        if (!player.hasPermission("mctennis.join.${game.arena.name}")) {
+        if (!player.hasPermission("mctennis.join.${game.arena.name}") && !player.hasPermission("mctennis.join.*")) {
             player.sendMessage(MCTennisLanguage.noPermissionForGameMessage.format(game.arena.name))
             return
         }
