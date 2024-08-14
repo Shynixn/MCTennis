@@ -108,6 +108,15 @@ class PlaceHolderServiceImpl @Inject constructor(private val gameService: GameSe
                 "0"
             }
         }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_CURRENT_SET] = { g ->
+            g.currentSet.toString()
+        }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_WON_SETS_TEAM_BLUE] = { g ->
+            g.teamBlueSetScore.toString()
+        }
+        gamePlayerHolderFunctions[PlaceHolder.GAME_WON_SETS_TEAM_RED] = { g ->
+            g.teamRedSetScore.toString()
+        }
 
         // Game and Player
         gameAndPlayerHolderFunctions[PlaceHolder.GAME_ISTEAMBLUEPLAYER] =

@@ -12,9 +12,12 @@ The following placeholders are available in MCTennis and can also be used via Pl
 | %mctennis_game_isJoinAble%       | true if the game can be joined, false if not   |   
 | %mctennis_game_isRunning%        | true if the game is running, false if not      |
 | %mctennis_game_displayName%      | DisplayName of a game.                         |
-| %mctennis_game_rawScoreTeamRed%  | Score of team red                              |
-| %mctennis_game_rawScoreTeamBlue% | Score of team blue                             |
-| %mctennis_game_score%            | Overall game score                             |
+| %mctennis_game_score%            | Score of both teams with text                  |
+| %mctennis_game_rawScoreTeamRed%  | Numeric score of team red                      |
+| %mctennis_game_rawScoreTeamBlue% | Numeric score of team blue                     |
+| %mctennis_game_currentSet%       | The current set                                |
+| %mctennis_game_wonSetsTeamRed%   | Number of won sets of team red                 |
+| %mctennis_game_wonSetsTeamBlue%  | Number of won sets of team blue                |
 | %mctennis_game_state%            | State of the game: DISABLED, JOINABLE, RUNNING |
 | %mctennis_game_stateDisplayName% | State of the game with color codes             |
 | %mctennis_game_players%          | Current amount of players in the game          |
