@@ -97,6 +97,11 @@ class TennisGameImpl(
     override var teamBlueSetScore: Int = 0
 
     /**
+     * The index number of the current set.
+     */
+    override var currentSet: Int = 1
+
+    /**
      * Gets the team who is serving.
      */
     override var servingTeam: Team = Team.RED
@@ -450,6 +455,8 @@ class TennisGameImpl(
      */
     private suspend fun winSet(team: Team) {
         gameState = GameState.ENDING
+        currentSet++
+
         when (team) {
             Team.RED -> {
                 teamRedSetScore++

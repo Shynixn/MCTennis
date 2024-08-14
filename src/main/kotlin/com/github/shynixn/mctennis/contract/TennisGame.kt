@@ -60,6 +60,11 @@ interface TennisGame {
     val teamBlueSetScore: Int
 
     /**
+     * The index number of the current set.
+     */
+    val currentSet : Int
+
+    /**
      * Gets the team who is serving.
      */
     val servingTeam: Team
