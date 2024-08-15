@@ -52,7 +52,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}-latest.jar
-          asset_name: MCTennis-Latest.jar
+          asset_name: MCTennis.jar
           asset_content_type: application/jar
 
       - name: Upload Premium Release to Github
