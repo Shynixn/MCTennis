@@ -10,7 +10,7 @@ import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.LocationType
 import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
-import com.github.shynixn.mctennis.impl.exception.TennisArenaException
+import com.github.shynixn.mctennis.impl.exception.TennisGameException
 import com.github.shynixn.mcutils.common.*
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandBuilder
@@ -277,7 +277,7 @@ class MCTennisCommandExecutor @Inject constructor(
             arena.isEnabled = !arena.isEnabled
             gameService.reload(arena)
             sender.sendMessage(MCTennisLanguage.enabledArenaMessage.format(arena.isEnabled.toString()))
-        } catch (e: TennisArenaException) {
+        } catch (e: TennisGameException) {
             arena.isEnabled = !arena.isEnabled
             sender.sendMessage(fallBackPrefix + ChatColor.RED.toString() + "Failed to reload arena ${e.arena.name}.")
             sender.sendMessage(fallBackPrefix + e.message)
@@ -491,7 +491,7 @@ class MCTennisCommandExecutor @Inject constructor(
     private suspend fun reloadArena(sender: CommandSender, arena: TennisArena?) {
         try {
             arenaRepository.clearCache()
-        } catch (e: TennisArenaException) {
+        } catch (e: TennisGameException) {
             sender.sendMessage(fallBackPrefix + ChatColor.RED.toString() + "Failed to reload arenas.")
             sender.sendMessage(fallBackPrefix + e.message)
             return
@@ -506,7 +506,7 @@ class MCTennisCommandExecutor @Inject constructor(
             try {
                 arenaRepository.clearCache()
                 gameService.reloadAll()
-            } catch (e: TennisArenaException) {
+            } catch (e: TennisGameException) {
                 sender.sendMessage(fallBackPrefix + ChatColor.RED.toString() + "Failed to reload arena ${e.arena.name}.")
                 sender.sendMessage(fallBackPrefix + e.message)
                 return
@@ -519,7 +519,7 @@ class MCTennisCommandExecutor @Inject constructor(
         try {
             arenaRepository.clearCache()
             gameService.reload(arena)
-        } catch (e: TennisArenaException) {
+        } catch (e: TennisGameException) {
             sender.sendMessage(fallBackPrefix + ChatColor.RED.toString() + "Failed to reload arena ${e.arena.name}.")
             sender.sendMessage(fallBackPrefix + e.message)
             return
