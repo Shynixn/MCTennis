@@ -11,14 +11,14 @@
       
       
       
-        <link rel="prev" href="../commands/">
+        <link rel="prev" href="../permission/">
       
       
         <link rel="next" href="../interaction/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.33">
     
     
       
@@ -328,27 +328,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../commands/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Commands
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -496,6 +475,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#changing-the-speed-of-the-ball" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changing the speed of the ball
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -517,6 +505,27 @@
   
   <span class="md-ellipsis">
     Interactions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Commands
   </span>
   
 
@@ -700,6 +709,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#changing-the-speed-of-the-ball" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changing the speed of the ball
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -818,6 +836,15 @@
 <p>Execute the reload command to load your file changes.</p>
 <div class="highlight"><pre><span></span><code>/mctennis reload game1
 </code></pre></div>
+<h3 id="changing-the-speed-of-the-ball">Changing the speed of the ball</h3>
+<p>Players can change the speed of the ball by pressing SHIFT. The amount of green power bars define how fast the ball flies. </p>
+<p>However, the base speed of the ball may not fit the size of your arena. You should edit the following properties in your <code>plugins/MCTennis/arena/&lt;name&gt;.yml</code> file.</p>
+<ul>
+<li>horizontalBaseMultiplier</li>
+<li>verticalSpeedAbsolute</li>
+<li>gravityAbsolute</li>
+</ul>
+<p>Try very minor adjustments (comma values), execute the reload command and rejoin your arena. Repeat until it works for you.</p>
 
 
 
@@ -849,7 +876,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../commands/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Commands">
+          <a href="../permission/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Permission">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -859,7 +886,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Commands
+                Permission
               </div>
             </div>
           </a>
@@ -904,7 +931,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tabs", "content.tabs.link", "content.code.copy", "navigation.footer"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      <script src="../assets/javascripts/bundle.af256bd8.min.js"></script>
       
     
   </body>
