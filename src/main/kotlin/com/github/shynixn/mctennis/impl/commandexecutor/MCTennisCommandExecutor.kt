@@ -529,7 +529,7 @@ class MCTennisCommandExecutor @Inject constructor(
         if (arena == null) {
             plugin.reloadConfig()
             val language = configurationService.findValue<String>("language")
-            plugin.reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
+            plugin.reloadTranslation(language, MCTennisLanguage::class.java, "en_us", "es_es")
             plugin.logger.log(Level.INFO, "Loaded language file $language.properties.")
 
             try {

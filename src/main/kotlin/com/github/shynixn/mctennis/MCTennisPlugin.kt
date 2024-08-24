@@ -117,7 +117,7 @@ class MCTennisPlugin : JavaPlugin() {
             // Load Language
             val configurationService = module.getService<ConfigurationService>()
             val language = configurationService.findValue<String>("language")
-            reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
+            reloadTranslation(language, MCTennisLanguage::class.java, "en_us", "es_es")
             logger.log(Level.INFO, "Loaded language file $language.properties.")
 
             // Load Games
