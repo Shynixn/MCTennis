@@ -171,3 +171,16 @@ Execute the reload command to load your file changes.
 ```
 /mctennis reload game1
 ```
+
+### Changing the speed of the ball
+
+Players can change the speed of the ball by pressing SHIFT. The amount of green power bars define how fast the ball flies. 
+
+However, the base speed of the ball may not fit the size of your arena. You should edit the following properties in your ``plugins/MCTennis/arena/<name>.yml`` file.
+
+* horizontalBaseMultiplier
+* verticalSpeedAbsolute
+* gravityAbsolute
+
+Try very minor adjustments (comma values), execute the reload command and rejoin your arena. Repeat until it works for you.
+

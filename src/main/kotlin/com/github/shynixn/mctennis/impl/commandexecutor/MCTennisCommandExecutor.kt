@@ -314,18 +314,47 @@ class MCTennisCommandExecutor @Inject constructor(
     private suspend fun listArena(sender: CommandSender) {
         val existingArenas = arenaRepository.getAll()
 
-        sender.sendMessage("---------MCTennis---------")
+        val headerBuilder = StringBuilder()
+        headerBuilder.append(org.bukkit.ChatColor.GRAY)
+        headerBuilder.append(org.bukkit.ChatColor.STRIKETHROUGH)
+        for (i in 0 until (30 - plugin.name.length) / 2) {
+            headerBuilder.append(" ")
+        }
+        headerBuilder.append(org.bukkit.ChatColor.RESET)
+        headerBuilder.append(org.bukkit.ChatColor.WHITE)
+        headerBuilder.append(org.bukkit.ChatColor.BOLD)
+        headerBuilder.append(plugin.name)
+        headerBuilder.append(org.bukkit.ChatColor.RESET)
+        headerBuilder.append(org.bukkit.ChatColor.GRAY)
+        headerBuilder.append(org.bukkit.ChatColor.STRIKETHROUGH)
+        for (i in 0 until (30 - plugin.name.length) / 2) {
+            headerBuilder.append(" ")
+        }
+        sender.sendMessage(headerBuilder.toString())
         for (arena in existingArenas) {
             if (arena.isEnabled) {
-                sender.sendMessage(ChatColor.GRAY.toString() + arena.name + " [${arena.displayName.translateChatColors()}" + ChatColor.GRAY + "] " + ChatColor.GREEN + "[enabled]")
+                sender.sendMessage(ChatColor.YELLOW.toString() + arena.name + " [${arena.displayName.translateChatColors()}" + ChatColor.GRAY + "] " + ChatColor.GREEN + "[enabled]")
             } else {
-                sender.sendMessage(ChatColor.GRAY.toString() + arena.name + " [${arena.displayName.translateChatColors()}" + ChatColor.GRAY + "] " + ChatColor.RED + "[disabled]")
+                sender.sendMessage(ChatColor.YELLOW.toString() + arena.name + " [${arena.displayName.translateChatColors()}" + ChatColor.GRAY + "] " + ChatColor.RED + "[disabled]")
 
             }
 
             sender.sendMessage()
         }
-        sender.sendMessage("----------┌1/1┐----------")
+
+        val footerBuilder = java.lang.StringBuilder()
+        footerBuilder.append(org.bukkit.ChatColor.GRAY)
+        footerBuilder.append(org.bukkit.ChatColor.STRIKETHROUGH)
+        footerBuilder.append("               ")
+        footerBuilder.append(org.bukkit.ChatColor.RESET)
+        footerBuilder.append(org.bukkit.ChatColor.WHITE)
+        footerBuilder.append(org.bukkit.ChatColor.BOLD)
+        footerBuilder.append("1/1")
+        footerBuilder.append(org.bukkit.ChatColor.RESET)
+        footerBuilder.append(org.bukkit.ChatColor.GRAY)
+        footerBuilder.append(org.bukkit.ChatColor.STRIKETHROUGH)
+        footerBuilder.append("               ")
+        sender.sendMessage(footerBuilder.toString())
     }
 
     private fun joinGame(player: Player, name: String, team: Team? = null) {
