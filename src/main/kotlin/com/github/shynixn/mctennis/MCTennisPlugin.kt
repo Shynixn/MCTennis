@@ -8,6 +8,7 @@ import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
+import com.github.shynixn.mctennis.impl.exception.TennisGameException
 import com.github.shynixn.mctennis.impl.listener.GameListener
 import com.github.shynixn.mctennis.impl.listener.PacketListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
@@ -116,12 +117,16 @@ class MCTennisPlugin : JavaPlugin() {
             // Load Language
             val configurationService = module.getService<ConfigurationService>()
             val language = configurationService.findValue<String>("language")
-            reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
+            reloadTranslation(language, MCTennisLanguage::class.java, "en_us", "es_es")
             logger.log(Level.INFO, "Loaded language file $language.properties.")
 
             // Load Games
             val gameService = module.getService<GameService>()
-            gameService.reloadAll()
+            try {
+                gameService.reloadAll()
+            } catch (e: TennisGameException) {
+                plugin.logger.log(Level.WARNING, "Cannot start game of tennisArena ${e.arena.name}.", e)
+            }
 
             // Load Signs
             val placeHolderService = module.getService<PlaceHolderService>()

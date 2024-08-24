@@ -10,8 +10,12 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.Plugin
+import java.util.logging.Level
 
-class BedrockServiceImpl @Inject constructor(private val plugin: Plugin, private val physicDispatcher: PhysicObjectDispatcher) :
+class BedrockServiceImpl @Inject constructor(
+    private val plugin: Plugin,
+    private val physicDispatcher: PhysicObjectDispatcher
+) :
     BedrockService {
     /**
      * All bedrock players.
@@ -29,15 +33,20 @@ class BedrockServiceImpl @Inject constructor(private val plugin: Plugin, private
     private var geyserSpigotPlugin: DependencyGeyserSpigotServiceImpl? = null
 
     init {
+        Bukkit.getPluginManager().registerEvents(this, plugin)
+
+        try {
+            if (Bukkit.getPluginManager().getPlugin("Geyser-Spigot") != null) {
+                geyserSpigotPlugin = DependencyGeyserSpigotServiceImpl()
+            }
+        } catch (e: Exception) {
+            plugin.logger.log(Level.WARNING, "Cannot load Geyser-Spigot integration.")
+        }
+
         Bukkit.getOnlinePlayers().forEach { e ->
             plugin.launch(physicDispatcher) {
                 applyPlayerToGroup(e)
             }
-        }
-
-        Bukkit.getPluginManager().registerEvents(this, plugin)
-        if (Bukkit.getPluginManager().getPlugin("Geyser-Spigot") != null) {
-            geyserSpigotPlugin = DependencyGeyserSpigotServiceImpl()
         }
     }
 
@@ -73,8 +82,12 @@ class BedrockServiceImpl @Inject constructor(private val plugin: Plugin, private
      * Gets if the given player is playing on a bedrock client.
      */
     private fun isBedRockPlayer(player: Player): Boolean {
-        if (geyserSpigotPlugin != null) {
-            return geyserSpigotPlugin!!.isBedrockPlayer(player)
+        try {
+            if (geyserSpigotPlugin != null) {
+                return geyserSpigotPlugin!!.isBedrockPlayer(player)
+            }
+        } catch (e: Exception) {
+            // Sometimes the integration fails. Ignore in this case.
         }
 
         return false

@@ -6,7 +6,7 @@ import com.github.shynixn.mctennis.contract.PlaceHolderService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
-import com.github.shynixn.mctennis.impl.exception.TennisArenaException
+import com.github.shynixn.mctennis.impl.exception.TennisGameException
 import com.github.shynixn.mctennis.impl.TennisGameImpl
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandService
@@ -124,31 +124,31 @@ class GameServiceImpl @Inject constructor(
 
     private fun validateGame(arena: TennisArena) {
         if (arena.leaveSpawnpoint.isEmpty()) {
-            throw TennisArenaException(arena, "Set the leave spawnpoint values in arena ${arena.name}!")
+            throw TennisGameException(arena, "Set the leave spawnpoint values in arena ${arena.name}!")
         }
         if (arena.redTeamMeta.lobbySpawnpoint.isEmpty()) {
-            throw TennisArenaException(arena, "Set the lobby spawnpoint of team red in arena ${arena.name}!")
+            throw TennisGameException(arena, "Set the lobby spawnpoint of team red in arena ${arena.name}!")
         }
         if (arena.redTeamMeta.spawnpoints.firstOrNull() == null || arena.redTeamMeta.spawnpoints.first().isEmpty()) {
-            throw TennisArenaException(arena, "Set the first spawnpoint of team red in arena ${arena.name}!")
+            throw TennisGameException(arena, "Set the first spawnpoint of team red in arena ${arena.name}!")
         }
         if (arena.redTeamMeta.leftLowerCorner.isEmpty()) {
-            throw TennisArenaException(arena, "Set the corner 1 of team red in arena ${arena.name}!")
+            throw TennisGameException(arena, "Set the corner 1 of team red in arena ${arena.name}!")
         }
         if (arena.redTeamMeta.rightUpperCorner.isEmpty()) {
-            throw TennisArenaException(arena, "Set the corner 2 of team red in arena ${arena.name}!")
+            throw TennisGameException(arena, "Set the corner 2 of team red in arena ${arena.name}!")
         }
         if (arena.blueTeamMeta.lobbySpawnpoint.isEmpty()) {
-            throw TennisArenaException(arena, "Set the lobby spawnpoint of team blue in arena ${arena.name}!")
+            throw TennisGameException(arena, "Set the lobby spawnpoint of team blue in arena ${arena.name}!")
         }
         if (arena.blueTeamMeta.spawnpoints.firstOrNull() == null || arena.blueTeamMeta.spawnpoints.first().isEmpty()) {
-            throw TennisArenaException(arena, "Set the first spawnpoint of team blue in arena ${arena.name}!")
+            throw TennisGameException(arena, "Set the first spawnpoint of team blue in arena ${arena.name}!")
         }
         if (arena.blueTeamMeta.leftLowerCorner.isEmpty()) {
-            throw TennisArenaException(arena, "Set the corner 1 of team blue in arena ${arena.name}!")
+            throw TennisGameException(arena, "Set the corner 1 of team blue in arena ${arena.name}!")
         }
         if (arena.blueTeamMeta.rightUpperCorner.isEmpty()) {
-            throw TennisArenaException(arena, "Set the corner 2 of team blue in arena ${arena.name}!")
+            throw TennisGameException(arena, "Set the corner 2 of team blue in arena ${arena.name}!")
         }
 
         fixCorners(arena.redTeamMeta)

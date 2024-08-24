@@ -10,7 +10,7 @@ import com.github.shynixn.mctennis.enumeration.JoinResult
 import com.github.shynixn.mctennis.enumeration.LocationType
 import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
-import com.github.shynixn.mctennis.impl.exception.TennisArenaException
+import com.github.shynixn.mctennis.impl.exception.TennisGameException
 import com.github.shynixn.mcutils.common.*
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandBuilder
@@ -277,7 +277,7 @@ class MCTennisCommandExecutor @Inject constructor(
             arena.isEnabled = !arena.isEnabled
             gameService.reload(arena)
             sender.sendMessage(MCTennisLanguage.enabledArenaMessage.format(arena.isEnabled.toString()))
-        } catch (e: TennisArenaException) {
+        } catch (e: TennisGameException) {
             arena.isEnabled = !arena.isEnabled
             sender.sendMessage(fallBackPrefix + ChatColor.RED.toString() + "Failed to reload arena ${e.arena.name}.")
             sender.sendMessage(fallBackPrefix + e.message)
@@ -314,18 +314,47 @@ class MCTennisCommandExecutor @Inject constructor(
     private suspend fun listArena(sender: CommandSender) {
         val existingArenas = arenaRepository.getAll()
 
-        sender.sendMessage("---------MCTennis---------")
+        val headerBuilder = StringBuilder()
+        headerBuilder.append(org.bukkit.ChatColor.GRAY)
+        headerBuilder.append(org.bukkit.ChatColor.STRIKETHROUGH)
+        for (i in 0 until (30 - plugin.name.length) / 2) {
+            headerBuilder.append(" ")
+        }
+        headerBuilder.append(org.bukkit.ChatColor.RESET)
+        headerBuilder.append(org.bukkit.ChatColor.WHITE)
+        headerBuilder.append(org.bukkit.ChatColor.BOLD)
+        headerBuilder.append(plugin.name)
+        headerBuilder.append(org.bukkit.ChatColor.RESET)
+        headerBuilder.append(org.bukkit.ChatColor.GRAY)
+        headerBuilder.append(org.bukkit.ChatColor.STRIKETHROUGH)
+        for (i in 0 until (30 - plugin.name.length) / 2) {
+            headerBuilder.append(" ")
+        }
+        sender.sendMessage(headerBuilder.toString())
         for (arena in existingArenas) {
             if (arena.isEnabled) {
-                sender.sendMessage(ChatColor.GRAY.toString() + arena.name + " [${arena.displayName.translateChatColors()}" + ChatColor.GRAY + "] " + ChatColor.GREEN + "[enabled]")
+                sender.sendMessage(ChatColor.YELLOW.toString() + arena.name + " [${arena.displayName.translateChatColors()}" + ChatColor.GRAY + "] " + ChatColor.GREEN + "[enabled]")
             } else {
-                sender.sendMessage(ChatColor.GRAY.toString() + arena.name + " [${arena.displayName.translateChatColors()}" + ChatColor.GRAY + "] " + ChatColor.RED + "[disabled]")
+                sender.sendMessage(ChatColor.YELLOW.toString() + arena.name + " [${arena.displayName.translateChatColors()}" + ChatColor.GRAY + "] " + ChatColor.RED + "[disabled]")
 
             }
 
             sender.sendMessage()
         }
-        sender.sendMessage("----------┌1/1┐----------")
+
+        val footerBuilder = java.lang.StringBuilder()
+        footerBuilder.append(org.bukkit.ChatColor.GRAY)
+        footerBuilder.append(org.bukkit.ChatColor.STRIKETHROUGH)
+        footerBuilder.append("               ")
+        footerBuilder.append(org.bukkit.ChatColor.RESET)
+        footerBuilder.append(org.bukkit.ChatColor.WHITE)
+        footerBuilder.append(org.bukkit.ChatColor.BOLD)
+        footerBuilder.append("1/1")
+        footerBuilder.append(org.bukkit.ChatColor.RESET)
+        footerBuilder.append(org.bukkit.ChatColor.GRAY)
+        footerBuilder.append(org.bukkit.ChatColor.STRIKETHROUGH)
+        footerBuilder.append("               ")
+        sender.sendMessage(footerBuilder.toString())
     }
 
     private fun joinGame(player: Player, name: String, team: Team? = null) {
@@ -491,7 +520,7 @@ class MCTennisCommandExecutor @Inject constructor(
     private suspend fun reloadArena(sender: CommandSender, arena: TennisArena?) {
         try {
             arenaRepository.clearCache()
-        } catch (e: TennisArenaException) {
+        } catch (e: TennisGameException) {
             sender.sendMessage(fallBackPrefix + ChatColor.RED.toString() + "Failed to reload arenas.")
             sender.sendMessage(fallBackPrefix + e.message)
             return
@@ -500,13 +529,13 @@ class MCTennisCommandExecutor @Inject constructor(
         if (arena == null) {
             plugin.reloadConfig()
             val language = configurationService.findValue<String>("language")
-            plugin.reloadTranslation(language, MCTennisLanguage::class.java, "en_us")
+            plugin.reloadTranslation(language, MCTennisLanguage::class.java, "en_us", "es_es")
             plugin.logger.log(Level.INFO, "Loaded language file $language.properties.")
 
             try {
                 arenaRepository.clearCache()
                 gameService.reloadAll()
-            } catch (e: TennisArenaException) {
+            } catch (e: TennisGameException) {
                 sender.sendMessage(fallBackPrefix + ChatColor.RED.toString() + "Failed to reload arena ${e.arena.name}.")
                 sender.sendMessage(fallBackPrefix + e.message)
                 return
@@ -519,7 +548,7 @@ class MCTennisCommandExecutor @Inject constructor(
         try {
             arenaRepository.clearCache()
             gameService.reload(arena)
-        } catch (e: TennisArenaException) {
+        } catch (e: TennisGameException) {
             sender.sendMessage(fallBackPrefix + ChatColor.RED.toString() + "Failed to reload arena ${e.arena.name}.")
             sender.sendMessage(fallBackPrefix + e.message)
             return
