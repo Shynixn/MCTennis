@@ -24,7 +24,6 @@ class TennisBallImpl(
     private val bounceComponent: BounceComponent,
     private val playerComponent: PlayerComponent,
     private val entityComponent: ArmorstandEntityComponent?, // Armorstand is optional.
-    private val spinComponent: SpinComponent,
     private val slimeEntityComponent: SlimeEntityComponent,
     private val settings: TennisBallSettings,
     private val plugin: Plugin,
@@ -103,7 +102,6 @@ class TennisBallImpl(
             kickVector.y += settings.verticalSpeedAbsolute
             setVelocity(kickVector.toVector())
             delay(250)
-            spinComponent.setSpin(prevDirection, player.eyeLocation.direction.toVector3d())
         }
     }
 
@@ -135,7 +133,6 @@ class TennisBallImpl(
         playerComponent.tickMinecraft()
         entityComponent?.tickMinecraft()
         slimeEntityComponent.tickMinecraft()
-        spinComponent.tickMinecraft()
     }
 
     /**
@@ -147,7 +144,6 @@ class TennisBallImpl(
         playerComponent.tickPhysic()
         entityComponent?.tickPhysic()
         slimeEntityComponent.tickPhysic()
-        spinComponent.tickPhysic()
     }
 
     /**
@@ -159,7 +155,6 @@ class TennisBallImpl(
         playerComponent.close()
         entityComponent?.close()
         slimeEntityComponent.close()
-        spinComponent.close()
         isDead = true
         game = null
     }

@@ -46,16 +46,6 @@ class TennisBallFactoryImpl @Inject constructor(
         val playerComponent =
             PlayerComponent(mathPhysicComponent, settings.renderVisibilityUpdateMs, settings.renderDistanceBlocks)
 
-        val spinComponent = SpinComponent(
-            mathPhysicComponent,
-            settings.maximumSpinningVelocity,
-            settings.spinBaseMultiplier,
-            settings.spinMaximum,
-            settings.spinMinimum,
-            settings.spinDefault,
-            settings.spinVertical
-        )
-
         val armorStandEntityId = packetService.getNextEntityId()
         val slimeEntityId = packetService.getNextEntityId()
 
@@ -149,7 +139,6 @@ class TennisBallFactoryImpl @Inject constructor(
             bounceComponent,
             playerComponent,
             armorstandEntityComponent,
-            spinComponent,
             slimeEntityComponent,
             settings,
             plugin,
