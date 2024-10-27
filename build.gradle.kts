@@ -3,7 +3,7 @@ import java.util.*
 import java.io.*
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version ("1.6.10")
+    id("org.jetbrains.kotlin.jvm") version ("1.9.25")
     id("com.github.johnrengelman.shadow") version ("7.0.0")
 }
 
@@ -25,12 +25,12 @@ tasks.register("printVersion") {
 dependencies {
     // Compile Only
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.9.2")
+    compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("org.geysermc.geyser:api:2.2.0-SNAPSHOT")
 
     // Plugin.yml Shade dependencies
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.17.0")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.17.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.20.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.20.0")
     implementation("com.google.inject:guice:5.0.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.2.3")
