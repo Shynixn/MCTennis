@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.shynixn"
-version = "1.8.0"
+version = "1.9.0"
 
 repositories {
     mavenCentral()
@@ -38,8 +38,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:2024.23")
-    implementation("com.github.shynixn.mcutils:packet:2024.33")
+    implementation("com.github.shynixn.mcutils:common:2024.25")
+    implementation("com.github.shynixn.mcutils:packet:2024.42")
     implementation("com.github.shynixn.mcutils:sign:2024.3")
     implementation("com.github.shynixn.mcutils:guice:2024.2")
 
@@ -99,6 +99,7 @@ tasks.register("relocatePluginJar", com.github.jengelman.gradle.plugins.shadow.t
     dependsOn("shadowJar")
     from(zipTree(File("./build/libs/" + (tasks.getByName("shadowJar") as Jar).archiveName)))
     archiveName = "${baseName}-${version}-relocate.${extension}"
+    relocate("com.fasterxml", "com.github.shynixn.mctennis.lib.com.fasterxml")
     relocate("com.github.shynixn.mcutils", "com.github.shynixn.mctennis.lib.com.github.shynixn.mcutils")
 }
 
