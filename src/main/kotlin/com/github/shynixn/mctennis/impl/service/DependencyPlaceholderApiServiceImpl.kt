@@ -58,7 +58,7 @@ class DependencyPlaceholderApiServiceImpl @Inject constructor(
      * @param s      customText
      * @return result
      */
-    override fun onPlaceholderRequest(player: Player?, params: String?): String? {
+    override fun onPlaceholderRequest(player: Player?, params: String): String? {
         if (params == null) {
             return null
         }
