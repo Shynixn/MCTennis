@@ -14,6 +14,8 @@ timeToStart: 5
 gameTime: 300
 # Amount of Tennis sets to play.
 setsToWin: 3
+# If set to true, then the player keeps his inventory when joining a game.
+keepInventory: false
 # Spawnpoint of players who leave the game.
 leaveSpawnpoint:
   world: "world"
@@ -53,16 +55,16 @@ redTeamMeta:
   name: null
   # Inventory the player receives when joining this team.
   # Should be set in game using the inventory sub command.
-  inventoryContents: []
+  inventoryContents: [ ]
   # Inventory the player receives when joining this team.
   # Should be set in game using the armor sub command.
-  armorInventoryContents: []
+  armorInventoryContents: [ ]
   # Commands which are executed on the team who wins the match.
-  winCommands: []
+  winCommands: [ ]
   # Commands which are executed on the team who looses the match.
-  looseCommands: []
+  looseCommands: [ ]
   # Commands which are executed if the game ends in a draw.
-  drawCommands: []
+  drawCommands: [ ]
   # Commands which are executed every MCTennis game tick (1 tick per second, not the minecraft tick which is 20 ticks per second)
   # Types are:
   #  SERVER (executes a single command with server level permission)
@@ -125,16 +127,16 @@ blueTeamMeta:
   name: null
   # Inventory the player receives when joining this team.
   # Should be set in game using the inventory sub command.
-  inventoryContents: []
+  inventoryContents: [ ]
   # Inventory the player receives when joining this team.
   # Should be set in game using the armor sub command.
-  armorInventoryContents: []
+  armorInventoryContents: [ ]
   # Commands which are executed on the team who wins the match.
-  winCommands: []
+  winCommands: [ ]
   # Commands which are executed on the team who looses the match.
-  looseCommands: []
+  looseCommands: [ ]
   # Commands which are executed if the game ends in a draw.
-  drawCommands: []
+  drawCommands: [ ]
   # Commands which are executed every MCTennis game tick (1 tick per second, not the minecraft tick which is 20 ticks per second)
   # Types are:
   #  SERVER (executes a single command with server level permission)

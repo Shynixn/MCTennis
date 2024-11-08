@@ -1,7 +1,7 @@
 package com.github.shynixn.mctennis.impl.listener
 
 import com.github.shynixn.mccoroutine.bukkit.launch
-import com.github.shynixn.mctennis.MCTennisLanguage
+import com.github.shynixn.mctennis.contract.Language
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TennisArena
@@ -23,7 +23,8 @@ import org.bukkit.plugin.Plugin
 
 class TennisListener @Inject constructor(
     private val packetService: PacketService,
-    private val plugin: Plugin
+    private val plugin: Plugin,
+    private val language : Language
 ) : Listener {
     /**
      * Handles ground bouncing.
@@ -59,7 +60,7 @@ class TennisListener @Inject constructor(
             printMessageAtScorePosition(
                 game,
                 event.tennisBall,
-                MCTennisLanguage.bounceOutHologram
+                language.bounceOutHologram.text
             )
 
             if (game.bounceCounter == 1) {
@@ -78,7 +79,7 @@ class TennisListener @Inject constructor(
             printMessageAtScorePosition(
                 game,
                 event.tennisBall,
-                MCTennisLanguage.bounceSecondHologram
+                language.bounceSecondHologram.text
             )
             game.scorePoint(player, opponentTeam)
             return
@@ -92,7 +93,7 @@ class TennisListener @Inject constructor(
         printMessageAtScorePosition(
             game,
             event.tennisBall,
-            MCTennisLanguage.bounceSecondHologram
+            language.bounceSecondHologram.text
         )
         game.scorePoint(player, team)
     }

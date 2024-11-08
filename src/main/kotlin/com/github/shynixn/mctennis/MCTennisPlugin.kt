@@ -1,10 +1,7 @@
 package com.github.shynixn.mctennis
 
 import com.github.shynixn.mccoroutine.bukkit.launch
-import com.github.shynixn.mctennis.contract.BedrockService
-import com.github.shynixn.mctennis.contract.GameService
-import com.github.shynixn.mctennis.contract.PlaceHolderService
-import com.github.shynixn.mctennis.contract.TennisBallFactory
+import com.github.shynixn.mctennis.contract.*
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
@@ -12,10 +9,9 @@ import com.github.shynixn.mctennis.impl.exception.TennisGameException
 import com.github.shynixn.mctennis.impl.listener.GameListener
 import com.github.shynixn.mctennis.impl.listener.PacketListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
-import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.Version
+import com.github.shynixn.mcutils.common.language.reloadTranslation
 import com.github.shynixn.mcutils.common.physic.PhysicObjectService
-import com.github.shynixn.mcutils.common.reloadTranslation
 import com.github.shynixn.mcutils.common.repository.Repository
 import com.github.shynixn.mcutils.packet.api.PacketInType
 import com.github.shynixn.mcutils.packet.api.PacketService
@@ -27,6 +23,10 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Level
 
 class MCTennisPlugin : JavaPlugin() {
+    companion object{
+        var language : Language? = null
+    }
+
     private val prefix: String = org.bukkit.ChatColor.BLUE.toString() + "[MCTennis] " + org.bukkit.ChatColor.WHITE
     private var isLoaded = false
     private lateinit var module: MCTennisDependencyInjectionModule
@@ -86,6 +86,12 @@ class MCTennisPlugin : JavaPlugin() {
         this.module = MCTennisDependencyInjectionModule(this).build()
         this.reloadConfig()
 
+        // Load Language
+        val mcTennisLanguage = module.getService<Language>()
+        MCTennisPlugin.language = mcTennisLanguage
+        reloadTranslation(mcTennisLanguage as MCTennisLanguageImpl, MCTennisLanguageImpl::class.java)
+        logger.log(Level.INFO, "Loaded language file.")
+
         // Register Packet
         module.getService<PacketService>().registerPacketListening(PacketInType.USEENTITY)
 
@@ -116,11 +122,6 @@ class MCTennisPlugin : JavaPlugin() {
         val plugin = this
         plugin.launch {
             // Load Language
-            val configurationService = module.getService<ConfigurationService>()
-            val language = configurationService.findValue<String>("language")
-            reloadTranslation(language, MCTennisLanguage::class.java, "en_us", "es_es")
-            logger.log(Level.INFO, "Loaded language file $language.properties.")
-
             // Load Games
             val gameService = module.getService<GameService>()
             try {

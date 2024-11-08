@@ -51,6 +51,11 @@ class TennisArena : Element {
     var setsToWin: Int = 3
 
     /**
+     * If set to true, the player keeps their inventory on join.
+     */
+    var keepInventory: Boolean = false
+
+    /**
      * Leave spawnpoint.
      */
     @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty", "direction"))

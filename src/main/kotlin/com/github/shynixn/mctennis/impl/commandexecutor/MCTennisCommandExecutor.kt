@@ -2,8 +2,10 @@ package com.github.shynixn.mctennis.impl.commandexecutor
 
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.MCTennisDependencyInjectionModule
-import com.github.shynixn.mctennis.MCTennisLanguage
+import com.github.shynixn.mctennis.MCTennisLanguageImpl
 import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mctennis.contract.Language
+import com.github.shynixn.mctennis.contract.PlaceHolderService
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.JoinResult
@@ -17,6 +19,7 @@ import com.github.shynixn.mcutils.common.command.CommandBuilder
 import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.mcutils.common.command.CommandType
 import com.github.shynixn.mcutils.common.command.Validator
+import com.github.shynixn.mcutils.common.language.reloadTranslation
 import com.github.shynixn.mcutils.common.repository.CacheRepository
 import com.github.shynixn.mcutils.sign.SignService
 import com.google.inject.Inject
@@ -31,8 +34,9 @@ class MCTennisCommandExecutor @Inject constructor(
     private val arenaRepository: CacheRepository<TennisArena>,
     private val gameService: GameService,
     private val plugin: Plugin,
-    private val configurationService: ConfigurationService,
     private val signService: SignService,
+    private val language: Language,
+    private val placeHolderService: PlaceHolderService,
     chatMessageService: ChatMessageService
 ) {
     private val fallBackPrefix: String =
@@ -64,7 +68,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         override suspend fun message(sender: CommandSender, prevArgs: List<Any>, openArgs: List<String>): String {
-            return MCTennisLanguage.maxLength20Characters
+            return language.maxLength20Characters.text
         }
     }
     private val gameMustNotExistValidator = object : Validator<String> {
@@ -79,7 +83,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         override suspend fun message(sender: CommandSender, prevArgs: List<Any>, openArgs: List<String>): String {
-            return MCTennisLanguage.gameAlreadyExistsMessage.format(openArgs[0])
+            return language.gameAlreadyExistsMessage.text.format(openArgs[0])
         }
     }
     private val gameMustExistValidator = object : Validator<TennisArena> {
@@ -91,7 +95,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         override suspend fun message(sender: CommandSender, prevArgs: List<Any>, openArgs: List<String>): String {
-            return MCTennisLanguage.gameDoesNotExistMessage.format(openArgs[0])
+            return language.gameDoesNotExistMessage.text.format(openArgs[0])
         }
     }
     private val teamValidator = object : Validator<Team> {
@@ -106,7 +110,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         override suspend fun message(sender: CommandSender, prevArgs: List<Any>, openArgs: List<String>): String {
-            return MCTennisLanguage.teamDoesNotExistMessage.format(openArgs[0])
+            return language.teamDoesNotExistMessage.text.format(openArgs[0])
         }
     }
 
@@ -129,7 +133,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         override suspend fun message(sender: CommandSender, prevArgs: List<Any>, openArgs: List<String>): String {
-            return MCTennisLanguage.teamDoesNotExistMessage.format(openArgs[0])
+            return language.teamDoesNotExistMessage.text.format(openArgs[0])
         }
     }
 
@@ -141,12 +145,12 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         override suspend fun message(sender: CommandSender, prevArgs: List<Any>, openArgs: List<String>): String {
-            return MCTennisLanguage.locationTypeDoesNotExistMessage
+            return language.locationTypeDoesNotExistMessage.text
         }
     }
     private val signTypeValidator = object : Validator<String> {
         override suspend fun message(sender: CommandSender, prevArgs: List<Any>, openArgs: List<String>): String {
-            return MCTennisLanguage.signTypeDoesNotExist
+            return language.signTypeDoesNotExist.text
         }
 
         override suspend fun validate(
@@ -161,11 +165,11 @@ class MCTennisCommandExecutor @Inject constructor(
 
     init {
         val mcCart = CommandBuilder(plugin, coroutineExecutor, "mctennis", chatMessageService) {
-            usage(MCTennisLanguage.commandUsage.translateChatColors())
-            description(MCTennisLanguage.commandDescription)
+            usage(language.commandUsage.text.translateChatColors())
+            description(language.commandDescription.text)
             aliases(plugin.config.getStringList("commands.mctennis.aliases"))
             permission(Permission.COMMAND)
-            permissionMessage(MCTennisLanguage.noPermissionMessage.translateChatColors())
+            permissionMessage(language.noPermissionMessage.text.translateChatColors())
             subCommand("create") {
                 permission(Permission.EDIT_GAME)
                 builder().argument("name").validator(maxLengthValidator).validator(maxLengthValidator)
@@ -190,25 +194,25 @@ class MCTennisCommandExecutor @Inject constructor(
             subCommand("join") {
                 noPermission()
                 builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
-                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { sender, arena ->
+                    .executePlayer({ language.commandSenderHasToBePlayer.text }) { sender, arena ->
                         joinGame(
                             sender, arena.name
                         )
                     }.argument("team").validator(teamValidator).tabs { listOf("red", "blue") }
-                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { sender, arena, team ->
+                    .executePlayer({ language.commandSenderHasToBePlayer.text }) { sender, arena, team ->
                         joinGame(sender, arena.name, team)
                     }
             }
             subCommand("leave") {
                 noPermission()
-                builder().executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { sender -> leaveGame(sender) }
+                builder().executePlayer({ language.commandSenderHasToBePlayer.text }) { sender -> leaveGame(sender) }
             }
             helpCommand()
             subCommand("location") {
                 permission(Permission.EDIT_GAME)
                 builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("type").validator(locationTypeValidator).tabs { LocationType.values().map { e -> e.id } }
-                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { player, arena, locationType ->
+                    .executePlayer({ language.commandSenderHasToBePlayer.text }) { player, arena, locationType ->
                         setLocation(player, arena, locationType)
                     }
             }
@@ -216,7 +220,7 @@ class MCTennisCommandExecutor @Inject constructor(
                 permission(Permission.EDIT_GAME)
                 builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("team").validator(teamMetaValidator).tabs { listOf("red", "blue") }
-                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { player, arena, meta ->
+                    .executePlayer({ language.commandSenderHasToBePlayer.text }) { player, arena, meta ->
                         setInventory(player, arena, meta)
                     }
             }
@@ -224,7 +228,7 @@ class MCTennisCommandExecutor @Inject constructor(
                 permission(Permission.EDIT_GAME)
                 builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("team").validator(teamMetaValidator).tabs { listOf("red", "blue") }
-                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { player, arena, meta ->
+                    .executePlayer({ language.commandSenderHasToBePlayer.text }) { player, arena, meta ->
                         setArmor(player, arena, meta)
                     }
             }
@@ -232,9 +236,19 @@ class MCTennisCommandExecutor @Inject constructor(
                 permission(Permission.EDIT_GAME)
                 builder().argument("name").validator(gameMustExistValidator).tabs(arenaTabs)
                     .argument("type").validator(signTypeValidator).tabs { listOf("join", "leave") }
-                    .executePlayer({ MCTennisLanguage.commandSenderHasToBePlayer }) { player, arena, signType ->
+                    .executePlayer({ language.commandSenderHasToBePlayer.text }) { player, arena, signType ->
                         setSign(player, arena, signType)
                     }
+            }
+            subCommand("placeholder") {
+                permission(Permission.EDIT_GAME)
+                builder().argument("placeholder").tabs { listOf("<>") }.execute { sender, placeHolder ->
+                    val evaluatedValue = placeHolderService.replacePlaceHolders(placeHolder)
+                    sender.sendMessage(language.commandPlaceHolderMessage.text.format(evaluatedValue))
+                }.executePlayer({ language.commandSenderHasToBePlayer.text }) { player, placeHolder ->
+                    val evaluatedValue = placeHolderService.replacePlaceHolders(placeHolder, player)
+                    player.sendMessage(language.commandPlaceHolderMessage.text.format(evaluatedValue))
+                }
             }
             subCommand("reload") {
                 permission(Permission.EDIT_GAME)
@@ -254,7 +268,7 @@ class MCTennisCommandExecutor @Inject constructor(
 
     private suspend fun createArena(sender: CommandSender, name: String, displayName: String) {
         if (arenaRepository.getAll().size > 0 && !MCTennisDependencyInjectionModule.areLegacyVersionsIncluded) {
-            sender.sendMessage(MCTennisLanguage.freeVersionMessage)
+            language.sendMessage(language.freeVersionMessage, sender)
             return
         }
 
@@ -262,21 +276,21 @@ class MCTennisCommandExecutor @Inject constructor(
         arena.name = name
         arena.displayName = displayName
         arenaRepository.save(arena)
-        sender.sendMessage(MCTennisLanguage.gameCreatedMessage.format(name))
+        language.sendMessage(language.gameCreatedMessage, sender, name)
     }
 
     private suspend fun deleteArena(sender: CommandSender, arena: TennisArena) {
         val runningGame = gameService.getAll().firstOrNull { e -> e.arena.name.equals(arena.name, true) }
         runningGame?.dispose(false)
         arenaRepository.delete(arena)
-        sender.sendMessage(MCTennisLanguage.deletedGameMessage.format(arena.name))
+        sender.sendMessage(language.deletedGameMessage.text.format(arena.name))
     }
 
     private suspend fun toggleGame(sender: CommandSender, arena: TennisArena) {
         try {
             arena.isEnabled = !arena.isEnabled
             gameService.reload(arena)
-            sender.sendMessage(MCTennisLanguage.enabledArenaMessage.format(arena.isEnabled.toString()))
+            sender.sendMessage(language.enabledArenaMessage.text.format(arena.isEnabled.toString()))
         } catch (e: TennisGameException) {
             arena.isEnabled = !arena.isEnabled
             sender.sendMessage(fallBackPrefix + ChatColor.RED.toString() + "Failed to reload arena ${e.arena.name}.")
@@ -284,7 +298,7 @@ class MCTennisCommandExecutor @Inject constructor(
             return
         }
         arenaRepository.save(arena)
-        sender.sendMessage(MCTennisLanguage.reloadedGameMessage.format(arena.name))
+        sender.sendMessage(language.reloadedGameMessage.text.format(arena.name))
     }
 
     private suspend fun setInventory(player: Player, arena: TennisArena, teamMetadata: TeamMetadata) {
@@ -294,7 +308,7 @@ class MCTennisCommandExecutor @Inject constructor(
             yamlConfiguration.saveToString()
         }.toTypedArray()
         arenaRepository.save(arena)
-        player.sendMessage(MCTennisLanguage.updatedInventoryMessage)
+        player.sendMessage(language.updatedInventoryMessage.text)
     }
 
     private suspend fun setArmor(player: Player, arena: TennisArena, teamMeta: TeamMetadata) {
@@ -304,7 +318,7 @@ class MCTennisCommandExecutor @Inject constructor(
             yamlConfiguration.saveToString()
         }.toTypedArray()
         arenaRepository.save(arena)
-        player.sendMessage(MCTennisLanguage.updatedArmorMessage)
+        player.sendMessage(language.updatedArmorMessage.text)
     }
 
     private fun CommandBuilder.permission(permission: Permission) {
@@ -373,15 +387,15 @@ class MCTennisCommandExecutor @Inject constructor(
 
         if (game == null) {
             if (MCTennisDependencyInjectionModule.areLegacyVersionsIncluded) {
-                player.sendMessage(MCTennisLanguage.gameDoesNotExistMessage.format(name))
+                player.sendMessage(language.gameDoesNotExistMessage.text.format(name))
             } else {
-                player.sendMessage(MCTennisLanguage.freeVersionMessage)
+                player.sendMessage(language.freeVersionMessage.text)
             }
             return
         }
 
         if (!player.hasPermission("mctennis.join.${game.arena.name}") && !player.hasPermission("mctennis.join.*")) {
-            player.sendMessage(MCTennisLanguage.noPermissionForGameMessage.format(game.arena.name))
+            player.sendMessage(language.noPermissionForGameMessage.text.format(game.arena.name))
             return
         }
 
@@ -396,14 +410,14 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (joinResult == JoinResult.GAME_FULL || joinResult == JoinResult.GAME_ALREADY_RUNNING) {
-            player.sendMessage(MCTennisLanguage.gameIsFullMessage)
+            player.sendMessage(language.gameIsFullMessage.text)
             return
         }
 
         if (joinResult == JoinResult.SUCCESS_BLUE) {
-            player.sendMessage(MCTennisLanguage.joinTeamBlueMessage)
+            player.sendMessage(language.joinTeamBlueMessage.text)
         } else if (joinResult == JoinResult.SUCCESS_RED) {
-            player.sendMessage(MCTennisLanguage.joinTeamRedMessage)
+            player.sendMessage(language.joinTeamRedMessage.text)
         }
     }
 
@@ -418,7 +432,7 @@ class MCTennisCommandExecutor @Inject constructor(
         }
 
         if (leftGame) {
-            player.sendMessage(MCTennisLanguage.leftGameMessage)
+            player.sendMessage(language.leftGameMessage.text)
         }
     }
 
@@ -450,17 +464,17 @@ class MCTennisCommandExecutor @Inject constructor(
         } else if (locationType == LocationType.CORNER_BLUE_2) {
             arena.blueTeamMeta.rightUpperCorner = player.location.toVector3d()
         } else {
-            player.sendMessage(MCTennisLanguage.locationTypeDoesNotExistMessage.format(player.location))
+            player.sendMessage(language.locationTypeDoesNotExistMessage.text.format(player.location))
             return
         }
 
         arenaRepository.save(arena)
-        player.sendMessage(MCTennisLanguage.spawnPointSetMessage.format(player.location))
+        player.sendMessage(language.spawnPointSetMessage.text.format(player.location))
     }
 
     private suspend fun setSign(sender: Player, arena: TennisArena, signType: String) {
         if (signType.equals("join", true)) {
-            sender.sendMessage(MCTennisLanguage.rightClickOnSignMessage)
+            sender.sendMessage(language.rightClickOnSignMessage.text)
             signService.addSignByRightClick(sender) { sign ->
                 sign.let {
                     it.line1 = "%mctennis_lang_joinSignLine1%"
@@ -482,11 +496,11 @@ class MCTennisCommandExecutor @Inject constructor(
                 plugin.launch {
                     arenaRepository.save(arena)
                     gameService.reload(arena)
-                    sender.sendMessage(MCTennisLanguage.addedSignMessage)
+                    sender.sendMessage(language.addedSignMessage.text)
                 }
             }
         } else if (signType.equals("leave", true)) {
-            sender.sendMessage(MCTennisLanguage.rightClickOnSignMessage)
+            sender.sendMessage(language.rightClickOnSignMessage.text)
             signService.addSignByRightClick(sender) { sign ->
                 sign.let {
                     it.line1 = "%mctennis_lang_leaveSignLine1%"
@@ -508,14 +522,13 @@ class MCTennisCommandExecutor @Inject constructor(
                 plugin.launch {
                     arenaRepository.save(arena)
                     gameService.reload(arena)
-                    sender.sendMessage(MCTennisLanguage.addedSignMessage)
+                    sender.sendMessage(language.addedSignMessage.text)
                 }
             }
         } else {
-            sender.sendMessage(MCTennisLanguage.signTypeDoesNotExist)
+            sender.sendMessage(language.signTypeDoesNotExist.text)
         }
     }
-
 
     private suspend fun reloadArena(sender: CommandSender, arena: TennisArena?) {
         try {
@@ -528,9 +541,8 @@ class MCTennisCommandExecutor @Inject constructor(
 
         if (arena == null) {
             plugin.reloadConfig()
-            val language = configurationService.findValue<String>("language")
-            plugin.reloadTranslation(language, MCTennisLanguage::class.java, "en_us", "es_es")
-            plugin.logger.log(Level.INFO, "Loaded language file $language.properties.")
+            plugin.reloadTranslation(language as MCTennisLanguageImpl, MCTennisLanguageImpl::class.java)
+            plugin.logger.log(Level.INFO, "Loaded language file.")
 
             try {
                 arenaRepository.clearCache()
@@ -541,7 +553,7 @@ class MCTennisCommandExecutor @Inject constructor(
                 return
             }
 
-            sender.sendMessage(MCTennisLanguage.reloadedAllGamesMessage)
+            sender.sendMessage(language.reloadedAllGamesMessage.text)
             return
         }
 
@@ -553,7 +565,7 @@ class MCTennisCommandExecutor @Inject constructor(
             sender.sendMessage(fallBackPrefix + e.message)
             return
         }
-        sender.sendMessage(MCTennisLanguage.reloadedGameMessage.format(arena.name))
+        sender.sendMessage(language.reloadedGameMessage.text.format(arena.name))
         return
     }
 }

@@ -1,11 +1,13 @@
 package com.github.shynixn.mctennis.impl.service
 
-import com.github.shynixn.mctennis.MCTennisLanguage
+import com.github.shynixn.mctennis.MCTennisLanguageImpl
+import com.github.shynixn.mctennis.MCTennisPlugin
 import com.github.shynixn.mctennis.contract.GameService
 import com.github.shynixn.mctennis.contract.PlaceHolderService
 import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.enumeration.GameState
 import com.github.shynixn.mctennis.enumeration.PlaceHolder
+import com.github.shynixn.mcutils.common.language.LanguageItem
 import com.github.shynixn.mcutils.common.translateChatColors
 import com.google.inject.Inject
 import org.bukkit.entity.Player
@@ -22,12 +24,14 @@ class PlaceHolderServiceImpl @Inject constructor(private val gameService: GameSe
             placeHolders[placeHolder.fullPlaceHolder] = placeHolder
         }
 
-        for (field in MCTennisLanguage::class.java.declaredFields) {
+        for (field in MCTennisLanguageImpl::class.java.declaredFields) {
             field.isAccessible = true
-            langPlaceHolderFunctions["%mctennis_lang_${field.name}%"] = { field.get(null) as String }
+            langPlaceHolderFunctions["%mctennis_lang_${field.name}%"] = { (field.get(null) as LanguageItem).text }
         }
 
         // Player
+        playerPlaceHolderFunctions[PlaceHolder.PLAYER_NAME] =
+            { p -> p.name }
         playerPlaceHolderFunctions[PlaceHolder.PLAYER_ISINGAME] =
             { p -> (gameService.getByPlayer(p) != null).toString() }
 
@@ -53,11 +57,11 @@ class PlaceHolderServiceImpl @Inject constructor(private val gameService: GameSe
         }
         gamePlayerHolderFunctions[PlaceHolder.GAME_STATE_DISPLAYNAME] = { g ->
             if (!g.arena.isEnabled) {
-                MCTennisLanguage.gameStateDisabled
+                MCTennisPlugin.language!!.gameStateDisabled.text
             } else if (g.gameState == GameState.RUNNING_PLAYING || g.gameState == GameState.RUNNING_SERVING || g.gameState == GameState.ENDING) {
-                MCTennisLanguage.gameStateRunning
+                MCTennisPlugin.language!!.gameStateRunning.text
             } else {
-                MCTennisLanguage.gameStateJoinAble
+                MCTennisPlugin.language!!.gameStateJoinAble.text
             }
         }
         gamePlayerHolderFunctions[PlaceHolder.GAME_PLAYER_AMOUNT] = { g ->
@@ -124,7 +128,6 @@ class PlaceHolderServiceImpl @Inject constructor(private val gameService: GameSe
         gameAndPlayerHolderFunctions[PlaceHolder.GAME_ISTEAMREDPLAYER] =
             { g, p -> g.teamRedPlayers.contains(p).toString() }
     }
-
 
     /**
      * Replaces the placeholders.
