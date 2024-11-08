@@ -2,6 +2,7 @@ package com.github.shynixn.mctennis.impl.service
 
 import com.github.shynixn.mctennis.MCTennisDependencyInjectionModule
 import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mctennis.contract.Language
 import com.github.shynixn.mctennis.contract.PlaceHolderService
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TeamMetadata
@@ -26,7 +27,8 @@ class GameServiceImpl @Inject constructor(
     private val commandService: CommandService,
     private val signService: SignService,
     private val chatMessageService: ChatMessageService,
-    private val placeHolderService: PlaceHolderService
+    private val placeHolderService: PlaceHolderService,
+    private val language: Language
 ) : GameService {
     private val games = ArrayList<TennisGameImpl>()
 
@@ -69,7 +71,7 @@ class GameServiceImpl @Inject constructor(
                 return
             }
 
-            val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory, chatMessageService, plugin, commandService, placeHolderService)
+            val tennisGameImpl = TennisGameImpl(arena, tennisBallFactory, chatMessageService, plugin, commandService, placeHolderService, language)
             games.add(tennisGameImpl)
             plugin.logger.log(Level.INFO, "Game '" + arena.name + "' is ready.")
         } else {

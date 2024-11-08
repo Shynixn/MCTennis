@@ -1,0 +1,202 @@
+# All language key identifiers.
+gameStartingMessage:
+  # Available types: "CHAT", "TITLE", "ACTIONBAR", "HIDDEN"
+  type: "CHAT"
+  # The primary text to be sent.
+  text: "[&9MCTennis&f] Game is starting in %1$1d seconds."
+  # Only available for type "TITLE". Adds a subTitle.
+  subTitle: ""
+  # Only available for type: "TITLE". Adds a fade in effect.
+  fadeInTicks: 20
+  # Only available for type: "TITLE". Adds a stay effect.
+  stayTicks: 60
+  # Only available for type: "TITLE". Adds a fade out effect.
+  fadeOutTicks: 20
+gameStartCancelledMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Game start has been cancelled."
+gameDoesNotExistMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Game %1$1s does not exist."
+noPermissionForGameMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] You do not have permission to join game %1$1s."
+noPermissionMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] You do not have permission."
+locationTypeDoesNotExistMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] This location type is not known. For more locations, open the arena.yml."
+spawnPointSetMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Location was set on %1$1s."
+gameAlreadyExistsMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Game %1$1s already exists."
+enabledArenaMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Game enable state was set to %1$1s."
+gameIsFullMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Game is already full."
+gameCreatedMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Created game %1$1s."
+reloadedAllGamesMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Reloaded all games."
+reloadedGameMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Reloaded game %1$1s."
+joinTeamRedMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Successfully joined team red."
+joinTeamBlueMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Successfully joined team blue."
+leftGameMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Left the game."
+deletedGameMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Deleted game %1$1s."
+notEnoughPlayersMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Not enough players! Game start was cancelled."
+teamDoesNotExistMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Team %1$1s does not exist."
+updatedInventoryMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Updated inventory of game."
+updatedArmorMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Updated armor of game."
+secondsRemaining:
+  type: "CHAT"
+  text: "[&9MCTennis&f] %1$1s second(s) remaining."
+gameCancelledMessage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Game has been cancelled."
+scoreRed:
+  type: "TITLE"
+  text: "&c&l%mctennis_game_score%"
+  subTitle: "%1$1s scored for &cTeam Red"
+  fadeInTicks: 10
+  stayTicks: 60
+  fadeOutTicks: 10
+scoreBlue:
+  type: "TITLE"
+  text: "&9&l%mctennis_game_score%"
+  subTitle: "%1$1s scored for &9Team Blue."
+  fadeInTicks: 10
+  stayTicks: 60
+  fadeOutTicks: 10
+winRed:
+  type: "TITLE"
+  text: "&c&lTeam Red"
+  subTitle: "&cTeam Red &ahas won the match"
+  fadeInTicks: 10
+  stayTicks: 60
+  fadeOutTicks: 10
+winSetRed:
+  type: "TITLE"
+  text: "&cTeam Red"
+  subTitle: "&cTeam Red &ahas won this set"
+  fadeInTicks: 10
+  stayTicks: 60
+  fadeOutTicks: 10
+winBlue:
+  type: "TITLE"
+  text: "&9Team Blue"
+  subTitle: "&9Team Blue &ahas won the match"
+  fadeInTicks: 10
+  stayTicks: 60
+  fadeOutTicks: 10
+winSetBlue:
+  type: "TITLE"
+  text: "&9Team Blue"
+  subTitle: "&9Team Blue &ahas won this set"
+  fadeInTicks: 10
+  stayTicks: 60
+  fadeOutTicks: 10
+winDraw:
+  type: "TITLE"
+  text: "&fDraw"
+  subTitle: "&aThe game has ended in a draw"
+  fadeInTicks: 10
+  stayTicks: 60
+  fadeOutTicks: 10
+readyMessage:
+  type: "TITLE"
+  text: "&6&lReady?"
+  subTitle: ""
+  fadeInTicks: 10
+  stayTicks: 60
+  fadeOutTicks: 10
+bounceOutHologram:
+  type: "CHAT"
+  text: "&lOut"
+bounceSecondHologram:
+  type: "CHAT"
+  text: "&l2nd Bounce"
+joinSignLine1:
+  type: "CHAT"
+  text: "&f[&r&lMCTennis&r&f]"
+joinSignLine2:
+  type: "CHAT"
+  text: "%mctennis_game_stateDisplayName%"
+joinSignLine3:
+  type: "CHAT"
+  text: "%mctennis_game_players%/%mctennis_game_maxPlayers%"
+joinSignLine4:
+  type: "CHAT"
+  text: ""
+leaveSignLine1:
+  type: "CHAT"
+  text: "&f[&r&lMCTennis&r&f]"
+leaveSignLine2:
+  type: "CHAT"
+  text: "&f&lLeave"
+leaveSignLine3:
+  type: "CHAT"
+  text: "%mctennis_game_players%/%mctennis_game_maxPlayers%"
+leaveSignLine4:
+  type: "CHAT"
+  text: ""
+gameStateJoinAble:
+  type: "CHAT"
+  text: "&aJoin"
+gameStateDisabled:
+  type: "CHAT"
+  text: "&4Disabled"
+gameStateRunning:
+  type: "CHAT"
+  text: "&1Running"
+rightClickOnSignMessage:
+  type: "CHAT"
+  text: "RightClick on a sign to convert it into a game sign."
+signTypeDoesNotExist:
+  type: "CHAT"
+  text: "This sign type does not exist."
+addedSignMessage:
+  type: "CHAT"
+  text: "A sign was added to the game."
+commandDescription:
+  type: "CHAT"
+  text: "All commands for the MCTennis plugin."
+commandUsage:
+  type: "CHAT"
+  text: "[&9MCTennis&f] Use /mctennis help to see more info about the plugin."
+maxLength20Characters:
+  type: "CHAT"
+  text: "The text length has to be less than 20 characters."
+commandSenderHasToBePlayer:
+  type: "CHAT"
+  text: "The command sender has to be a player!"
+freeVersionMessage:
+  type: "CHAT"
+  text: "This version of MCTennis does only allow 1 game per server. Go to https://patreon.com/Shynixn for the premium version."
+commandPlaceHolderMessage:
+  type: "CHAT"
+  text: "Evaluated placeholder: %1$1s"

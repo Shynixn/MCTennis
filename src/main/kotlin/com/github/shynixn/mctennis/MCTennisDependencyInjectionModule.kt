@@ -2,10 +2,7 @@ package com.github.shynixn.mctennis
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.shynixn.mccoroutine.bukkit.launch
-import com.github.shynixn.mctennis.contract.BedrockService
-import com.github.shynixn.mctennis.contract.GameService
-import com.github.shynixn.mctennis.contract.PlaceHolderService
-import com.github.shynixn.mctennis.contract.TennisBallFactory
+import com.github.shynixn.mctennis.contract.*
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.PluginDependency
 import com.github.shynixn.mctennis.impl.service.*
@@ -54,6 +51,14 @@ class MCTennisDependencyInjectionModule(private val plugin: Plugin) : Dependency
     override fun configure() {
         // Common
         addService<Plugin>(plugin)
+        addService<Language> {
+            val chatMessageService = getService<ChatMessageService>()
+            val language = MCTennisLanguageImpl()
+            language.chatMessageService = chatMessageService
+            language.placeHolderFun =
+                { text, player -> getService<PlaceHolderService>().replacePlaceHolders(text, player) }
+            language
+        }
 
         // Repositories
         val tennisArenaRepository = YamlFileRepositoryImpl<TennisArena>(plugin,
@@ -67,7 +72,7 @@ class MCTennisDependencyInjectionModule(private val plugin: Plugin) : Dependency
 
         // Services
         addService<SignService> {
-            SignServiceImpl(plugin, getService(), MCTennisLanguage.noPermissionMessage)
+            SignServiceImpl(plugin, getService(), getService<Language>().noPermissionMessage.text)
         }
         addService<PhysicObjectService> {
             PhysicObjectServiceImpl(plugin, getService())

@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.shynixn"
-version = "1.9.0"
+version = "1.10.0"
 
 repositories {
     mavenCentral()
@@ -19,7 +19,7 @@ repositories {
 }
 
 tasks.register("printVersion") {
-     println(version)
+    println(version)
 }
 
 dependencies {
@@ -38,7 +38,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:2024.25")
+    implementation("com.github.shynixn.mcutils:common:2024.36")
     implementation("com.github.shynixn.mcutils:packet:2024.42")
     implementation("com.github.shynixn.mcutils:sign:2024.3")
     implementation("com.github.shynixn.mcutils:guice:2024.2")
@@ -110,7 +110,7 @@ tasks.register("pluginJarLatest", com.github.jengelman.gradle.plugins.shadow.tas
     dependsOn("relocatePluginJar")
     from(zipTree(File("./build/libs/" + (tasks.getByName("relocatePluginJar") as Jar).archiveName)))
     archiveName = "${baseName}-${version}-latest.${extension}"
-    // destinationDir = File("C:\\temp\\plugins")
+    destinationDir = File("C:\\temp\\plugins")
 
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_8_R3/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_9_R2/**")
@@ -196,26 +196,27 @@ tasks.register("pluginJarLegacy", com.github.jengelman.gradle.plugins.shadow.tas
 
 tasks.register("languageFile") {
     val kotlinSrcFolder = project.sourceSets.toList()[0].allJava.srcDirs.first { e -> e.endsWith("kotlin") }
-    val languageKotlinFile = kotlinSrcFolder.resolve("com/github/shynixn/mctennis/MCTennisLanguage.kt")
-    val resourceFile = kotlinSrcFolder.parentFile.resolve("resources").resolve("lang").resolve("en_us.properties")
-    val bundle = FileInputStream(resourceFile).use { stream ->
-        PropertyResourceBundle(stream)
-    }
+    val contractFile = kotlinSrcFolder.resolve("com/github/shynixn/mctennis/contract/Language.kt")
+    val resourceFile = kotlinSrcFolder.parentFile.resolve("resources").resolve("lang").resolve("en_us.yaml")
+    val lines = resourceFile.readLines()
 
     val contents = ArrayList<String>()
-    contents.add("package com.github.shynixn.mctennis")
+    contents.add("package com.github.shynixn.mctennis.contract")
     contents.add("")
-    contents.add("object MCTennisLanguage {")
-    for (key in bundle.keys) {
-        val value = bundle.getString(key)
-        contents.add("  /** $value **/")
-        contents.add("  var ${key} : String = \"$value\"")
-        contents.add("")
+    contents.add("import com.github.shynixn.mcutils.common.language.LanguageItem")
+    contents.add("import com.github.shynixn.mcutils.common.language.LanguageProvider")
+    contents.add("")
+    contents.add("interface Language : LanguageProvider {")
+    for (key in lines) {
+        if (key.toCharArray()[0].isLetter()) {
+            contents.add("  var ${key} LanguageItem")
+            contents.add("")
+        }
     }
     contents.removeLast()
     contents.add("}")
 
-    languageKotlinFile.printWriter().use { out ->
+    contractFile.printWriter().use { out ->
         for (line in contents) {
             out.println(line)
         }

@@ -4,11 +4,7 @@ import com.github.shynixn.mccoroutine.bukkit.CoroutineTimings
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import com.github.shynixn.mccoroutine.bukkit.ticks
-import com.github.shynixn.mctennis.MCTennisLanguage
-import com.github.shynixn.mctennis.contract.PlaceHolderService
-import com.github.shynixn.mctennis.contract.TennisBall
-import com.github.shynixn.mctennis.contract.TennisBallFactory
-import com.github.shynixn.mctennis.contract.TennisGame
+import com.github.shynixn.mctennis.contract.*
 import com.github.shynixn.mctennis.entity.PlayerData
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
@@ -37,7 +33,8 @@ class TennisGameImpl(
     private val chatMessageService: ChatMessageService,
     private val plugin: Plugin,
     private val commandService: CommandService,
-    private val placeHolderService: PlaceHolderService
+    private val placeHolderService: PlaceHolderService,
+    private val language: Language
 ) : TennisGame {
     private var isDisposed = false
 
@@ -226,16 +223,11 @@ class TennisGameImpl(
 
         if (team == Team.RED) {
             teamRedScore++
-            sendTitleMessageToPlayers(
-                MCTennisLanguage.scoreRedTitle.format(getScoreText(), player.name),
-                MCTennisLanguage.scoreRedSubTitle.format(getScoreText(), player.name)
-            )
+            language.sendMessageToPlayers(language.scoreRed, getPlayers(), player.name)
+
         } else {
             teamBlueScore++
-            sendTitleMessageToPlayers(
-                MCTennisLanguage.scoreBlueTitle.format(getScoreText(), player.name),
-                MCTennisLanguage.scoreBlueSubTitle.format(getScoreText(), player.name)
-            )
+            language.sendMessageToPlayers(language.scoreBlue, getPlayers(), player.name)
         }
 
         plugin.launch {
@@ -260,17 +252,17 @@ class TennisGameImpl(
         // Wait in lobby.
         for (i in 0 until arena.timeToStart) {
             val remaining = arena.timeToStart - i
-            sendMessageToPlayers(MCTennisLanguage.gameStartingMessage.format(remaining))
+            language.sendMessageToPlayers(language.gameStartingMessage, getPlayers(), remaining)
             delay(1000L)
 
             if (!arena.isEnabled) {
                 dispose()
-                sendMessageToPlayers(MCTennisLanguage.gameStartCancelledMessage)
+                language.sendMessageToPlayers(language.gameStartCancelledMessage, getPlayers())
                 return
             }
 
             if (teamBluePlayers.size < arena.minPlayersPerTeam || teamRedPlayers.size < arena.minPlayersPerTeam) {
-                sendMessageToPlayers(MCTennisLanguage.notEnoughPlayersMessage)
+                language.sendMessageToPlayers(language.notEnoughPlayersMessage, getPlayers())
                 gameState = GameState.LOBBY_IDLE
                 return
             }
@@ -283,35 +275,38 @@ class TennisGameImpl(
 
         // Store cache data.
         delay(250)
-        for (player in cachedData.keys) {
-            val playerData = cachedData[player]!!
-            playerData.armorContents = player.inventory.armorContents.clone()
-            playerData.inventoryContents = player.inventory.contents.clone()
+        if (!arena.keepInventory) {
+            for (player in cachedData.keys) {
+                val playerData = cachedData[player]!!
+                // As long as the armor contents are not set. It is also not restored.
+                playerData.armorContents = player.inventory.armorContents.clone()
+                playerData.inventoryContents = player.inventory.contents.clone()
 
-            val teamMeta = if (teamBluePlayers.contains(player)) {
-                arena.blueTeamMeta
-            } else {
-                arena.redTeamMeta
+                val teamMeta = if (teamBluePlayers.contains(player)) {
+                    arena.blueTeamMeta
+                } else {
+                    arena.redTeamMeta
+                }
+
+                player.inventory.contents = teamMeta.inventoryContents.map {
+                    if (it != null) {
+                        val configuration = YamlConfiguration()
+                        configuration.loadFromString(it)
+                        configuration.getItemStack("item")
+                    } else {
+                        null
+                    }
+                }.toTypedArray()
+                player.inventory.setArmorContents(teamMeta.armorInventoryContents.map {
+                    if (it != null) {
+                        val configuration = YamlConfiguration()
+                        configuration.loadFromString(it)
+                        configuration.getItemStack("item")
+                    } else {
+                        null
+                    }
+                }.toTypedArray())
             }
-
-            player.inventory.contents = teamMeta.inventoryContents.map {
-                if (it != null) {
-                    val configuration = YamlConfiguration()
-                    configuration.loadFromString(it)
-                    configuration.getItemStack("item")
-                } else {
-                    null
-                }
-            }.toTypedArray()
-            player.inventory.setArmorContents(teamMeta.armorInventoryContents.map {
-                if (it != null) {
-                    val configuration = YamlConfiguration()
-                    configuration.loadFromString(it)
-                    configuration.getItemStack("item")
-                } else {
-                    null
-                }
-            }.toTypedArray())
         }
 
         val gameStartEvent = GameStartEvent(this)
@@ -330,15 +325,15 @@ class TennisGameImpl(
             val remaining = arena.gameTime - i
 
             if (remaining == 30) {
-                sendMessageToPlayers(MCTennisLanguage.secondsRemaining.format(30))
+                language.sendMessageToPlayers(language.secondsRemaining, getPlayers(), 30)
             }
 
             if (remaining <= 10) {
-                sendMessageToPlayers(MCTennisLanguage.secondsRemaining.format(remaining))
+                language.sendMessageToPlayers(language.secondsRemaining, getPlayers(), remaining)
             }
 
             if (!arena.isEnabled) {
-                sendMessageToPlayers(MCTennisLanguage.gameCancelledMessage)
+                language.sendMessageToPlayers(language.gameCancelledMessage, getPlayers())
                 dispose()
                 return
             }
@@ -432,7 +427,7 @@ class TennisGameImpl(
         ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), arena.ballSettings, this)
 
         delay(500)
-        sendTitleMessageToPlayers(MCTennisLanguage.readyTitle, MCTennisLanguage.readySubTitle)
+        language.sendMessageToPlayers(language.readyMessage, getPlayers())
         delay(1500)
         ball!!.setVelocity(Vector(0.0, 0.2, 0.0))
         ball!!.allowActions = true
@@ -460,11 +455,12 @@ class TennisGameImpl(
         when (team) {
             Team.RED -> {
                 teamRedSetScore++
-                sendTitleMessageToPlayers(MCTennisLanguage.winSetRedTitle, MCTennisLanguage.winSetRedSubTitle)
+                language.sendMessageToPlayers(language.winSetRed, getPlayers())
             }
+
             else -> {
                 teamBlueSetScore++
-                sendTitleMessageToPlayers(MCTennisLanguage.winSetBlueTitle, MCTennisLanguage.winSetBlueSubTitle)
+                language.sendMessageToPlayers(language.winSetBlue, getPlayers())
             }
         }
 
@@ -494,17 +490,19 @@ class TennisGameImpl(
     private suspend fun winGame(team: Team? = null) {
         when (team) {
             null -> {
-                sendTitleMessageToPlayers(MCTennisLanguage.winDrawTitle, MCTennisLanguage.winDrawSubTitle)
+                language.sendMessageToPlayers(language.winDraw, getPlayers())
                 executeCommandsWithPlaceHolder(teamRedPlayers, arena.redTeamMeta.drawCommands)
                 executeCommandsWithPlaceHolder(teamBluePlayers, arena.blueTeamMeta.drawCommands)
             }
+
             Team.RED -> {
-                sendTitleMessageToPlayers(MCTennisLanguage.winRedTitle, MCTennisLanguage.winRedSubTitle)
+                language.sendMessageToPlayers(language.winRed, getPlayers())
                 executeCommandsWithPlaceHolder(teamRedPlayers, arena.redTeamMeta.winCommands)
                 executeCommandsWithPlaceHolder(teamBluePlayers, arena.blueTeamMeta.looseCommands)
             }
+
             else -> {
-                sendTitleMessageToPlayers(MCTennisLanguage.winBlueTitle, MCTennisLanguage.winBlueSubTitle)
+                language.sendMessageToPlayers(language.winBlue, getPlayers())
                 executeCommandsWithPlaceHolder(teamBluePlayers, arena.blueTeamMeta.winCommands)
                 executeCommandsWithPlaceHolder(teamRedPlayers, arena.redTeamMeta.looseCommands)
             }
@@ -635,15 +633,19 @@ class TennisGameImpl(
             0 -> {
                 "0"
             }
+
             1 -> {
                 "15"
             }
+
             2 -> {
                 "30"
             }
+
             3 -> {
                 "40"
             }
+
             else -> throw RuntimeException("Score $points cannot be converted!")
         }
     }
@@ -671,21 +673,10 @@ class TennisGameImpl(
         throw RuntimeException("Team $team not found!")
     }
 
-    private fun sendTitleMessageToPlayers(title: String, subTitle: String) {
-        for (player in teamRedPlayers) {
-            chatMessageService.sendTitleMessage(player, title, subTitle, 10, 70, 20)
-        }
-        for (player in teamBluePlayers) {
-            chatMessageService.sendTitleMessage(player, title, subTitle, 10, 70, 20)
-        }
-    }
-
     private fun executeCommandsWithPlaceHolder(players: List<Player>, commands: List<CommandMeta>) {
         commandService.executeCommands(players, commands) { c, p ->
             placeHolderService.replacePlaceHolders(
-                c,
-                p,
-                this
+                c, p, this
             )
         }
     }

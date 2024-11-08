@@ -31,8 +31,8 @@ The following placeholders are available in MCTennis and can also be used via Pl
 
 | Player PlaceHolders        | Description                                     |   
 |----------------------------|-------------------------------------------------|
+| %mctennis_player_name%	   | Name of the player during an event e.g.         |
 | %mctennis_player_isInGame% | true if the player is in the game, false if not |
-| %mctennis_player_name%     | Name of the player                              |
 
 | Game and Player PlaceHolders     | Description                                      |   
 |----------------------------------|--------------------------------------------------|
