@@ -42,7 +42,15 @@ class PacketListener @Inject constructor(
             val player = event.player
             val game = gameService.getByPlayer(player) ?: return@launch
             val playerData = game.getPlayerData(player) ?: return@launch
-            physicObject.shoot(event.player, playerData.currentPower)
+
+            val powerSettings = if(game.servingPlayer == player){
+                game.arena.servePowerLevelSettings
+            }else{
+                game.arena.defaultPowerLevelSettings
+            }
+
+            val power = powerSettings.powerLevelMultiplierPerLevel * playerData.currentPowerLevel
+            physicObject.shoot(event.player, power)
         }
     }
 }

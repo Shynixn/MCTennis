@@ -16,6 +16,8 @@ gameTime: 300
 setsToWin: 3
 # If set to true, then the player keeps his inventory when joining a game.
 keepInventory: false
+# Amount of time until the player queue timeouts.
+queueTimeOutSec: 30
 # Spawnpoint of players who leave the game.
 leaveSpawnpoint:
   world: "world"
@@ -178,6 +180,24 @@ blueTeamMeta:
     z: -1602.6071343393714
     yaw: 85.5672607421875
     pitch: 49.05009078979492
+servePowerLevelSettings:
+  # When pressing shift during serve, should green bars appear to increase the punching power of the player?
+  enabled: true
+  # Amount of green bars, which can appear.
+  levelsAmount: 5
+  # How fast the green bars charge.
+  increaseSteps: 0.5
+  # The increase in punching power per acquired green bar level. This value is used even when enabled is set to false. It generates the final ball speed together with horizontalBaseMultiplier of the ball.
+  powerLevelMultiplierPerLevel: 1.0
+defaultPowerLevelSettings:
+  # When pressing shift during a game, should green bars appear to increase the punching power of the player?
+  enabled: false
+  # Amount of green bars, which can appear.
+  levelsAmount: 5
+  # How fast the green bars charge.
+  increaseSteps: 0.5
+  # The increase in punching power per acquired green bar level. This value is used even when enabled is set to false. It generates the final ball speed together with horizontalBaseMultiplier of the ball.
+  powerLevelMultiplierPerLevel: 1.0
 ball:
   item:
     # TypeName the ball is represented. For version compatibility, multiple identifiers can be added by separating with a comma.
@@ -190,6 +210,12 @@ ball:
     component: '{"minecraft:profile":{"properties":[{"name":"textures","value":"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODlkZDI3MzRiMzk1NGJlMjU5ODIwNDBjNjM5Yzg3NjFhZDRjNDQ2YTM5MjE2ZmIxZjEyZGUyN2FmM2RlMDI3MiJ9fX0="}]}}'
     # Optional SkinBase64 tag. This overwrites any skin specified in nbt or component.
     skinBase64: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODlkZDI3MzRiMzk1NGJlMjU5ODIwNDBjNjM5Yzg3NjFhZDRjNDQ2YTM5MjE2ZmIxZjEyZGUyN2FmM2RlMDI3MiJ9fX0='
+  # Offset from the serving player to the ball.
+  spawnOffsetFront: 2.5
+  # Offset from the serving player to the ball.
+  spawnOffsetUp: 0.5
+  # Offset from the serving player to the ball.
+  spawnOffsetLeft: 0.0
   # The normalized velocity of the direction the ball is shot is multiplied by this value.
   horizontalBaseMultiplier: 0.6
   # The vertical minimum value which is added to the normalized velocity.
@@ -220,7 +246,7 @@ ball:
   spinDefault: 20.0
   spinVertical: 0.6
   # Cooldown in Milliseconds how often the ball can be touched.
-  clickCooldown: 250
+  clickCooldown: 2000
   # Flag if the slime hitbox should be shown on "BEDROCK", "JAVA" or "ALL".
   slimeVisibility: "BEDROCK"
   # Flag if the armorstand ball should be shown on "BEDROCK", "JAVA" or "ALL".

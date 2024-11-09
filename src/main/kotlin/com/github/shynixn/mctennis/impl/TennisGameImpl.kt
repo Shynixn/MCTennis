@@ -37,6 +37,8 @@ class TennisGameImpl(
     private val language: Language
 ) : TennisGame {
     private var isDisposed = false
+    private var currentQueueTime = arena.queueTimeOutSec
+    private var isQueueTimeRunning = false
 
     /**
      * Tennis ball.
@@ -103,6 +105,8 @@ class TennisGameImpl(
      */
     override var servingTeam: Team = Team.RED
 
+    override var servingPlayer: Player? = null
+
     init {
         plugin.launch(plugin.minecraftDispatcher + object : CoroutineTimings() {}) {
             while (!isDisposed) {
@@ -164,9 +168,13 @@ class TennisGameImpl(
         val playerData = PlayerData()
         cachedData[player] = playerData
 
+        // Handle Queue Timeout.
+        queueTimeOut()
+
         if (teamBluePlayers.size >= arena.minPlayersPerTeam && teamRedPlayers.size >= arena.minPlayersPerTeam && teamRedPlayers.size + teamBluePlayers.size > 0) {
             if (gameState == GameState.LOBBY_IDLE) {
                 gameState = GameState.LOBBY_COUNTDOWN
+                isQueueTimeRunning = false
                 plugin.launch {
                     startGame()
                 }
@@ -175,6 +183,7 @@ class TennisGameImpl(
 
         return joinResult
     }
+
 
     /**
      * Leaves the given player.
@@ -264,6 +273,7 @@ class TennisGameImpl(
             if (teamBluePlayers.size < arena.minPlayersPerTeam || teamRedPlayers.size < arena.minPlayersPerTeam) {
                 language.sendMessageToPlayers(language.notEnoughPlayersMessage, getPlayers())
                 gameState = GameState.LOBBY_IDLE
+                queueTimeOut()
                 return
             }
         }
@@ -385,30 +395,41 @@ class TennisGameImpl(
 
     private fun increasePunchPower() {
         for (player in getPlayers()) {
+            var powerSettings = arena.defaultPowerLevelSettings
+
+            if (player == servingPlayer) {
+                powerSettings = arena.servePowerLevelSettings
+            }
+
             val playerData = cachedData[player]
 
             if (playerData == null) {
                 continue
             }
 
+            if (!powerSettings.enabled) {
+                playerData.currentPowerLevel = 1.0
+                continue
+            }
+
             if (player.isSneaking) {
                 if (playerData.wasSneaking) {
-                    playerData.currentPower += 0.5
+                    playerData.currentPowerLevel += powerSettings.increaseSteps
                 } else {
-                    playerData.currentPower = 1.0
+                    playerData.currentPowerLevel = 1.0
                     playerData.wasSneaking = true
                 }
             } else {
                 playerData.wasSneaking = false
             }
 
-            if (playerData.currentPower > 5.0) {
-                playerData.currentPower = 5.0
+            if (playerData.currentPowerLevel > powerSettings.levelsAmount) {
+                playerData.currentPowerLevel = powerSettings.levelsAmount.toDouble()
             }
 
             val builder = StringBuilder()
 
-            for (i in 0 until playerData.currentPower.toInt()) {
+            for (i in 0 until playerData.currentPowerLevel.toInt()) {
                 builder.append("█")
             }
 
@@ -418,12 +439,23 @@ class TennisGameImpl(
 
     private suspend fun setBallForServingTeam(team: Team) {
         teleportPlayersToSpawnpoint()
+        for (player in cachedData.keys) {
+            chatMessageService.sendActionBarMessage(player, "")
+        }
+
+        if (team == Team.RED && teamRedPlayers.size > 0) {
+            servingPlayer = teamRedPlayers[0]
+        } else if (team == Team.BLUE && teamBluePlayers.size > 0) {
+            servingPlayer = teamBluePlayers[0]
+        }
 
         val teamMetaData = getTeamMetaFromTeam(team)
         // Spawnpoint 0 is always serving.
         val spawnpoint = teamMetaData.spawnpoints[0]
-        val ballspawnpoint = spawnpoint.copy().addRelativeFront(2.0).addRelativeUp(0.5)
-
+        val ballspawnpoint = spawnpoint.copy()
+            .addRelativeFront(arena.ballSettings.spawnOffsetFront)
+            .addRelativeUp(arena.ballSettings.spawnOffsetUp)
+            .addRelativeLeft(arena.ballSettings.spawnOffsetLeft)
         ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), arena.ballSettings, this)
 
         delay(500)
@@ -442,6 +474,11 @@ class TennisGameImpl(
                 // Auto balance for testing.
                 lastHitPlayer = teamRedPlayers[0]
             }
+        }
+
+        plugin.launch {
+            delay(1500)
+            servingPlayer = null
         }
     }
 
@@ -534,6 +571,7 @@ class TennisGameImpl(
         cachedData.clear()
         isDisposed = true
         ball?.remove()
+        servingPlayer = null
 
         if (sendEvent) {
             val gameEndEvent = GameEndEvent(this)
@@ -678,6 +716,33 @@ class TennisGameImpl(
             placeHolderService.replacePlaceHolders(
                 c, p, this
             )
+        }
+    }
+
+    private fun queueTimeOut() {
+        currentQueueTime = arena.queueTimeOutSec
+
+        if (isQueueTimeRunning) {
+            return
+        }
+
+        isQueueTimeRunning = true
+        plugin.launch {
+            while (isQueueTimeRunning) {
+                currentQueueTime -= 1
+
+                if (currentQueueTime <= 0) {
+                    isQueueTimeRunning = false
+                    for (player in cachedData.keys.toTypedArray()) {
+                        language.sendMessage(language.queueTimeOutMessage, player)
+                        leave(player)
+                    }
+                    gameState = GameState.LOBBY_IDLE
+                    return@launch
+                }
+
+                delay(20.ticks)
+            }
         }
     }
 }

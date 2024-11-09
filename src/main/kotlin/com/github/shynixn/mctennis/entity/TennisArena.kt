@@ -56,6 +56,11 @@ class TennisArena : Element {
     var keepInventory: Boolean = false
 
     /**
+     * Amount of seconds until the queue timeouts.
+     */
+    var queueTimeOutSec: Int = 30
+
+    /**
      * Leave spawnpoint.
      */
     @JsonIgnoreProperties(value = arrayOf("blockX", "blockY", "blockZ", "empty", "direction"))
@@ -70,6 +75,16 @@ class TennisArena : Element {
      * BlueTeam.
      */
     var blueTeamMeta: TeamMetadata = TeamMetadata()
+
+    /**
+     * PowerLevel when service
+     */
+    var servePowerLevelSettings = PowerLevelSettings()
+
+    /**
+     * PowerLevel when playing.
+     */
+    var defaultPowerLevelSettings = PowerLevelSettings()
 
     /**
      * All signs.

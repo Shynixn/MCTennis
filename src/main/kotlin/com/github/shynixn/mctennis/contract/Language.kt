@@ -109,4 +109,6 @@ interface Language : LanguageProvider {
   var freeVersionMessage: LanguageItem
 
   var commandPlaceHolderMessage: LanguageItem
+
+  var queueTimeOutMessage: LanguageItem
 }

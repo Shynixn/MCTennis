@@ -94,7 +94,6 @@ class TennisBallImpl(
         game?.lastHitPlayer = player
 
         plugin.launch {
-            val prevDirection = player.eyeLocation.direction.toVector3d()
             val strengthMultiplier = 1.0 + (multiplier * 0.1)
             val kickVector =
                 player.eyeLocation.direction.toVector3d().normalize().multiply(settings.horizontalBaseMultiplier)
