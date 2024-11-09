@@ -113,4 +113,8 @@ class MCTennisLanguageImpl() : Language, LanguageProviderImpl() {
     override var freeVersionMessage: LanguageItem = LanguageItem()
 
     override var commandPlaceHolderMessage: LanguageItem = LanguageItem()
+
+    override var queueTimeOutMessage: LanguageItem = LanguageItem().also {
+        it.text = "[&9MCTennis&f]&c Not enough players joined in time to start the game."
+    }
 }

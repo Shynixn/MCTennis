@@ -197,7 +197,7 @@ tasks.register("pluginJarLegacy", com.github.jengelman.gradle.plugins.shadow.tas
 tasks.register("languageFile") {
     val kotlinSrcFolder = project.sourceSets.toList()[0].allJava.srcDirs.first { e -> e.endsWith("kotlin") }
     val contractFile = kotlinSrcFolder.resolve("com/github/shynixn/mctennis/contract/Language.kt")
-    val resourceFile = kotlinSrcFolder.parentFile.resolve("resources").resolve("lang").resolve("en_us.yaml")
+    val resourceFile = kotlinSrcFolder.parentFile.resolve("resources").resolve("lang").resolve("en_us.yml")
     val lines = resourceFile.readLines()
 
     val contents = ArrayList<String>()

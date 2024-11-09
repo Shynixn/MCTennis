@@ -37,6 +37,8 @@ class TennisGameImpl(
     private val language: Language
 ) : TennisGame {
     private var isDisposed = false
+    private var currentQueueTime = arena.queueTimeOutSec
+    private var isQueueTimeRunning = false
 
     /**
      * Tennis ball.
@@ -164,9 +166,13 @@ class TennisGameImpl(
         val playerData = PlayerData()
         cachedData[player] = playerData
 
+        // Handle Queue Timeout.
+        queueTimeOut()
+
         if (teamBluePlayers.size >= arena.minPlayersPerTeam && teamRedPlayers.size >= arena.minPlayersPerTeam && teamRedPlayers.size + teamBluePlayers.size > 0) {
             if (gameState == GameState.LOBBY_IDLE) {
                 gameState = GameState.LOBBY_COUNTDOWN
+                isQueueTimeRunning = false
                 plugin.launch {
                     startGame()
                 }
@@ -175,6 +181,7 @@ class TennisGameImpl(
 
         return joinResult
     }
+
 
     /**
      * Leaves the given player.
@@ -264,6 +271,7 @@ class TennisGameImpl(
             if (teamBluePlayers.size < arena.minPlayersPerTeam || teamRedPlayers.size < arena.minPlayersPerTeam) {
                 language.sendMessageToPlayers(language.notEnoughPlayersMessage, getPlayers())
                 gameState = GameState.LOBBY_IDLE
+                queueTimeOut()
                 return
             }
         }
@@ -678,6 +686,33 @@ class TennisGameImpl(
             placeHolderService.replacePlaceHolders(
                 c, p, this
             )
+        }
+    }
+
+    private fun queueTimeOut() {
+        currentQueueTime = arena.queueTimeOutSec
+
+        if (isQueueTimeRunning) {
+            return
+        }
+
+        isQueueTimeRunning = true
+        plugin.launch {
+            while (isQueueTimeRunning) {
+                currentQueueTime -= 1
+
+                if (currentQueueTime <= 0) {
+                    isQueueTimeRunning = false
+                    for (player in cachedData.keys.toTypedArray()) {
+                        language.sendMessage(language.queueTimeOutMessage, player)
+                        leave(player)
+                    }
+                    gameState = GameState.LOBBY_IDLE
+                    return@launch
+                }
+
+                delay(20.ticks)
+            }
         }
     }
 }
