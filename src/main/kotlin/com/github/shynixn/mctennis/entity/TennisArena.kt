@@ -77,6 +77,16 @@ class TennisArena : Element {
     var blueTeamMeta: TeamMetadata = TeamMetadata()
 
     /**
+     * PowerLevel when service
+     */
+    var servePowerLevelSettings = PowerLevelSettings()
+
+    /**
+     * PowerLevel when playing.
+     */
+    var defaultPowerLevelSettings = PowerLevelSettings()
+
+    /**
      * All signs.
      */
     var signs = ArrayList<SignMeta>()

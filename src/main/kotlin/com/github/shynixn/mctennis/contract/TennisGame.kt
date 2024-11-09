@@ -70,6 +70,11 @@ interface TennisGame {
     val servingTeam: Team
 
     /**
+     * Gets the player who is serving.
+     */
+    val servingPlayer : Player?
+
+    /**
      * Ball.
      */
     val ball: TennisBall?

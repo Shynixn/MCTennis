@@ -19,7 +19,7 @@ class PlayerData {
     var wasSneaking: Boolean = false
 
     /**
-     * Power Index.
+     * Power Level.
      */
-    var currentPower: Double = 4.0
+    var currentPowerLevel: Double = 1.0
 }
