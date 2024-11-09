@@ -13,8 +13,15 @@ class TennisBallSettings {
     var item: Item = Item().also {
         it.typeName = "PLAYER_HEAD,397"
         it.durability = "3"
-        it.skinBase64 = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZkYThhNzk3N2VjOTIxNGM1YjcwMWY5YWU3ZTE1NWI4ZWIyMWQxZDM3MTU5OGUxYjk4NzVjNGM4NWM2NWFlNiJ9fX0="
+        it.skinBase64 =
+            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZkYThhNzk3N2VjOTIxNGM1YjcwMWY5YWU3ZTE1NWI4ZWIyMWQxZDM3MTU5OGUxYjk4NzVjNGM4NWM2NWFlNiJ9fX0="
     }
+
+    var spawnOffsetFront: Double = 2.5
+
+    var spawnOffsetUp: Double = 0.5
+
+    var spawnOffsetLeft: Double = 0.0
 
     // Ground
     var horizontalBaseMultiplier: Double = 0.4
@@ -49,12 +56,12 @@ class TennisBallSettings {
     /**
      * RayTraceOffset.
      */
-    var rayTraceYOffset : Double = 0.0
+    var rayTraceYOffset: Double = 0.0
 
     /**
      * Render offset.
      */
-    var renderYOffset : Double = -0.3
+    var renderYOffset: Double = -0.3
 
     /**
      * Render visibility updates.
@@ -72,39 +79,9 @@ class TennisBallSettings {
     var clickHitBoxSize: Int = 3
 
     /**
-     * Base Multiplier for the speed when spinning.
-     */
-    var spinBaseMultiplier: Double = 1.0
-
-    /**
-     * Maximum spinning velocity.
-     */
-    var maximumSpinningVelocity = 0.08
-
-    /**
-     * Maximum spin angle.
-     */
-    var spinMaximum: Double = 60.0
-
-    /**
-     * Minimum spin angle
-     */
-    var spinMinimum: Double = 0.0
-
-    /**
-     * Default spin.
-     */
-    var spinDefault: Double = 20.0
-
-    /**
-     * Spin vertical
-     */
-    var spinVertical: Double = 0.6
-
-    /**
      * Minimum amount of cooldown milliseconds between two clicks.
      */
-    var clickCooldown: Int = 250
+    var clickCooldown: Int = 2000
 
     /**
      * Slime visibility.
