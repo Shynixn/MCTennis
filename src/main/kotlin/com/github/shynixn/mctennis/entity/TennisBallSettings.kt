@@ -94,6 +94,16 @@ class TennisBallSettings {
     var armorstandVisibility: VisibilityType = VisibilityType.JAVA
 
     /**
+     * Should the ball collide with water blocks or lava?
+     */
+    var collideWithWater: Boolean = false
+
+    /**
+     * Should the ball collide with cobwebs and similar?
+     */
+    var collideWithPassableBlocks: Boolean =  true
+
+    /**
      * Sound played when hitting the ball.
      */
     var hitSound: SoundMeta = SoundMeta().also {

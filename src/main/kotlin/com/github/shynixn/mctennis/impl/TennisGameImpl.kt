@@ -728,7 +728,7 @@ class TennisGameImpl(
 
         isQueueTimeRunning = true
         plugin.launch {
-            while (isQueueTimeRunning) {
+            while (isQueueTimeRunning && gameState == GameState.LOBBY_IDLE) {
                 currentQueueTime -= 1
 
                 if (currentQueueTime <= 0) {

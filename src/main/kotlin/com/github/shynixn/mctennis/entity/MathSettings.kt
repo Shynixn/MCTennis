@@ -28,4 +28,14 @@ class MathSettings {
      * e.g. 1.0 for player npcs.
      */
     var rayTraceYOffset: Double = 0.0
+
+    /**
+     * Should the ball collide with water blocks or lava?
+     */
+    var collideWithWater: Boolean = false
+
+    /**
+     * Should the ball collide with cobwebs and similar?
+     */
+    var collideWithPassableBlocks: Boolean =  true
 }

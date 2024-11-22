@@ -236,15 +236,12 @@ ball:
   renderVisibilityUpdateMs: 5000
   # How far the ball can be seen in blocks.
   renderDistanceBlocks: 70
+  # Should the ball collide with water blocks or lava?
+  collideWithWater: false
+  # Should the ball collide with cobwebs and similar?
+  collideWithPassableBlocks: true
   # Click hitbox size of the ball.
   clickHitBoxSize: 3
-  # Spin properties.
-  spinBaseMultiplier: 1.0
-  maximumSpinningVelocity: 0.08
-  spinMaximum: 60.0
-  spinMinimum: 0.0
-  spinDefault: 20.0
-  spinVertical: 0.6
   # Cooldown in Milliseconds how often the ball can be touched.
   clickCooldown: 2000
   # Flag if the slime hitbox should be shown on "BEDROCK", "JAVA" or "ALL".

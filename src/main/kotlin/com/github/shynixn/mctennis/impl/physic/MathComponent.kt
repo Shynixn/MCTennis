@@ -88,7 +88,7 @@ class MathComponent(
 
         // RayTrace Motion in world.
         position.y += settings.rayTraceYOffset
-        lastRayTraceResult = rayTracingService.rayTraceMotion(position, motion)
+        lastRayTraceResult = rayTracingService.rayTraceMotion(position, motion, settings.collideWithWater, settings.collideWithPassableBlocks)
         lastRayTraceResult!!.targetPosition.y -= settings.rayTraceYOffset // this is fine.
     }
 
