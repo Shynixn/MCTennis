@@ -184,3 +184,12 @@ However, the base speed of the ball may not fit the size of your arena. You shou
 
 Try very minor adjustments (comma values), execute the reload command and rejoin your arena. Repeat until it works for you.
 
+### Charge shots and power levels
+
+By pressing SHIFT (sneak), you can charge your shots to shoot the ball further. Green bars appear when you hold SHIFT.
+You can configure the multipliers and disable it under ``servePowerLevelSettings`` and ``defaultPowerLevelSettings`` in your ``arena.yml``.
+
+### Changing the player inventory
+
+In order to change the inventory a player receives, use the command ``/mctennis inventory`` and ``/mctennis armor``.
+These commands copy your current inventory and store it into your ``arena.yml`` file.

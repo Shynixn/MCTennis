@@ -38,6 +38,8 @@ class TennisBallFactoryImpl @Inject constructor(
         mathSettings.groundResistanceAbsolute = settings.groundResistanceAbsolute
         mathSettings.groundResistanceRelative = settings.groundResistanceRelative
         mathSettings.rayTraceYOffset = settings.rayTraceYOffset
+        mathSettings.collideWithWater = settings.collideWithWater
+        mathSettings.collideWithPassableBlocks = settings.collideWithPassableBlocks
         val mathPhysicComponent = MathComponent(location.toVector3d(), mathSettings, rayTracingService)
 
         val bounceComponent =
