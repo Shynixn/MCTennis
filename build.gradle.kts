@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.shynixn"
-version = "1.12.0"
+version = "1.13.0"
 
 repositories {
     mavenCentral()
@@ -38,8 +38,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:2024.36")
-    implementation("com.github.shynixn.mcutils:packet:2024.47")
+    implementation("com.github.shynixn.mcutils:common:2024.39")
+    implementation("com.github.shynixn.mcutils:packet:2024.51")
     implementation("com.github.shynixn.mcutils:sign:2024.3")
     implementation("com.github.shynixn.mcutils:guice:2024.2")
 
@@ -71,6 +71,11 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 /**
@@ -114,12 +119,18 @@ tasks.register("pluginJarLatest", com.github.jengelman.gradle.plugins.shadow.tas
 
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_8_R3/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_9_R2/**")
+    exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_17_R1/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_18_R1/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_18_R2/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_19_R1/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_19_R2/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_19_R3/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_20_R1/**")
+    exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_20_R2/**")
+    exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_20_R3/**")
+    exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_20_R4/**")
+    exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_21_R1/**")
+    exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_21_R2/**")
     exclude("com/github/shynixn/mcutils/**")
     exclude("com/github/shynixn/mccoroutine/**")
     exclude("kotlin/**")
