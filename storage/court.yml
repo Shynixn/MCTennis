@@ -106,8 +106,6 @@ ball:
   spinDefault: 20.0
   spinVertical: 0.6
   clickCooldown: 250
-  slimeVisibility: "BEDROCK"
-  armorstandVisibility: "JAVA"
   hitSound:
     name: "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,ENTITY_ZOMBIE_ATTACK_DOOR_WOOD,ZOMBIE_WOOD"
     volume: 5.0

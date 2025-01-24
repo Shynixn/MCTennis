@@ -1,7 +1,7 @@
 package com.github.shynixn.mctennis.impl.listener
 
 import com.github.shynixn.mccoroutine.bukkit.launch
-import com.github.shynixn.mctennis.contract.Language
+import com.github.shynixn.mctennis.contract.MCTennisLanguage
 import com.github.shynixn.mctennis.contract.TennisBall
 import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.TennisArena
@@ -14,17 +14,16 @@ import com.github.shynixn.mcutils.packet.api.meta.enumeration.EntityType
 import com.github.shynixn.mcutils.packet.api.packet.PacketOutEntityDestroy
 import com.github.shynixn.mcutils.packet.api.packet.PacketOutEntityMetadata
 import com.github.shynixn.mcutils.packet.api.packet.PacketOutEntitySpawn
-import com.google.inject.Inject
 import kotlinx.coroutines.delay
 import org.bukkit.Location
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 
-class TennisListener @Inject constructor(
+class TennisListener (
     private val packetService: PacketService,
     private val plugin: Plugin,
-    private val language : Language
+    private val language : MCTennisLanguage
 ) : Listener {
     /**
      * Handles ground bouncing.

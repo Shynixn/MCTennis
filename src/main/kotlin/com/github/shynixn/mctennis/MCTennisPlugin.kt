@@ -1,17 +1,20 @@
 package com.github.shynixn.mctennis
 
 import com.github.shynixn.mccoroutine.bukkit.launch
-import com.github.shynixn.mctennis.contract.*
+import com.github.shynixn.mctennis.contract.GameService
+import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TennisArena
-import com.github.shynixn.mctennis.enumeration.PluginDependency
+import com.github.shynixn.mctennis.enumeration.PlaceHolder
 import com.github.shynixn.mctennis.impl.commandexecutor.MCTennisCommandExecutor
 import com.github.shynixn.mctennis.impl.exception.TennisGameException
 import com.github.shynixn.mctennis.impl.listener.GameListener
 import com.github.shynixn.mctennis.impl.listener.PacketListener
 import com.github.shynixn.mctennis.impl.listener.TennisListener
 import com.github.shynixn.mcutils.common.Version
+import com.github.shynixn.mcutils.common.di.DependencyInjectionModule
 import com.github.shynixn.mcutils.common.language.reloadTranslation
 import com.github.shynixn.mcutils.common.physic.PhysicObjectService
+import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.repository.Repository
 import com.github.shynixn.mcutils.packet.api.PacketInType
 import com.github.shynixn.mcutils.packet.api.PacketService
@@ -23,13 +26,14 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Level
 
 class MCTennisPlugin : JavaPlugin() {
-    companion object{
-        var language : Language? = null
+    companion object {
+        var gameKey = "[game]"
+        var languageKey = "language"
     }
 
     private val prefix: String = org.bukkit.ChatColor.BLUE.toString() + "[MCTennis] " + org.bukkit.ChatColor.WHITE
     private var isLoaded = false
-    private lateinit var module: MCTennisDependencyInjectionModule
+    private lateinit var module: DependencyInjectionModule
 
     /**
      * Called when this plugin is enabled.
@@ -37,7 +41,6 @@ class MCTennisPlugin : JavaPlugin() {
     override fun onEnable() {
         Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Loading MCTennis ...")
         this.saveDefaultConfig()
-
         val versions = if (MCTennisDependencyInjectionModule.areLegacyVersionsIncluded) {
             listOf(
                 Version.VERSION_1_8_R3,
@@ -83,15 +86,16 @@ class MCTennisPlugin : JavaPlugin() {
 
         logger.log(Level.INFO, "Loaded NMS version ${Version.serverVersion}.")
 
-        // Guice
-        this.module = MCTennisDependencyInjectionModule(this).build()
-        this.reloadConfig()
-
-        // Load Language
-        val mcTennisLanguage = module.getService<Language>()
-        MCTennisPlugin.language = mcTennisLanguage
-        reloadTranslation(mcTennisLanguage as MCTennisLanguageImpl, MCTennisLanguageImpl::class.java)
+        // Load MCTennisLanguage
+        val language = MCTennisLanguageImpl()
+        reloadTranslation(language)
         logger.log(Level.INFO, "Loaded language file.")
+
+        // Module
+        this.module = MCTennisDependencyInjectionModule(this, language).build()
+
+        // Register PlaceHolder
+        PlaceHolder.registerAll(module.getService(), module.getService(), language)
 
         // Register Packet
         module.getService<PacketService>().registerPacketListening(PacketInType.USEENTITY)
@@ -100,15 +104,9 @@ class MCTennisPlugin : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(module.getService<GameListener>(), this)
         Bukkit.getPluginManager().registerEvents(module.getService<PacketListener>(), this)
         Bukkit.getPluginManager().registerEvents(module.getService<TennisListener>(), this)
-        Bukkit.getPluginManager().registerEvents(module.getService<BedrockService>(), this)
 
         // Register CommandExecutor
         module.getService<MCTennisCommandExecutor>()
-
-        // Register Dependencies
-        if (Bukkit.getPluginManager().getPlugin(PluginDependency.GEYSER_SPIGOT.pluginName) != null) {
-            logger.log(Level.INFO, "Loaded dependency ${PluginDependency.GEYSER_SPIGOT.pluginName}.")
-        }
 
         // Service dependencies
         Bukkit.getServicesManager().register(
@@ -122,7 +120,6 @@ class MCTennisPlugin : JavaPlugin() {
 
         val plugin = this
         plugin.launch {
-            // Load Language
             // Load Games
             val gameService = module.getService<GameService>()
             try {
@@ -152,12 +149,13 @@ class MCTennisPlugin : JavaPlugin() {
                 if (signMeta.tag != null) {
                     val game = gameService.getByName(signMeta.tag!!)
                     if (game != null) {
-                        resolvedText = placeHolderService.replacePlaceHolders(text, null, game)
+                        resolvedText =
+                            placeHolderService.resolvePlaceHolder(text, null, mapOf(gameKey to game.arena.name))
                     }
                 }
 
                 if (resolvedText == null) {
-                    resolvedText = placeHolderService.replacePlaceHolders(text)
+                    resolvedText = placeHolderService.resolvePlaceHolder(text, null)
                 }
 
                 resolvedText

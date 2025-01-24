@@ -11,62 +11,27 @@ group = "com.github.shynixn"
 version = "1.13.0"
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
-    maven("https://repo.opencollab.dev/main/")
-    maven(System.getenv("SHYNIXN_MCUTILS_REPOSITORY")) // All MCUTILS libraries are private and not OpenSource.
-}
-
-tasks.register("printVersion") {
-    println(version)
+    maven(System.getenv("SHYNIXN_MCUTILS_REPOSITORY_2025")) // All MCUTILS libraries are private and not OpenSource.
 }
 
 dependencies {
     // Compile Only
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnly("org.geysermc.geyser:api:2.2.0-SNAPSHOT")
 
     // Plugin.yml Shade dependencies
     implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.20.0")
     implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.20.0")
-    implementation("com.google.inject:guice:5.0.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.2.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-    implementation("com.google.code.gson:gson:2.8.6")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:2024.39")
-    implementation("com.github.shynixn.mcutils:packet:2024.51")
-    implementation("com.github.shynixn.mcutils:sign:2024.3")
-    implementation("com.github.shynixn.mcutils:guice:2024.2")
-
-    // Test
-    testImplementation(kotlin("test"))
-    testImplementation("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
-    testImplementation("org.mockito:mockito-core:2.23.0")
-}
-
-tasks.test {
-    useJUnitPlatform()
-    testLogging.showStandardStreams = true
-    failFast = true
-
-    testLogging {
-        events(
-            org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
-            org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-            org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
-            org.gradle.api.tasks.testing.logging.TestLogEvent.STARTED
-        )
-        displayGranularity = 0
-        showExceptions = true
-        showCauses = true
-        showStackTraces = true
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-    }
+    implementation("com.github.shynixn.mcutils:common:2025.1")
+    implementation("com.github.shynixn.mcutils:packet:2025.1")
+    implementation("com.github.shynixn.mcutils:sign:2025.1")
 }
 
 tasks.withType<KotlinCompile> {
@@ -83,7 +48,7 @@ java {
  */
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     dependsOn("jar")
-    archiveName = "${baseName}-${version}-shadowjar.${extension}"
+    archiveFileName.set("${archiveBaseName.get()}-${archiveVersion.get()}-shadowjar.${archiveExtension.get()}")
     exclude("DebugProbesKt.bin")
     exclude("module-info.class")
 }
@@ -102,8 +67,8 @@ tasks.register("pluginJars") {
  */
 tasks.register("relocatePluginJar", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
     dependsOn("shadowJar")
-    from(zipTree(File("./build/libs/" + (tasks.getByName("shadowJar") as Jar).archiveName)))
-    archiveName = "${baseName}-${version}-relocate.${extension}"
+    from(zipTree(File("./build/libs/" + (tasks.getByName("shadowJar") as Jar).archiveFileName.get())))
+    archiveFileName.set("${archiveBaseName.get()}-${archiveVersion.get()}-relocate.${archiveExtension.get()}")
     relocate("com.fasterxml", "com.github.shynixn.mctennis.lib.com.fasterxml")
     relocate("com.github.shynixn.mcutils", "com.github.shynixn.mctennis.lib.com.github.shynixn.mcutils")
 }
@@ -113,9 +78,9 @@ tasks.register("relocatePluginJar", com.github.jengelman.gradle.plugins.shadow.t
  */
 tasks.register("pluginJarLatest", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
     dependsOn("relocatePluginJar")
-    from(zipTree(File("./build/libs/" + (tasks.getByName("relocatePluginJar") as Jar).archiveName)))
-    archiveName = "${baseName}-${version}-latest.${extension}"
-    // destinationDir = File("C:\\temp\\plugins")
+    from(zipTree(File("./build/libs/" + (tasks.getByName("relocatePluginJar") as Jar).archiveFileName.get())))
+    archiveFileName.set("${archiveBaseName.get()}-${archiveVersion.get()}-latest.${archiveExtension.get()}")
+    // destinationDirectory.set(File("C:\\temp\\plugins"))
 
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_8_R3/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_9_R2/**")
@@ -147,9 +112,9 @@ tasks.register("pluginJarLatest", com.github.jengelman.gradle.plugins.shadow.tas
  */
 tasks.register("pluginJarPremium", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
     dependsOn("relocatePluginJar")
-    from(zipTree(File("./build/libs/" + (tasks.getByName("relocatePluginJar") as Jar).archiveName)))
-    archiveName = "${baseName}-${version}-premium.${extension}"
-    // destinationDir = File("C:\\temp\\plugins")
+    from(zipTree(File("./build/libs/" + (tasks.getByName("relocatePluginJar") as Jar).archiveFileName.get())))
+    archiveFileName.set("${archiveBaseName.get()}-${archiveVersion.get()}-premium.${archiveExtension.get()}")
+    // destinationDirectory.set(File("C:\\temp\\plugins"))
 
     exclude("com/github/shynixn/mcutils/**")
     exclude("com/github/shynixn/mccoroutine/**")
@@ -167,12 +132,11 @@ tasks.register("pluginJarPremium", com.github.jengelman.gradle.plugins.shadow.ta
  */
 tasks.register("relocateLegacyPluginJar", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
     dependsOn("shadowJar")
-    from(zipTree(File("./build/libs/" + (tasks.getByName("shadowJar") as Jar).archiveName)))
-    archiveName = "${baseName}-${version}-legacy-relocate.${extension}"
+    from(zipTree(File("./build/libs/" + (tasks.getByName("shadowJar") as Jar).archiveFileName.get())))
+    archiveFileName.set("${archiveBaseName.get()}-${archiveVersion.get()}-legacy-relocate.${archiveExtension.get()}")
     relocate("com.github.shynixn.mcutils", "com.github.shynixn.mctennis.lib.com.github.shynixn.mcutils")
     relocate("kotlin", "com.github.shynixn.mctennis.lib.kotlin")
     relocate("org.intellij", "com.github.shynixn.mctennis.lib.org.intelli")
-    relocate("org.aopalliance", "com.github.shynixn.mctennis.lib.org.aopalliance")
     relocate("org.checkerframework", "com.github.shynixn.mctennis.lib.org.checkerframework")
     relocate("org.jetbrains", "com.github.shynixn.mctennis.lib.org.jetbrains")
     relocate("org.slf4j", "com.github.shynixn.mctennis.lib.org.slf4j")
@@ -191,9 +155,10 @@ tasks.register("relocateLegacyPluginJar", com.github.jengelman.gradle.plugins.sh
  */
 tasks.register("pluginJarLegacy", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class.java) {
     dependsOn("relocateLegacyPluginJar")
-    from(zipTree(File("./build/libs/" + (tasks.getByName("relocateLegacyPluginJar") as Jar).archiveName)))
-    archiveName = "${baseName}-${version}-legacy.${extension}"
+    from(zipTree(File("./build/libs/" + (tasks.getByName("relocateLegacyPluginJar") as Jar).archiveFileName.get())))
+    archiveFileName.set("${archiveBaseName.get()}-${archiveVersion.get()}-legacy.${archiveExtension.get()}")
     // destinationDir = File("C:\\temp\\plugins")
+
     exclude("com/github/shynixn/mcutils/**")
     exclude("org/**")
     exclude("kotlin/**")
@@ -207,29 +172,73 @@ tasks.register("pluginJarLegacy", com.github.jengelman.gradle.plugins.shadow.tas
 
 tasks.register("languageFile") {
     val kotlinSrcFolder = project.sourceSets.toList()[0].allJava.srcDirs.first { e -> e.endsWith("kotlin") }
-    val contractFile = kotlinSrcFolder.resolve("com/github/shynixn/mctennis/contract/Language.kt")
+    val contractFile = kotlinSrcFolder.resolve("com/github/shynixn/mctennis/contract/MCTennisLanguage.kt")
     val resourceFile = kotlinSrcFolder.parentFile.resolve("resources").resolve("lang").resolve("en_us.yml")
     val lines = resourceFile.readLines()
 
-    val contents = ArrayList<String>()
-    contents.add("package com.github.shynixn.mctennis.contract")
-    contents.add("")
-    contents.add("import com.github.shynixn.mcutils.common.language.LanguageItem")
-    contents.add("import com.github.shynixn.mcutils.common.language.LanguageProvider")
-    contents.add("")
-    contents.add("interface Language : LanguageProvider {")
+    val contractContents = ArrayList<String>()
+    contractContents.add("package com.github.shynixn.mctennis.contract")
+    contractContents.add("")
+    contractContents.add("import com.github.shynixn.mcutils.common.language.LanguageItem")
+    contractContents.add("import com.github.shynixn.mcutils.common.language.LanguageProvider")
+    contractContents.add("")
+    contractContents.add("interface MCTennisLanguage : LanguageProvider {")
     for (key in lines) {
         if (key.toCharArray()[0].isLetter()) {
-            contents.add("  var ${key} LanguageItem")
-            contents.add("")
+            contractContents.add("  var ${key} LanguageItem")
+            contractContents.add("")
         }
     }
-    contents.removeLast()
-    contents.add("}")
+    contractContents.removeLast()
+    contractContents.add("}")
 
     contractFile.printWriter().use { out ->
-        for (line in contents) {
+        for (line in contractContents) {
             out.println(line)
         }
     }
+
+    val implFile = kotlinSrcFolder.resolve("com/github/shynixn/mctennis/MCTennisLanguageImpl.kt")
+    val implContents = ArrayList<String>()
+    implContents.add("package com.github.shynixn.mctennis")
+    implContents.add("")
+    implContents.add("import com.github.shynixn.mcutils.common.language.LanguageItem")
+    implContents.add("import com.github.shynixn.mctennis.contract.MCTennisLanguage")
+    implContents.add("")
+    implContents.add("class MCTennisLanguageImpl : MCTennisLanguage {")
+    implContents.add(" override val names: List<String>\n" +
+            "  get() = listOf(\"en_us\", \"es_es\", \"zh_cn\")")
+
+    for (i in 0 until lines.size) {
+        val key = lines[i]
+
+        if (key.toCharArray()[0].isLetter()) {
+            var text : String
+
+            var j = i
+            while (true){
+                if(lines[j].contains("text:")){
+                    text = lines[j]
+                    break
+                }
+                j++
+            }
+
+            implContents.add(" override var ${key.replace(":","")} = LanguageItem(${text.replace("  text: ","")})")
+            implContents.add("")
+        }
+    }
+    implContents.removeLast()
+    implContents.add("}")
+
+    implFile.printWriter().use { out ->
+        for (line in implContents) {
+            out.println(line)
+        }
+    }
+}
+
+
+tasks.register("printVersion") {
+    println(version)
 }

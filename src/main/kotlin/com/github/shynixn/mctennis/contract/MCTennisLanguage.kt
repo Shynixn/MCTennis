@@ -3,7 +3,7 @@ package com.github.shynixn.mctennis.contract
 import com.github.shynixn.mcutils.common.language.LanguageItem
 import com.github.shynixn.mcutils.common.language.LanguageProvider
 
-interface Language : LanguageProvider {
+interface MCTennisLanguage : LanguageProvider {
   var gameStartingMessage: LanguageItem
 
   var gameStartCancelledMessage: LanguageItem

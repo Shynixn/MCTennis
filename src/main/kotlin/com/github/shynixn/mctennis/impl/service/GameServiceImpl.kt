@@ -2,8 +2,7 @@ package com.github.shynixn.mctennis.impl.service
 
 import com.github.shynixn.mctennis.MCTennisDependencyInjectionModule
 import com.github.shynixn.mctennis.contract.GameService
-import com.github.shynixn.mctennis.contract.Language
-import com.github.shynixn.mctennis.contract.PlaceHolderService
+import com.github.shynixn.mctennis.contract.MCTennisLanguage
 import com.github.shynixn.mctennis.contract.TennisBallFactory
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
@@ -11,16 +10,16 @@ import com.github.shynixn.mctennis.impl.exception.TennisGameException
 import com.github.shynixn.mctennis.impl.TennisGameImpl
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandService
+import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.repository.Repository
 import com.github.shynixn.mcutils.sign.SignService
-import com.google.inject.Inject
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 import java.util.logging.Level
 import kotlin.math.max
 import kotlin.math.min
 
-class GameServiceImpl @Inject constructor(
+class GameServiceImpl(
     private val arenaRepository: Repository<TennisArena>,
     private val tennisBallFactory: TennisBallFactory,
     private val plugin: Plugin,
@@ -28,7 +27,7 @@ class GameServiceImpl @Inject constructor(
     private val signService: SignService,
     private val chatMessageService: ChatMessageService,
     private val placeHolderService: PlaceHolderService,
-    private val language: Language
+    private val language: MCTennisLanguage
 ) : GameService {
     private val games = ArrayList<TennisGameImpl>()
 
