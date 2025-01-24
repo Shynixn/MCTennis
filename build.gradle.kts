@@ -29,8 +29,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:2025.1")
-    implementation("com.github.shynixn.mcutils:packet:2025.1")
+    implementation("com.github.shynixn.mcutils:common:2025.3")
+    implementation("com.github.shynixn.mcutils:packet:2025.2")
     implementation("com.github.shynixn.mcutils:sign:2025.1")
 }
 
