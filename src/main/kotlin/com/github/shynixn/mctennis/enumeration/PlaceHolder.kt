@@ -43,7 +43,7 @@ enum class PlaceHolder(val text: String, val f: (Player?, TennisGame?, Map<Strin
     GAME_WON_SETS_TEAM_BLUE(
         "%mctennis_game_wonSetsTeamBlue_[game]%",
         { _, game, _ -> game?.teamBlueSetScore?.toString() }),
-    GAME_STATE("%mctennis_game_state%", { _, game, _ ->
+    GAME_STATE("%mctennis_game_state_[game]%", { _, game, _ ->
         if (game != null) {
             if (!game.arena.isEnabled) {
                 "DISABLED"
