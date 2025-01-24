@@ -25,11 +25,18 @@ jobs:
 
       - name: Build Java Application
         env:
-          SHYNIXN_MCUTILS_REPOSITORY: ${{ secrets.SHYNIXN_MCUTILS_REPOSITORY }}
+          SHYNIXN_MCUTILS_REPOSITORY_2025: ${{ secrets.SHYNIXN_MCUTILS_REPOSITORY_2025 }}
         run: |
           chmod +x gradlew
           ./gradlew build pluginJars
           echo "RELEASE_VERSION=$(./gradlew -q printVersion)" >> $GITHUB_ENV
+
+      - name: Create Geyser Customizations
+        if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
+        env:
+          GEYSER_PASSWORD: ${{ secrets.GEYSER_PASSWORD }}
+        run: |
+          7z x docs/resources/MCTennis-GeyserMC.7z -p${{ env.GEYSER_PASSWORD }}           
 
       - name: Create Github Release
         if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
@@ -76,6 +83,17 @@ jobs:
           asset_path: /home/runner/work/MCTennis/MCTennis/build/libs/mctennis-${{ env.RELEASE_VERSION }}-legacy.jar
           asset_name: MCTennis-Legacy.jar
           asset_content_type: application/jar
+
+      - name: Geyser Customizations to Github
+        if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /home/runner/work/MCTennis/MCTennis/MCTennis-GeyserMC.zip
+          asset_name: MCTennis-GeyserMC.zip
+          asset_content_type: application/zip
 
   Wiki:
     runs-on: ubuntu-latest

@@ -1,8 +1,9 @@
 # MCTennis  
 
-| branch | status                                                                                                                                 | download                                                                |
-|--------|----------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------| 
-| main   | [![Build Status](https://github.com/Shynixn/MCTennis/workflows/CI/badge.svg?branch=main)](https://github.com/Shynixn/MCTennis<br/>/actions) | [Download latest release](https://github.com/Shynixn/MCtennis/releases) |
+| branch      | status                                                                                                                                                      | download                                                                |
+|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------| 
+| main        | [![Build Status](https://github.com/Shynixn/MCTennis/actions/workflows/main.yml/badge.svg)](https://github.com/Shynixn/MCTennis/actions)                    | [Download latest release](https://github.com/Shynixn/MCtennis/releases) |
+| development | [![Build Status](https://github.com/Shynixn/MCTennis/actions/workflows/main.yml/badge.svg?branch=development)](https://github.com/Shynixn/MCTennis/actions) |  |
 
 ## Description
 
