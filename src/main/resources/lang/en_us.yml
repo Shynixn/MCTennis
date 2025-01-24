@@ -4,6 +4,8 @@ gameStartingMessage:
   type: "CHAT"
   # The primary text to be sent.
   text: "[&9MCTennis&f] Game is starting in %1$1d seconds."
+  # Only available for type "ACTIONBAR". The time until the action bar message disappears.
+  durationInTicks: 60
   # Only available for type "TITLE". Adds a subTitle.
   subTitle: ""
   # Only available for type: "TITLE". Adds a fade in effect.

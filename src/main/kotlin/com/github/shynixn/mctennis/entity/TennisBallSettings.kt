@@ -1,6 +1,5 @@
 package com.github.shynixn.mctennis.entity
 
-import com.github.shynixn.mctennis.enumeration.VisibilityType
 import com.github.shynixn.mcutils.common.EffectTargetType
 import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.mcutils.common.item.Item
@@ -82,16 +81,6 @@ class TennisBallSettings {
      * Minimum amount of cooldown milliseconds between two clicks.
      */
     var clickCooldown: Int = 2000
-
-    /**
-     * Slime visibility.
-     */
-    var slimeVisibility: VisibilityType = VisibilityType.BEDROCK
-
-    /**
-     * Armorstand visiblity.
-     */
-    var armorstandVisibility: VisibilityType = VisibilityType.JAVA
 
     /**
      * Should the ball collide with water blocks or lava?

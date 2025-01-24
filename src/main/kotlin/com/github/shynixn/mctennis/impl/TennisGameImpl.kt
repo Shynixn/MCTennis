@@ -4,7 +4,11 @@ import com.github.shynixn.mccoroutine.bukkit.CoroutineTimings
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import com.github.shynixn.mccoroutine.bukkit.ticks
-import com.github.shynixn.mctennis.contract.*
+import com.github.shynixn.mctennis.MCTennisPlugin
+import com.github.shynixn.mctennis.contract.MCTennisLanguage
+import com.github.shynixn.mctennis.contract.TennisBall
+import com.github.shynixn.mctennis.contract.TennisBallFactory
+import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.PlayerData
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
@@ -18,6 +22,9 @@ import com.github.shynixn.mcutils.common.ChatColor
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.mcutils.common.command.CommandService
+import com.github.shynixn.mcutils.common.language.LanguageItem
+import com.github.shynixn.mcutils.common.language.sendPluginMessage
+import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.toLocation
 import kotlinx.coroutines.delay
 import org.bukkit.Bukkit
@@ -34,7 +41,7 @@ class TennisGameImpl(
     private val plugin: Plugin,
     private val commandService: CommandService,
     private val placeHolderService: PlaceHolderService,
-    private val language: Language
+    private val language: MCTennisLanguage
 ) : TennisGame {
     private var isDisposed = false
     private var currentQueueTime = arena.queueTimeOutSec
@@ -232,11 +239,10 @@ class TennisGameImpl(
 
         if (team == Team.RED) {
             teamRedScore++
-            language.sendMessageToPlayers(language.scoreRed, getPlayers(), player.name)
-
+            sendMessageToPlayers(getPlayers(), language.scoreRed, player.name)
         } else {
             teamBlueScore++
-            language.sendMessageToPlayers(language.scoreBlue, getPlayers(), player.name)
+            sendMessageToPlayers(getPlayers(), language.scoreBlue, player.name)
         }
 
         plugin.launch {
@@ -261,17 +267,17 @@ class TennisGameImpl(
         // Wait in lobby.
         for (i in 0 until arena.timeToStart) {
             val remaining = arena.timeToStart - i
-            language.sendMessageToPlayers(language.gameStartingMessage, getPlayers(), remaining)
+            sendMessageToPlayers(getPlayers(), language.gameStartingMessage, remaining)
             delay(1000L)
 
             if (!arena.isEnabled) {
                 dispose()
-                language.sendMessageToPlayers(language.gameStartCancelledMessage, getPlayers())
+                sendMessageToPlayers(getPlayers(), language.gameStartCancelledMessage)
                 return
             }
 
             if (teamBluePlayers.size < arena.minPlayersPerTeam || teamRedPlayers.size < arena.minPlayersPerTeam) {
-                language.sendMessageToPlayers(language.notEnoughPlayersMessage, getPlayers())
+                sendMessageToPlayers(getPlayers(), language.notEnoughPlayersMessage)
                 gameState = GameState.LOBBY_IDLE
                 queueTimeOut()
                 return
@@ -335,15 +341,15 @@ class TennisGameImpl(
             val remaining = arena.gameTime - i
 
             if (remaining == 30) {
-                language.sendMessageToPlayers(language.secondsRemaining, getPlayers(), 30)
+                sendMessageToPlayers(getPlayers(), language.secondsRemaining, 30)
             }
 
             if (remaining <= 10) {
-                language.sendMessageToPlayers(language.secondsRemaining, getPlayers(), remaining)
+                sendMessageToPlayers(getPlayers(), language.secondsRemaining, remaining)
             }
 
             if (!arena.isEnabled) {
-                language.sendMessageToPlayers(language.gameCancelledMessage, getPlayers())
+                sendMessageToPlayers(getPlayers(), language.gameCancelledMessage)
                 dispose()
                 return
             }
@@ -459,7 +465,7 @@ class TennisGameImpl(
         ball = tennisBallFactory.createTennisBall(ballspawnpoint.toLocation(), arena.ballSettings, this)
 
         delay(500)
-        language.sendMessageToPlayers(language.readyMessage, getPlayers())
+        sendMessageToPlayers(getPlayers(), language.readyMessage)
         delay(1500)
         ball!!.setVelocity(Vector(0.0, 0.2, 0.0))
         ball!!.allowActions = true
@@ -492,12 +498,12 @@ class TennisGameImpl(
         when (team) {
             Team.RED -> {
                 teamRedSetScore++
-                language.sendMessageToPlayers(language.winSetRed, getPlayers())
+                sendMessageToPlayers(getPlayers(), language.winSetRed)
             }
 
             else -> {
                 teamBlueSetScore++
-                language.sendMessageToPlayers(language.winSetBlue, getPlayers())
+                sendMessageToPlayers(getPlayers(), language.winSetBlue)
             }
         }
 
@@ -527,19 +533,19 @@ class TennisGameImpl(
     private suspend fun winGame(team: Team? = null) {
         when (team) {
             null -> {
-                language.sendMessageToPlayers(language.winDraw, getPlayers())
+                sendMessageToPlayers(getPlayers(), language.winDraw)
                 executeCommandsWithPlaceHolder(teamRedPlayers, arena.redTeamMeta.drawCommands)
                 executeCommandsWithPlaceHolder(teamBluePlayers, arena.blueTeamMeta.drawCommands)
             }
 
             Team.RED -> {
-                language.sendMessageToPlayers(language.winRed, getPlayers())
+                sendMessageToPlayers(getPlayers(), language.winRed)
                 executeCommandsWithPlaceHolder(teamRedPlayers, arena.redTeamMeta.winCommands)
                 executeCommandsWithPlaceHolder(teamBluePlayers, arena.blueTeamMeta.looseCommands)
             }
 
             else -> {
-                language.sendMessageToPlayers(language.winBlue, getPlayers())
+                sendMessageToPlayers(getPlayers(), language.winBlue)
                 executeCommandsWithPlaceHolder(teamBluePlayers, arena.blueTeamMeta.winCommands)
                 executeCommandsWithPlaceHolder(teamRedPlayers, arena.redTeamMeta.looseCommands)
             }
@@ -713,8 +719,8 @@ class TennisGameImpl(
 
     private fun executeCommandsWithPlaceHolder(players: List<Player>, commands: List<CommandMeta>) {
         commandService.executeCommands(players, commands) { c, p ->
-            placeHolderService.replacePlaceHolders(
-                c, p, this
+            placeHolderService.resolvePlaceHolder(
+                c, p, mapOf(MCTennisPlugin.gameKey to this.arena.name)
             )
         }
     }
@@ -734,7 +740,7 @@ class TennisGameImpl(
                 if (currentQueueTime <= 0) {
                     isQueueTimeRunning = false
                     for (player in cachedData.keys.toTypedArray()) {
-                        language.sendMessage(language.queueTimeOutMessage, player)
+                        player.sendPluginMessage(language.queueTimeOutMessage)
                         leave(player)
                     }
                     gameState = GameState.LOBBY_IDLE
@@ -742,6 +748,16 @@ class TennisGameImpl(
                 }
 
                 delay(20.ticks)
+            }
+        }
+    }
+
+    private fun sendMessageToPlayers(players: List<Player>, languageItem: LanguageItem, param: Any? = null) {
+        for (player in players) {
+            if (param != null) {
+                player.sendPluginMessage(languageItem, param)
+            } else {
+                player.sendPluginMessage(languageItem)
             }
         }
     }

@@ -244,11 +244,6 @@ ball:
   clickHitBoxSize: 3
   # Cooldown in Milliseconds how often the ball can be touched.
   clickCooldown: 2000
-  # Flag if the slime hitbox should be shown on "BEDROCK", "JAVA" or "ALL".
-  slimeVisibility: "BEDROCK"
-  # Flag if the armorstand ball should be shown on "BEDROCK", "JAVA" or "ALL".
-  # Note, Armorstand blocks are invisible on Bedrock, which is a limitation of bedrock itself.
-  armorstandVisibility: "JAVA"
   # Commands which are executed every MCTennis game tick (1 tick per second, not the minecraft tick which is 20 ticks per second)
   # Types are:
   #  SERVER (executes a single command with server level permission)

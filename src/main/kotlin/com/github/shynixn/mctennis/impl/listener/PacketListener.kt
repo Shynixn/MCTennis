@@ -7,12 +7,11 @@ import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.packet.api.event.PacketAsyncEvent
 import com.github.shynixn.mcutils.packet.api.meta.enumeration.InteractionType
 import com.github.shynixn.mcutils.packet.api.packet.PacketInInteractEntity
-import com.google.inject.Inject
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 
-class PacketListener @Inject constructor(
+class PacketListener (
     private val physicObjectApi: PhysicObjectService,
     private val gameService: GameService,
     private val plugin: Plugin

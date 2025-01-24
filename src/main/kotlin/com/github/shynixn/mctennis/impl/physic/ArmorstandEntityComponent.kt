@@ -19,7 +19,6 @@ class ArmorstandEntityComponent(
     private val itemService: ItemService,
     private val ballSettings: TennisBallSettings,
     val entityId: Int,
-    private var filteredPlayers: HashSet<Player>,
     private val renderOffsetY : Double
 ) : PhysicComponent {
     private var rotation = 0.0
@@ -31,10 +30,6 @@ class ArmorstandEntityComponent(
     }
 
     private fun onPlayerSpawn(player: Player, location: Location) {
-        if (filteredPlayers.contains(player)) {
-            return
-        }
-
         packetService.sendPacketOutEntitySpawn(player, PacketOutEntitySpawn().also {
             it.entityId = this.entityId
             it.entityType = EntityType.ARMOR_STAND
@@ -56,10 +51,6 @@ class ArmorstandEntityComponent(
     }
 
     private fun onPlayerRemove(player: Player) {
-        if (filteredPlayers.contains(player)) {
-            return
-        }
-
         val outer = this
         packetService.sendPacketOutEntityDestroy(player, PacketOutEntityDestroy().also {
             it.entityIds = listOf(outer.entityId)
@@ -70,9 +61,6 @@ class ArmorstandEntityComponent(
         val players = playerComponent.visiblePlayers
 
         for (player in players) {
-            if (filteredPlayers.contains(player)) {
-                continue
-            }
 
             packetService.sendPacketOutEntityVelocity(player, PacketOutEntityVelocity().also {
                 it.entityId = this.entityId
@@ -109,10 +97,6 @@ class ArmorstandEntityComponent(
         val players = playerComponent.visiblePlayers
 
         for (player in players) {
-            if (filteredPlayers.contains(player)) {
-                continue
-            }
-
             packetService.sendPacketOutEntityMetadata(player, PacketOutEntityMetadata().also {
                 it.entityId = this.entityId
                 it.armorStandHeadRotation = EulerAngle(rotation, 0.0, 0.0)

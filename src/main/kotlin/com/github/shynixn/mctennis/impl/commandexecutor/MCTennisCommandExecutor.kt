@@ -2,10 +2,8 @@ package com.github.shynixn.mctennis.impl.commandexecutor
 
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mctennis.MCTennisDependencyInjectionModule
-import com.github.shynixn.mctennis.MCTennisLanguageImpl
 import com.github.shynixn.mctennis.contract.GameService
-import com.github.shynixn.mctennis.contract.Language
-import com.github.shynixn.mctennis.contract.PlaceHolderService
+import com.github.shynixn.mctennis.contract.MCTennisLanguage
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
 import com.github.shynixn.mctennis.enumeration.JoinResult
@@ -13,16 +11,20 @@ import com.github.shynixn.mctennis.enumeration.LocationType
 import com.github.shynixn.mctennis.enumeration.Permission
 import com.github.shynixn.mctennis.enumeration.Team
 import com.github.shynixn.mctennis.impl.exception.TennisGameException
-import com.github.shynixn.mcutils.common.*
+import com.github.shynixn.mcutils.common.ChatColor
+import com.github.shynixn.mcutils.common.CoroutineExecutor
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandBuilder
 import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.mcutils.common.command.CommandType
 import com.github.shynixn.mcutils.common.command.Validator
 import com.github.shynixn.mcutils.common.language.reloadTranslation
+import com.github.shynixn.mcutils.common.language.sendPluginMessage
+import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.repository.CacheRepository
+import com.github.shynixn.mcutils.common.toVector3d
+import com.github.shynixn.mcutils.common.translateChatColors
 import com.github.shynixn.mcutils.sign.SignService
-import com.google.inject.Inject
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
@@ -30,12 +32,12 @@ import org.bukkit.plugin.Plugin
 import java.util.*
 import java.util.logging.Level
 
-class MCTennisCommandExecutor @Inject constructor(
+class MCTennisCommandExecutor(
     private val arenaRepository: CacheRepository<TennisArena>,
     private val gameService: GameService,
     private val plugin: Plugin,
     private val signService: SignService,
-    private val language: Language,
+    private val language: MCTennisLanguage,
     private val placeHolderService: PlaceHolderService,
     chatMessageService: ChatMessageService
 ) {
@@ -243,10 +245,10 @@ class MCTennisCommandExecutor @Inject constructor(
             subCommand("placeholder") {
                 permission(Permission.EDIT_GAME)
                 builder().argument("placeholder").tabs { listOf("<>") }.execute { sender, placeHolder ->
-                    val evaluatedValue = placeHolderService.replacePlaceHolders(placeHolder)
+                    val evaluatedValue = placeHolderService.resolvePlaceHolder(placeHolder, null)
                     sender.sendMessage(language.commandPlaceHolderMessage.text.format(evaluatedValue))
                 }.executePlayer({ language.commandSenderHasToBePlayer.text }) { player, placeHolder ->
-                    val evaluatedValue = placeHolderService.replacePlaceHolders(placeHolder, player)
+                    val evaluatedValue = placeHolderService.resolvePlaceHolder(placeHolder, player)
                     player.sendMessage(language.commandPlaceHolderMessage.text.format(evaluatedValue))
                 }
             }
@@ -268,7 +270,7 @@ class MCTennisCommandExecutor @Inject constructor(
 
     private suspend fun createArena(sender: CommandSender, name: String, displayName: String) {
         if (arenaRepository.getAll().size > 0 && !MCTennisDependencyInjectionModule.areLegacyVersionsIncluded) {
-            language.sendMessage(language.freeVersionMessage, sender)
+            sender.sendPluginMessage(language.freeVersionMessage)
             return
         }
 
@@ -276,7 +278,7 @@ class MCTennisCommandExecutor @Inject constructor(
         arena.name = name
         arena.displayName = displayName
         arenaRepository.save(arena)
-        language.sendMessage(language.gameCreatedMessage, sender, name)
+        sender.sendPluginMessage(language.gameCreatedMessage, name)
     }
 
     private suspend fun deleteArena(sender: CommandSender, arena: TennisArena) {
@@ -477,10 +479,10 @@ class MCTennisCommandExecutor @Inject constructor(
             sender.sendMessage(language.rightClickOnSignMessage.text)
             signService.addSignByRightClick(sender) { sign ->
                 sign.let {
-                    it.line1 = "%mctennis_lang_joinSignLine1%"
-                    it.line2 = "%mctennis_lang_joinSignLine2%"
-                    it.line3 = "%mctennis_lang_joinSignLine3%"
-                    it.line4 = "%mctennis_lang_joinSignLine4%"
+                    it.line1 = language.joinSignLine1.text
+                    it.line2 = language.joinSignLine2.text
+                    it.line3 = language.joinSignLine3.text
+                    it.line4 = language.joinSignLine4.text
                     it.cooldown = 20
                     it.update = 40
                     it.commands = mutableListOf(CommandMeta().also {
@@ -503,10 +505,10 @@ class MCTennisCommandExecutor @Inject constructor(
             sender.sendMessage(language.rightClickOnSignMessage.text)
             signService.addSignByRightClick(sender) { sign ->
                 sign.let {
-                    it.line1 = "%mctennis_lang_leaveSignLine1%"
-                    it.line2 = "%mctennis_lang_leaveSignLine2%"
-                    it.line3 = "%mctennis_lang_leaveSignLine3%"
-                    it.line4 = "%mctennis_lang_leaveSignLine4%"
+                    it.line1 = language.leaveSignLine1.text
+                    it.line2 = language.leaveSignLine2.text
+                    it.line3 = language.leaveSignLine3.text
+                    it.line4 = language.leaveSignLine4.text
                     it.cooldown = 20
                     it.update = 40
                     it.commands = mutableListOf(CommandMeta().also {
@@ -541,7 +543,7 @@ class MCTennisCommandExecutor @Inject constructor(
 
         if (arena == null) {
             plugin.reloadConfig()
-            plugin.reloadTranslation(language as MCTennisLanguageImpl, MCTennisLanguageImpl::class.java)
+            plugin.reloadTranslation(language)
             plugin.logger.log(Level.INFO, "Loaded language file.")
 
             try {

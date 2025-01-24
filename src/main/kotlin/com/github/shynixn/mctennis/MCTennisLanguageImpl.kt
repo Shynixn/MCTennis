@@ -1,120 +1,116 @@
 package com.github.shynixn.mctennis
 
-import com.github.shynixn.mctennis.contract.Language
 import com.github.shynixn.mcutils.common.language.LanguageItem
-import com.github.shynixn.mcutils.common.language.LanguageProviderImpl
+import com.github.shynixn.mctennis.contract.MCTennisLanguage
 
-class MCTennisLanguageImpl() : Language, LanguageProviderImpl() {
-    override val names: List<String>
-        get() = listOf("en_us")
+class MCTennisLanguageImpl : MCTennisLanguage {
+ override val names: List<String>
+  get() = listOf("en_us")
+ override var gameStartingMessage = LanguageItem("[&9MCTennis&f] Game is starting in %1$1d seconds.")
 
-    override var gameStartingMessage: LanguageItem = LanguageItem()
+ override var gameStartCancelledMessage = LanguageItem("[&9MCTennis&f] Game start has been cancelled.")
 
-    override var gameStartCancelledMessage: LanguageItem = LanguageItem()
+ override var gameDoesNotExistMessage = LanguageItem("[&9MCTennis&f] Game %1$1s does not exist.")
 
-    override var gameDoesNotExistMessage: LanguageItem = LanguageItem()
+ override var noPermissionForGameMessage = LanguageItem("[&9MCTennis&f] You do not have permission to join game %1$1s.")
 
-    override var noPermissionForGameMessage: LanguageItem = LanguageItem()
+ override var noPermissionMessage = LanguageItem("[&9MCTennis&f] You do not have permission.")
 
-    override var noPermissionMessage: LanguageItem = LanguageItem()
+ override var locationTypeDoesNotExistMessage = LanguageItem("[&9MCTennis&f] This location type is not known. For more locations, open the arena.yml.")
 
-    override var locationTypeDoesNotExistMessage: LanguageItem = LanguageItem()
+ override var spawnPointSetMessage = LanguageItem("[&9MCTennis&f] Location was set on %1$1s.")
 
-    override var spawnPointSetMessage: LanguageItem = LanguageItem()
+ override var gameAlreadyExistsMessage = LanguageItem("[&9MCTennis&f] Game %1$1s already exists.")
 
-    override var gameAlreadyExistsMessage: LanguageItem = LanguageItem()
+ override var enabledArenaMessage = LanguageItem("[&9MCTennis&f] Game enable state was set to %1$1s.")
 
-    override var enabledArenaMessage: LanguageItem = LanguageItem()
+ override var gameIsFullMessage = LanguageItem("[&9MCTennis&f] Game is already full.")
 
-    override var gameIsFullMessage: LanguageItem = LanguageItem()
+ override var gameCreatedMessage = LanguageItem("[&9MCTennis&f] Created game %1$1s.")
 
-    override var gameCreatedMessage: LanguageItem = LanguageItem()
+ override var reloadedAllGamesMessage = LanguageItem("[&9MCTennis&f] Reloaded all games.")
 
-    override var reloadedAllGamesMessage: LanguageItem = LanguageItem()
+ override var reloadedGameMessage = LanguageItem("[&9MCTennis&f] Reloaded game %1$1s.")
 
-    override var reloadedGameMessage: LanguageItem = LanguageItem()
+ override var joinTeamRedMessage = LanguageItem("[&9MCTennis&f] Successfully joined team red.")
 
-    override var joinTeamRedMessage: LanguageItem = LanguageItem()
+ override var joinTeamBlueMessage = LanguageItem("[&9MCTennis&f] Successfully joined team blue.")
 
-    override var joinTeamBlueMessage: LanguageItem = LanguageItem()
+ override var leftGameMessage = LanguageItem("[&9MCTennis&f] Left the game.")
 
-    override var leftGameMessage: LanguageItem = LanguageItem()
+ override var deletedGameMessage = LanguageItem("[&9MCTennis&f] Deleted game %1$1s.")
 
-    override var deletedGameMessage: LanguageItem = LanguageItem()
+ override var notEnoughPlayersMessage = LanguageItem("[&9MCTennis&f] Not enough players! Game start was cancelled.")
 
-    override var notEnoughPlayersMessage: LanguageItem = LanguageItem()
+ override var teamDoesNotExistMessage = LanguageItem("[&9MCTennis&f] Team %1$1s does not exist.")
 
-    override var teamDoesNotExistMessage: LanguageItem = LanguageItem()
+ override var updatedInventoryMessage = LanguageItem("[&9MCTennis&f] Updated inventory of game.")
 
-    override var updatedInventoryMessage: LanguageItem = LanguageItem()
+ override var updatedArmorMessage = LanguageItem("[&9MCTennis&f] Updated armor of game.")
 
-    override var updatedArmorMessage: LanguageItem = LanguageItem()
+ override var secondsRemaining = LanguageItem("[&9MCTennis&f] %1$1s second(s) remaining.")
 
-    override var secondsRemaining: LanguageItem = LanguageItem()
+ override var gameCancelledMessage = LanguageItem("[&9MCTennis&f] Game has been cancelled.")
 
-    override var gameCancelledMessage: LanguageItem = LanguageItem()
+ override var scoreRed = LanguageItem("&c&l%mctennis_game_score%")
 
-    override var scoreRed: LanguageItem = LanguageItem()
+ override var scoreBlue = LanguageItem("&9&l%mctennis_game_score%")
 
-    override var scoreBlue: LanguageItem = LanguageItem()
+ override var winRed = LanguageItem("&c&lTeam Red")
 
-    override var winRed: LanguageItem = LanguageItem()
+ override var winSetRed = LanguageItem("&cTeam Red")
 
-    override var winSetRed: LanguageItem = LanguageItem()
+ override var winBlue = LanguageItem("&9Team Blue")
 
-    override var winBlue: LanguageItem = LanguageItem()
+ override var winSetBlue = LanguageItem("&9Team Blue")
 
-    override var winSetBlue: LanguageItem = LanguageItem()
+ override var winDraw = LanguageItem("&fDraw")
 
-    override var winDraw: LanguageItem = LanguageItem()
+ override var readyMessage = LanguageItem("&6&lReady?")
 
-    override var readyMessage: LanguageItem = LanguageItem()
+ override var bounceOutHologram = LanguageItem("&lOut")
 
-    override var bounceOutHologram: LanguageItem = LanguageItem()
+ override var bounceSecondHologram = LanguageItem("&l2nd Bounce")
 
-    override var bounceSecondHologram: LanguageItem = LanguageItem()
+ override var joinSignLine1 = LanguageItem("&f[&r&lMCTennis&r&f]")
 
-    override var joinSignLine1: LanguageItem = LanguageItem()
+ override var joinSignLine2 = LanguageItem("%mctennis_game_stateDisplayName%")
 
-    override var joinSignLine2: LanguageItem = LanguageItem()
+ override var joinSignLine3 = LanguageItem("%mctennis_game_players%/%mctennis_game_maxPlayers%")
 
-    override var joinSignLine3: LanguageItem = LanguageItem()
+ override var joinSignLine4 = LanguageItem("")
 
-    override var joinSignLine4: LanguageItem = LanguageItem()
+ override var leaveSignLine1 = LanguageItem("&f[&r&lMCTennis&r&f]")
 
-    override var leaveSignLine1: LanguageItem = LanguageItem()
+ override var leaveSignLine2 = LanguageItem("&f&lLeave")
 
-    override var leaveSignLine2: LanguageItem = LanguageItem()
+ override var leaveSignLine3 = LanguageItem("%mctennis_game_players%/%mctennis_game_maxPlayers%")
 
-    override var leaveSignLine3: LanguageItem = LanguageItem()
+ override var leaveSignLine4 = LanguageItem("")
 
-    override var leaveSignLine4: LanguageItem = LanguageItem()
+ override var gameStateJoinAble = LanguageItem("&aJoin")
 
-    override var gameStateJoinAble: LanguageItem = LanguageItem()
+ override var gameStateDisabled = LanguageItem("&4Disabled")
 
-    override var gameStateDisabled: LanguageItem = LanguageItem()
+ override var gameStateRunning = LanguageItem("&1Running")
 
-    override var gameStateRunning: LanguageItem = LanguageItem()
+ override var rightClickOnSignMessage = LanguageItem("RightClick on a sign to convert it into a game sign.")
 
-    override var rightClickOnSignMessage: LanguageItem = LanguageItem()
+ override var signTypeDoesNotExist = LanguageItem("This sign type does not exist.")
 
-    override var signTypeDoesNotExist: LanguageItem = LanguageItem()
+ override var addedSignMessage = LanguageItem("A sign was added to the game.")
 
-    override var addedSignMessage: LanguageItem = LanguageItem()
+ override var commandDescription = LanguageItem("All commands for the MCTennis plugin.")
 
-    override var commandDescription: LanguageItem = LanguageItem()
+ override var commandUsage = LanguageItem("[&9MCTennis&f] Use /mctennis help to see more info about the plugin.")
 
-    override var commandUsage: LanguageItem = LanguageItem()
+ override var maxLength20Characters = LanguageItem("The text length has to be less than 20 characters.")
 
-    override var maxLength20Characters: LanguageItem = LanguageItem()
+ override var commandSenderHasToBePlayer = LanguageItem("The command sender has to be a player!")
 
-    override var commandSenderHasToBePlayer: LanguageItem = LanguageItem()
+ override var freeVersionMessage = LanguageItem("This version of MCTennis does only allow 1 game per server. Go to https://patreon.com/Shynixn for the premium version.")
 
-    override var freeVersionMessage: LanguageItem = LanguageItem()
+ override var commandPlaceHolderMessage = LanguageItem("Evaluated placeholder: %1$1s")
 
-    override var commandPlaceHolderMessage: LanguageItem = LanguageItem()
-
-    override var queueTimeOutMessage: LanguageItem = LanguageItem().also {
-        it.text = "[&9MCTennis&f]&c Not enough players joined in time to start the game."
-    }
+ override var queueTimeOutMessage = LanguageItem("[&9MCTennis&f]&c Not enough players joined in time to start the game.")
 }
