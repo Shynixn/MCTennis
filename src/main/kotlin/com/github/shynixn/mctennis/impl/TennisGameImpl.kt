@@ -5,7 +5,10 @@ import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import com.github.shynixn.mccoroutine.bukkit.ticks
 import com.github.shynixn.mctennis.MCTennisPlugin
-import com.github.shynixn.mctennis.contract.*
+import com.github.shynixn.mctennis.contract.MCTennisLanguage
+import com.github.shynixn.mctennis.contract.TennisBall
+import com.github.shynixn.mctennis.contract.TennisBallFactory
+import com.github.shynixn.mctennis.contract.TennisGame
 import com.github.shynixn.mctennis.entity.PlayerData
 import com.github.shynixn.mctennis.entity.TeamMetadata
 import com.github.shynixn.mctennis.entity.TennisArena
@@ -346,7 +349,7 @@ class TennisGameImpl(
             }
 
             if (!arena.isEnabled) {
-                sendMessageToPlayers(getPlayers(),language.gameCancelledMessage)
+                sendMessageToPlayers(getPlayers(), language.gameCancelledMessage)
                 dispose()
                 return
             }
@@ -749,9 +752,13 @@ class TennisGameImpl(
         }
     }
 
-    private fun sendMessageToPlayers(players: List<Player>, languageItem: LanguageItem, vararg params: Any) {
+    private fun sendMessageToPlayers(players: List<Player>, languageItem: LanguageItem, param: Any? = null) {
         for (player in players) {
-            player.sendPluginMessage(languageItem, params)
+            if (param != null) {
+                player.sendPluginMessage(languageItem, param)
+            } else {
+                player.sendPluginMessage(languageItem)
+            }
         }
     }
 }

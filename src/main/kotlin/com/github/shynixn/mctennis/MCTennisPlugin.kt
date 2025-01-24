@@ -111,12 +111,12 @@ class MCTennisPlugin : JavaPlugin() {
         // Service dependencies
         Bukkit.getServicesManager().register(
             TennisBallFactory::class.java,
-            module.getService(),
+            module.getService<TennisBallFactory>(),
             this,
             ServicePriority.Normal
         )
         Bukkit.getServicesManager()
-            .register(GameService::class.java, module.getService(), this, ServicePriority.Normal)
+            .register(GameService::class.java, module.getService<GameService>(), this, ServicePriority.Normal)
 
         val plugin = this
         plugin.launch {

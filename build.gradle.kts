@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.shynixn"
-version = "1.13.0"
+version = "1.14.0"
 
 repositories {
     mavenLocal()
@@ -30,7 +30,7 @@ dependencies {
 
     // Custom dependencies
     implementation("com.github.shynixn.mcutils:common:2025.3")
-    implementation("com.github.shynixn.mcutils:packet:2025.2")
+    implementation("com.github.shynixn.mcutils:packet:2025.3")
     implementation("com.github.shynixn.mcutils:sign:2025.1")
 }
 
@@ -207,7 +207,7 @@ tasks.register("languageFile") {
     implContents.add("")
     implContents.add("class MCTennisLanguageImpl : MCTennisLanguage {")
     implContents.add(" override val names: List<String>\n" +
-            "  get() = listOf(\"en_us\", \"es_es\", \"zh_cn\")")
+            "  get() = listOf(\"en_us\")")
 
     for (i in 0 until lines.size) {
         val key = lines[i]

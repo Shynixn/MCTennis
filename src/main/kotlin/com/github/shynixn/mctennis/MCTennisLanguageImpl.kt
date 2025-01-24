@@ -5,7 +5,7 @@ import com.github.shynixn.mctennis.contract.MCTennisLanguage
 
 class MCTennisLanguageImpl : MCTennisLanguage {
  override val names: List<String>
-  get() = listOf("en_us", "es_es", "zh_cn")
+  get() = listOf("en_us")
  override var gameStartingMessage = LanguageItem("[&9MCTennis&f] Game is starting in %1$1d seconds.")
 
  override var gameStartCancelledMessage = LanguageItem("[&9MCTennis&f] Game start has been cancelled.")
