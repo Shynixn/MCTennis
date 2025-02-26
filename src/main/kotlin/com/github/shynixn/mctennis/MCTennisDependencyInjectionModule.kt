@@ -26,6 +26,7 @@ import com.github.shynixn.mcutils.common.physic.PhysicObjectDispatcher
 import com.github.shynixn.mcutils.common.physic.PhysicObjectDispatcherImpl
 import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.common.physic.PhysicObjectServiceImpl
+import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.repository.CacheRepository
 import com.github.shynixn.mcutils.common.repository.CachedRepositoryImpl
 import com.github.shynixn.mcutils.common.repository.Repository
@@ -42,7 +43,11 @@ import com.github.shynixn.mcutils.sign.SignService
 import com.github.shynixn.mcutils.sign.SignServiceImpl
 import org.bukkit.plugin.Plugin
 
-class MCTennisDependencyInjectionModule(private val plugin: MCTennisPlugin, private val language: MCTennisLanguage) {
+class MCTennisDependencyInjectionModule(
+    private val plugin: MCTennisPlugin,
+    private val language: MCTennisLanguage,
+    private val placeHolderService: PlaceHolderService
+) {
     companion object {
         val areLegacyVersionsIncluded: Boolean by lazy {
             try {
@@ -62,7 +67,8 @@ class MCTennisDependencyInjectionModule(private val plugin: MCTennisPlugin, priv
         module.addService<MCTennisLanguage>(language)
 
         // Repositories
-        val tennisArenaRepository = YamlFileRepositoryImpl<TennisArena>(plugin,
+        val tennisArenaRepository = YamlFileRepositoryImpl<TennisArena>(
+            plugin,
             "arena",
             listOf(Pair("arena_sample.yml", "arena_sample.yml")),
             listOf("arena_sample.yml"),
@@ -72,10 +78,8 @@ class MCTennisDependencyInjectionModule(private val plugin: MCTennisPlugin, priv
         module.addService<CacheRepository<TennisArena>>(cacheTennisArenaRepository)
 
         // Library Services
-        module.addService<com.github.shynixn.mcutils.common.placeholder.PlaceHolderService> {
-            com.github.shynixn.mcutils.common.placeholder.PlaceHolderServiceImpl(
-                plugin
-            )
+        module.addService<PlaceHolderService> {
+            placeHolderService
         }
         module.addService<CommandService>(CommandServiceImpl(object : CoroutineExecutor {
             override fun execute(f: suspend () -> Unit) {

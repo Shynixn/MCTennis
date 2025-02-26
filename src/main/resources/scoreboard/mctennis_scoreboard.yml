@@ -1,0 +1,21 @@
+# Unique identifier of a scoreboard.
+name: "mctennis_scoreboard"
+# Possible types: GLOBAL, COMMAND
+# If GLOBAl, the scoreboard is always visible as long as the player has got the permission.
+# If COMMAND, the scoreboard is only visible after executing the command.
+type: "COMMAND"
+# If multiple scoreboards would be available, the one with the highest priority (lowest number), is selected.
+priority: 1
+# The Minecraft ticks how often this scoreboard is updated to the player. (1 tick = 50ms)
+refreshTicks: 5
+# Displayed title of the scoreboard. Supports placeholders. Max length of the title is 16 characters.
+title: "&aMCTennis"
+# Displayed lines of the scoreboard. Supports placeholders. Max length of a line is 32 characters.
+lines:
+  - "&m              &m           &r"
+  - "&r&cTeam Red &f/ &9Team Blue"
+  - "&m              &m           &r"
+  - "          %mctennis_game_wonSetsTeamRed% / %mctennis_game_wonSetsTeamBlue%"
+  - "&m              &m           &r"
+  - "         %mctennis_game_score%"
+  - "&m              &m           &r"

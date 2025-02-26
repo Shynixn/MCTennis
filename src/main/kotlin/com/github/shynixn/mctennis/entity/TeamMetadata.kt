@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.command.CommandMeta
+import com.github.shynixn.mcutils.common.command.CommandType
 
 class TeamMetadata {
     /**
@@ -65,12 +66,22 @@ class TeamMetadata {
     /**
      * Commands executed on player join.
      */
-    var joinCommands: List<CommandMeta> = ArrayList()
+    var joinCommands: List<CommandMeta> = listOf(
+        CommandMeta(
+            CommandType.SERVER_PER_PLAYER,
+            "/mctennisscoreboard add mctennis_scoreboard %mctennis_player_name%"
+        )
+    )
 
     /**
      * Commands executed on player leave.
      */
-    var leaveCommands: List<CommandMeta> = ArrayList()
+    var leaveCommands: List<CommandMeta> = listOf(
+        CommandMeta(
+            CommandType.SERVER_PER_PLAYER,
+            "/mctennisscoreboard remove mctennis_scoreboard %mctennis_player_name%"
+        )
+    )
 
     /**
      * Commands which are executed every game tick.
