@@ -4,11 +4,11 @@ import java.io.*
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version ("1.9.25")
-    id("com.github.johnrengelman.shadow") version ("7.0.0")
+    id("com.gradleup.shadow") version ("8.3.6")
 }
 
 group = "com.github.shynixn"
-version = "1.14.0"
+version = "1.15.0"
 
 repositories {
     mavenLocal()
@@ -27,15 +27,15 @@ dependencies {
     implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.21.0")
     implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-api:2.21.0")
     implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-core:2.21.0")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.2.3")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 
     // Custom dependencies
-    implementation("com.github.shynixn.shyscoreboard:shyscoreboard:1.0.2")
-    implementation("com.github.shynixn.mcutils:common:2025.5")
-    implementation("com.github.shynixn.mcutils:packet:2025.9")
-    implementation("com.github.shynixn.mcutils:sign:2025.1")
+    implementation("com.github.shynixn.shyscoreboard:shyscoreboard:1.1.0")
+    implementation("com.github.shynixn.mcutils:common:2025.7")
+    implementation("com.github.shynixn.mcutils:packet:2025.10")
+    implementation("com.github.shynixn.mcutils:sign:2025.3")
 }
 
 tasks.withType<KotlinCompile> {
