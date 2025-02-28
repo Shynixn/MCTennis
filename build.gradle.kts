@@ -4,16 +4,17 @@ import java.io.*
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version ("1.9.25")
-    id("com.github.johnrengelman.shadow") version ("7.0.0")
+    id("com.gradleup.shadow") version ("8.3.6")
 }
 
 group = "com.github.shynixn"
-version = "1.14.0"
+version = "1.15.0"
 
 repositories {
     mavenLocal()
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://shynixn.github.io/m2/repository/releases")
     maven(System.getenv("SHYNIXN_MCUTILS_REPOSITORY_2025")) // All MCUTILS libraries are private and not OpenSource.
 }
 
@@ -22,16 +23,19 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
 
     // Plugin.yml Shade dependencies
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.20.0")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.20.0")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.2.3")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.21.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.21.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-api:2.21.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-core:2.21.0")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 
     // Custom dependencies
-    implementation("com.github.shynixn.mcutils:common:2025.3")
-    implementation("com.github.shynixn.mcutils:packet:2025.3")
-    implementation("com.github.shynixn.mcutils:sign:2025.1")
+    implementation("com.github.shynixn.shyscoreboard:shyscoreboard:1.1.0")
+    implementation("com.github.shynixn.mcutils:common:2025.7")
+    implementation("com.github.shynixn.mcutils:packet:2025.10")
+    implementation("com.github.shynixn.mcutils:sign:2025.3")
 }
 
 tasks.withType<KotlinCompile> {
@@ -177,14 +181,37 @@ tasks.register("languageFile") {
     val lines = resourceFile.readLines()
 
     val contractContents = ArrayList<String>()
+    val ignoredKeys = listOf(
+        "playerNotFoundMessage",
+        "reloadMessage",
+        "noPermissionCommand",
+        "commandSenderHasToBePlayer",
+        "reloadCommandHint",
+        "commonErrorMessage",
+        "scoreboardCommandUsage",
+        "scoreboardCommandDescription",
+        "scoreboardAddCommandHint",
+        "scoreboardRemoveCommandHint",
+        "scoreboardNotFoundMessage",
+        "scoreboardNoPermissionToScoreboardCommand",
+        "scoreboardAddedMessage",
+        "scoreboardRemovedMessage",
+        "scoreboardUpdateCommandHint",
+        "scoreboardUpdatedMessage"
+    )
     contractContents.add("package com.github.shynixn.mctennis.contract")
     contractContents.add("")
+    contractContents.add("import com.github.shynixn.shyscoreboard.contract.ShyScoreboardLanguage")
     contractContents.add("import com.github.shynixn.mcutils.common.language.LanguageItem")
     contractContents.add("import com.github.shynixn.mcutils.common.language.LanguageProvider")
     contractContents.add("")
-    contractContents.add("interface MCTennisLanguage : LanguageProvider {")
+    contractContents.add("interface MCTennisLanguage : LanguageProvider, ShyScoreboardLanguage  {")
     for (key in lines) {
         if (key.toCharArray()[0].isLetter()) {
+            if (ignoredKeys.contains(key.substring(0, key.length-1))) {
+                continue
+            }
+
             contractContents.add("  var ${key} LanguageItem")
             contractContents.add("")
         }

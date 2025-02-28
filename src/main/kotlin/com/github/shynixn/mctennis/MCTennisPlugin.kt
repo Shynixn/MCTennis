@@ -13,12 +13,17 @@ import com.github.shynixn.mctennis.impl.listener.TennisListener
 import com.github.shynixn.mcutils.common.Version
 import com.github.shynixn.mcutils.common.di.DependencyInjectionModule
 import com.github.shynixn.mcutils.common.language.reloadTranslation
-import com.github.shynixn.mcutils.common.physic.PhysicObjectService
 import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.repository.Repository
 import com.github.shynixn.mcutils.packet.api.PacketInType
 import com.github.shynixn.mcutils.packet.api.PacketService
 import com.github.shynixn.mcutils.sign.SignService
+import com.github.shynixn.shyscoreboard.ShyScoreboardDependencyInjectionModule
+import com.github.shynixn.shyscoreboard.contract.ScoreboardService
+import com.github.shynixn.shyscoreboard.contract.ShyScoreboardLanguage
+import com.github.shynixn.shyscoreboard.entity.ShyScoreboardSettings
+import com.github.shynixn.shyscoreboard.impl.commandexecutor.ShyScoreboardCommandExecutor
+import com.github.shynixn.shyscoreboard.impl.listener.ShyScoreboardListener
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.plugin.ServicePriority
@@ -32,8 +37,8 @@ class MCTennisPlugin : JavaPlugin() {
     }
 
     private val prefix: String = org.bukkit.ChatColor.BLUE.toString() + "[MCTennis] " + org.bukkit.ChatColor.WHITE
-    private var isLoaded = false
-    private lateinit var module: DependencyInjectionModule
+    private var module: DependencyInjectionModule? = null
+    private var scoreboardModule: DependencyInjectionModule? = null
 
     /**
      * Called when this plugin is enabled.
@@ -92,36 +97,37 @@ class MCTennisPlugin : JavaPlugin() {
         logger.log(Level.INFO, "Loaded language file.")
 
         // Module
-        this.module = MCTennisDependencyInjectionModule(this, language).build()
+        this.scoreboardModule = loadShyScoreboardModule(language)
+        this.module = MCTennisDependencyInjectionModule(this, language, this.scoreboardModule!!.getService()).build()
 
         // Register PlaceHolder
-        PlaceHolder.registerAll(module.getService(), module.getService(), language)
+        PlaceHolder.registerAll(module!!.getService(), module!!.getService(), language)
 
         // Register Packet
-        module.getService<PacketService>().registerPacketListening(PacketInType.USEENTITY)
+        module!!.getService<PacketService>().registerPacketListening(PacketInType.USEENTITY)
 
         // Register Listeners
-        Bukkit.getPluginManager().registerEvents(module.getService<GameListener>(), this)
-        Bukkit.getPluginManager().registerEvents(module.getService<PacketListener>(), this)
-        Bukkit.getPluginManager().registerEvents(module.getService<TennisListener>(), this)
+        Bukkit.getPluginManager().registerEvents(module!!.getService<GameListener>(), this)
+        Bukkit.getPluginManager().registerEvents(module!!.getService<PacketListener>(), this)
+        Bukkit.getPluginManager().registerEvents(module!!.getService<TennisListener>(), this)
 
         // Register CommandExecutor
-        module.getService<MCTennisCommandExecutor>()
+        module!!.getService<MCTennisCommandExecutor>()
 
         // Service dependencies
         Bukkit.getServicesManager().register(
             TennisBallFactory::class.java,
-            module.getService<TennisBallFactory>(),
+            module!!.getService<TennisBallFactory>(),
             this,
             ServicePriority.Normal
         )
         Bukkit.getServicesManager()
-            .register(GameService::class.java, module.getService<GameService>(), this, ServicePriority.Normal)
+            .register(GameService::class.java, module!!.getService<GameService>(), this, ServicePriority.Normal)
 
         val plugin = this
         plugin.launch {
             // Load Games
-            val gameService = module.getService<GameService>()
+            val gameService = module!!.getService<GameService>()
             try {
                 gameService.reloadAll()
             } catch (e: TennisGameException) {
@@ -129,9 +135,9 @@ class MCTennisPlugin : JavaPlugin() {
             }
 
             // Load Signs
-            val placeHolderService = module.getService<PlaceHolderService>()
-            val signService = module.getService<SignService>()
-            val arenaService = module.getService<Repository<TennisArena>>()
+            val placeHolderService = module!!.getService<PlaceHolderService>()
+            val signService = module!!.getService<SignService>()
+            val arenaService = module!!.getService<Repository<TennisArena>>()
             signService.onSignDestroy = { signMeta ->
                 plugin.launch {
                     val arenas = arenaService.getAll()
@@ -160,7 +166,6 @@ class MCTennisPlugin : JavaPlugin() {
 
                 resolvedText
             }
-            isLoaded = true
             Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled MCTennis " + plugin.description.version + " by Shynixn")
         }
     }
@@ -169,15 +174,45 @@ class MCTennisPlugin : JavaPlugin() {
      * Called when this plugin is disabled
      */
     override fun onDisable() {
-        if (!isLoaded) {
-            return
+        scoreboardModule?.close()
+        module?.close()
+    }
+
+    private fun loadShyScoreboardModule(language: ShyScoreboardLanguage): DependencyInjectionModule {
+        val settings = ShyScoreboardSettings({ s ->
+            s.joinDelaySeconds = config.getInt("scoreboard.joinDelaySeconds")
+            s.checkForPermissionChangeSeconds = config.getInt("scoreboard.checkForPermissionChangeSeconds")
+            s.baseCommand = "mctennisscoreboard"
+            s.commandAliases = config.getStringList("commands.mctennisscoreboard.aliases")
+            s.commandPermission = "mctennis.shyscoreboard.command"
+            s.reloadPermission = "mctennis.shyscoreboard.reload"
+            s.dynScoreboardPermission = "mctennis.shyscoreboard.scoreboard."
+            s.addPermission = "mctennis.shyscoreboard.add"
+            s.removePermission = "mctennis.shyscoreboard.remove"
+            s.updatePermission = "mctennis.shyscoreboard.update"
+            s.defaultScoreboards = listOf(
+                "scoreboard/mctennis_scoreboard.yml" to "mctennis_scoreboard.yml"
+            )
+        })
+        settings.reload()
+        val module = ShyScoreboardDependencyInjectionModule(this, settings, language).build()
+
+        // Register PlaceHolders
+        com.github.shynixn.shyscoreboard.enumeration.PlaceHolder.registerAll(
+            this,
+            module.getService<PlaceHolderService>(),
+        )
+
+        // Register Listeners
+        Bukkit.getPluginManager().registerEvents(module.getService<ShyScoreboardListener>(), this)
+
+        // Register CommandExecutor
+        module.getService<ShyScoreboardCommandExecutor>()
+        val scoreboardService = module.getService<ScoreboardService>()
+        launch {
+            scoreboardService.reload()
         }
 
-        val packetService = module.getService<PacketService>()
-        packetService.close()
-        val physicObjectService = module.getService<PhysicObjectService>()
-        physicObjectService.close()
-        val gameService = module.getService<GameService>()
-        gameService.close()
+        return module
     }
 }

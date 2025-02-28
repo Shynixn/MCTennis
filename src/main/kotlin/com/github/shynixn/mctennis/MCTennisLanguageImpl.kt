@@ -113,4 +113,34 @@ class MCTennisLanguageImpl : MCTennisLanguage {
  override var commandPlaceHolderMessage = LanguageItem("Evaluated placeholder: %1$1s")
 
  override var queueTimeOutMessage = LanguageItem("[&9MCTennis&f]&c Not enough players joined in time to start the game.")
+
+ override var commonErrorMessage = LanguageItem("[&9MCTennis&f]&c A problem occurred. Check the console log for details.")
+
+ override var scoreboardCommandUsage = LanguageItem("[&9MCTennis&f] Use /mctennisscoreboard help to see more info about the plugin.")
+
+ override var scoreboardCommandDescription = LanguageItem("[&9MCTennis&f] All commands for scoreboards in MCTennis.")
+
+ override var scoreboardAddCommandHint = LanguageItem("Adds a scoreboard to a player.")
+
+ override var scoreboardRemoveCommandHint = LanguageItem("Removes a scoreboard from a player.")
+
+ override var scoreboardNotFoundMessage = LanguageItem("[&9MCTennis&f] &cScoreboard %1$1s not found.")
+
+ override var scoreboardNoPermissionToScoreboardCommand = LanguageItem("[&9MCTennis&f] &cYou do not have permission to this scoreboard.")
+
+ override var scoreboardAddedMessage = LanguageItem("[&9MCTennis&f] Added the scoreboard %1$1s to the player %2$1s.")
+
+ override var scoreboardRemovedMessage = LanguageItem("[&9MCTennis&f] Removed the scoreboard %1$1s from the player %2$1s.")
+
+ override var scoreboardUpdateCommandHint = LanguageItem("Updates the placeholder of the scoreboard.")
+
+ override var scoreboardUpdatedMessage = LanguageItem("[&9MCTennis&f] Updated the scoreboard.")
+
+ override var noPermissionCommand = LanguageItem("[&9MCTennis&f] &cYou do not have permission to execute this command.")
+
+ override var reloadCommandHint = LanguageItem("Reloads all configuration.")
+
+ override var reloadMessage = LanguageItem("[&9MCTennis&f] Reloaded all configuration.")
+
+ override var playerNotFoundMessage = LanguageItem("[&9MCTennis&f]&c Player %1$1s not found.")
 }

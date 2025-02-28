@@ -675,7 +675,7 @@ class TennisGameImpl(
     private fun getScore(points: Int): String {
         return when (points) {
             0 -> {
-                "0"
+                "00"
             }
 
             1 -> {

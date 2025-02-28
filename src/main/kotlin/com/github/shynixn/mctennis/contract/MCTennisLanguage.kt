@@ -1,9 +1,10 @@
 package com.github.shynixn.mctennis.contract
 
+import com.github.shynixn.shyscoreboard.contract.ShyScoreboardLanguage
 import com.github.shynixn.mcutils.common.language.LanguageItem
 import com.github.shynixn.mcutils.common.language.LanguageProvider
 
-interface MCTennisLanguage : LanguageProvider {
+interface MCTennisLanguage : LanguageProvider, ShyScoreboardLanguage  {
   var gameStartingMessage: LanguageItem
 
   var gameStartCancelledMessage: LanguageItem
@@ -103,8 +104,6 @@ interface MCTennisLanguage : LanguageProvider {
   var commandUsage: LanguageItem
 
   var maxLength20Characters: LanguageItem
-
-  var commandSenderHasToBePlayer: LanguageItem
 
   var freeVersionMessage: LanguageItem
 
