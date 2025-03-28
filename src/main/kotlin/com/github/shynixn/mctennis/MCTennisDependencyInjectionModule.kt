@@ -69,7 +69,7 @@ class MCTennisDependencyInjectionModule(
         // Repositories
         val tennisArenaRepository = YamlFileRepositoryImpl<TennisArena>(
             plugin,
-            "arena",
+            plugin.dataFolder.toPath().resolve("arena"),
             listOf(Pair("arena_sample.yml", "arena_sample.yml")),
             listOf("arena_sample.yml"),
             object : TypeReference<TennisArena>() {})

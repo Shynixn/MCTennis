@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.shynixn"
-version = "1.15.0"
+version = "1.16.0"
 
 repositories {
     mavenLocal()
@@ -30,12 +30,14 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+    implementation("org.yaml:snakeyaml:1.33")
 
     // Custom dependencies
-    implementation("com.github.shynixn.shyscoreboard:shyscoreboard:1.1.0")
-    implementation("com.github.shynixn.mcutils:common:2025.7")
-    implementation("com.github.shynixn.mcutils:packet:2025.10")
+    implementation("com.github.shynixn.shyscoreboard:shyscoreboard:1.3.0")
+    implementation("com.github.shynixn.mcutils:common:2025.14")
+    implementation("com.github.shynixn.mcutils:packet:2025.16")
     implementation("com.github.shynixn.mcutils:sign:2025.3")
+    implementation("com.github.shynixn.mcutils:worldguard:2025.4")
 }
 
 tasks.withType<KotlinCompile> {
@@ -100,6 +102,7 @@ tasks.register("pluginJarLatest", com.github.jengelman.gradle.plugins.shadow.tas
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_20_R4/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_21_R1/**")
     exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_21_R2/**")
+    exclude("com/github/shynixn/mctennis/lib/com/github/shynixn/mcutils/packet/nms/v1_21_R3/**")
     exclude("com/github/shynixn/mcutils/**")
     exclude("com/github/shynixn/mccoroutine/**")
     exclude("kotlin/**")
@@ -149,6 +152,7 @@ tasks.register("relocateLegacyPluginJar", com.github.jengelman.gradle.plugins.sh
     relocate("kotlinx.coroutines", "com.github.shynixn.mctennis.lib.kotlinx.coroutines")
     relocate("com.google", "com.github.shynixn.mctennis.lib.com.google")
     relocate("com.fasterxml", "com.github.shynixn.mctennis.lib.com.fasterxml")
+    relocate("org.yaml", "com.github.shynixn.mctennis.lib.org.yaml")
     relocate("com.github.shynixn.mccoroutine", "com.github.shynixn.mctennis.lib.com.github.shynixn.mccoroutine")
     exclude("plugin.yml")
     rename("plugin-legacy.yml", "plugin.yml")

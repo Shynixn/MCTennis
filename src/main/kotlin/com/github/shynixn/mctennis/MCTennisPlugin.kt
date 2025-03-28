@@ -18,6 +18,7 @@ import com.github.shynixn.mcutils.common.repository.Repository
 import com.github.shynixn.mcutils.packet.api.PacketInType
 import com.github.shynixn.mcutils.packet.api.PacketService
 import com.github.shynixn.mcutils.sign.SignService
+import com.github.shynixn.mcutils.worldguard.WorldGuardServiceImpl
 import com.github.shynixn.shyscoreboard.ShyScoreboardDependencyInjectionModule
 import com.github.shynixn.shyscoreboard.contract.ScoreboardService
 import com.github.shynixn.shyscoreboard.contract.ShyScoreboardLanguage
@@ -72,10 +73,11 @@ class MCTennisPlugin : JavaPlugin() {
                 Version.VERSION_1_20_R4,
                 Version.VERSION_1_21_R1,
                 Version.VERSION_1_21_R2,
-                Version.VERSION_1_21_R3
+                Version.VERSION_1_21_R3,
+                Version.VERSION_1_21_R4
             )
         } else {
-            listOf(Version.VERSION_1_21_R3)
+            listOf(Version.VERSION_1_21_R4)
         }
 
         if (!Version.serverVersion.isCompatible(*versions.toTypedArray())) {
@@ -181,7 +183,7 @@ class MCTennisPlugin : JavaPlugin() {
     private fun loadShyScoreboardModule(language: ShyScoreboardLanguage): DependencyInjectionModule {
         val settings = ShyScoreboardSettings({ s ->
             s.joinDelaySeconds = config.getInt("scoreboard.joinDelaySeconds")
-            s.checkForPermissionChangeSeconds = config.getInt("scoreboard.checkForPermissionChangeSeconds")
+            s.checkForChangeChangeSeconds = config.getInt("scoreboard.checkForChangeChangeSeconds")
             s.baseCommand = "mctennisscoreboard"
             s.commandAliases = config.getStringList("commands.mctennisscoreboard.aliases")
             s.commandPermission = "mctennis.shyscoreboard.command"
@@ -195,7 +197,7 @@ class MCTennisPlugin : JavaPlugin() {
             )
         })
         settings.reload()
-        val module = ShyScoreboardDependencyInjectionModule(this, settings, language).build()
+        val module = ShyScoreboardDependencyInjectionModule(this, settings, language, WorldGuardServiceImpl(this)).build()
 
         // Register PlaceHolders
         com.github.shynixn.shyscoreboard.enumeration.PlaceHolder.registerAll(
