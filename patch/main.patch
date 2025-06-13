@@ -1,13 +1,48 @@
-Subject: [PATCH] Updated submodule to latest.
+Subject: [PATCH] Tennis changes.
 ---
+Index: docs/wiki/docs/README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docs/wiki/docs/README.md b/docs/wiki/docs/README.md
+--- a/docs/wiki/docs/README.md	(revision 79496944c2024c6685ee4da896895280d4ab0f83)
++++ b/docs/wiki/docs/README.md	(date 1749839224908)
+@@ -2,7 +2,17 @@
+ 
+ BlockBall is a spigot plugin to play soccer/football games in Minecraft.
+ 
+-Are you looking for the 6.x.x wiki? You can access it via [the WayBackMachine](https://web.archive.org/web/20240811125048/https://shynixn.github.io/BlockBall/build/html/index.html).
++This wiki is currently being reworked while migrating MCTennis to the BlockBall engine.
++You can find the old pages here:
++
++* [Api](https://github.com/Shynixn/MCTennis/blob/tmp/docs/wiki/docs/api.md)
++* [Bedrock](https://github.com/Shynixn/MCTennis/blob/tmp/docs/wiki/docs/bedrock.md)
++* [Commands](https://github.com/Shynixn/MCTennis/blob/tmp/docs/wiki/docs/commands.md)
++* [Creating a Game](https://github.com/Shynixn/MCTennis/blob/tmp/docs/wiki/docs/game.md)
++* [Interactions](https://github.com/Shynixn/MCTennis/blob/tmp/docs/wiki/docs/interaction.md)
++* [Permissions](https://github.com/Shynixn/MCTennis/blob/tmp/docs/wiki/docs/permission.md)
++* [PlaceHolders](https://github.com/Shynixn/MCTennis/blob/tmp/docs/wiki/docs/placeholders.md)
++* [Signs](https://github.com/Shynixn/MCTennis/blob/tmp/docs/wiki/docs/sign.md)
+ 
+ ## Features
+ 
+@@ -12,7 +22,3 @@
+ * PlaceHolderApi Support
+ * Multiple games per server
+ * Player Stats collecting (Patreon Only)
+-
+-## Installation
+-
+-<iframe width="560" height="315" src="https://www.youtube.com/embed/VPBYYQUaRCs?si=oJf9aM7RWhpXWJ_y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 Index: src/main/resources/config.yml
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/resources/config.yml b/src/main/resources/config.yml
---- a/src/main/resources/config.yml	(revision dffec243f3b474302c1e88f579d674be957a8762)
-+++ b/src/main/resources/config.yml	(date 1748683335921)
+--- a/src/main/resources/config.yml	(revision 79496944c2024c6685ee4da896895280d4ab0f83)
++++ b/src/main/resources/config.yml	(date 1749838802528)
 @@ -15,15 +15,12 @@
    blockball:
      aliases:
@@ -30,8 +65,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/docs/wiki/docs/api.md b/docs/wiki/docs/api.md
---- a/docs/wiki/docs/api.md	(revision dffec243f3b474302c1e88f579d674be957a8762)
-+++ b/docs/wiki/docs/api.md	(date 1748683335892)
+--- a/docs/wiki/docs/api.md	(revision 79496944c2024c6685ee4da896895280d4ab0f83)
++++ b/docs/wiki/docs/api.md	(date 1749838802494)
 @@ -31,5 +31,3 @@
      }
  }
@@ -44,8 +79,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(revision dffec243f3b474302c1e88f579d674be957a8762)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(date 1748683566622)
+--- a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(revision 79496944c2024c6685ee4da896895280d4ab0f83)
++++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(date 1749838802521)
 @@ -19,7 +19,7 @@
      var airResistance: Double = 0.001
  
@@ -131,8 +166,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(revision dffec243f3b474302c1e88f579d674be957a8762)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(date 1748683446749)
+--- a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(revision 79496944c2024c6685ee4da896895280d4ab0f83)
++++ b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(date 1749838802508)
 @@ -1,5 +1,8 @@
  package com.github.shynixn.blockball.entity
  
@@ -156,39 +191,14 @@ diff --git a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt b/sr
      }
  
      /**
-Index: docs/wiki/docs/README.md
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/docs/wiki/docs/README.md b/docs/wiki/docs/README.md
---- a/docs/wiki/docs/README.md	(revision dffec243f3b474302c1e88f579d674be957a8762)
-+++ b/docs/wiki/docs/README.md	(date 1748683335899)
-@@ -2,8 +2,6 @@
- 
- BlockBall is a spigot plugin to play soccer/football games in Minecraft.
- 
--Are you looking for the 6.x.x wiki? You can access it via [the WayBackMachine](https://web.archive.org/web/20240811125048/https://shynixn.github.io/BlockBall/build/html/index.html).
--
- ## Features
- 
- * Adds a new playable soccer/football lobby game or standalone minigame
-@@ -12,7 +10,3 @@
- * PlaceHolderApi Support
- * Multiple games per server
- * Player Stats collecting (Patreon Only)
--
--## Installation
--
--<iframe width="560" height="315" src="https://www.youtube.com/embed/VPBYYQUaRCs?si=oJf9aM7RWhpXWJ_y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 Index: src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(revision dffec243f3b474302c1e88f579d674be957a8762)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(date 1748683368388)
+--- a/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(revision 79496944c2024c6685ee4da896895280d4ab0f83)
++++ b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(date 1749838802515)
 @@ -20,7 +20,7 @@
      var keepHealthEnabled: Boolean = true
  
