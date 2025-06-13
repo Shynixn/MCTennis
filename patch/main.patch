@@ -1,0 +1,200 @@
+Subject: [PATCH] Updated submodule to latest.
+---
+Index: src/main/resources/config.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/config.yml b/src/main/resources/config.yml
+--- a/src/main/resources/config.yml	(revision dffec243f3b474302c1e88f579d674be957a8762)
++++ b/src/main/resources/config.yml	(date 1748683335921)
+@@ -15,15 +15,12 @@
+   blockball:
+     aliases:
+       - "soccer"
+-      - "football"
+   blockballscoreboard:
+     aliases:
+       - "soccerscoreboard"
+-      - "footballscoreboard"
+   blockballbossbar:
+     aliases:
+       - "soccerbossbar"
+-      - "footballbossbar"
+ 
+ ############################
+ # Debug settings
+Index: docs/wiki/docs/api.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docs/wiki/docs/api.md b/docs/wiki/docs/api.md
+--- a/docs/wiki/docs/api.md	(revision dffec243f3b474302c1e88f579d674be957a8762)
++++ b/docs/wiki/docs/api.md	(date 1748683335892)
+@@ -31,5 +31,3 @@
+     }
+ }
+ ```
+-
+-BlockBall broadcasts the following [events.](https://github.com/Shynixn/BlockBall/tree/master/src/main/java/com/github/shynixn/blockball/event)
+Index: src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt
+--- a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(revision dffec243f3b474302c1e88f579d674be957a8762)
++++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(date 1748683566622)
+@@ -19,7 +19,7 @@
+     var airResistance: Double = 0.001
+ 
+     @Comment("The speed reducement of the ball on the ground.")
+-    var rollingResistance: Double = 0.1
++    var rollingResistance: Double = 0.04
+ 
+     @Comment("The horizontal speed gain after touching the ball.")
+     var horizontalTouchModifier: Double = 1.0
+@@ -31,7 +31,7 @@
+     var shotVelocity: Double = 1.5
+ 
+     @Comment("Allows to override the shotVelocity with a vertical modifier if it is any other value than 1.0.")
+-    var shotPassYVelocityOverwrite: Double = 1.0
++    var shotPassYVelocityOverwrite: Double = 0.0
+ 
+     @Comment("The horizontal and vertical speed gain after right clicking the ball.")
+     var passVelocity: Double = 1.2
+@@ -59,22 +59,22 @@
+         var leftClickEnabled: Boolean = true
+ 
+         @Comment("Is rightClicking the ball enabled?")
+-        var rightClickEnabled: Boolean = true
++        var rightClickEnabled: Boolean = false
+ 
+         @Comment("Size of the running-into hitbox.")
+         var touchHitBoxSize: Double = 1.0
+ 
+         @Comment("Is running-into the ball enabled?")
+-        var touchEnabled: Boolean = true
++        var touchEnabled: Boolean = false
+ 
+         @Comment("Allows to move the hitbox up and down on the y-axe to make the ball appear more in the air or closer to the ground.")
+-        var offSetY: Double = -0.3
++        var offSetY: Double = -0.2
+ 
+         @Comment("Amount of ticks until the ball can intercept interaction again.")
+         var interactionCoolDownTicks: Int = 20
+ 
+         @Comment("Delay in ticks until the ball executes the kick pass requested by the player. If you set this to 0, the ball will be more smooth but direction manipulations may not be as accurate anymore.")
+-        var leftClickRightClickDelayTicks: Int = 1
++        var leftClickRightClickDelayTicks: Int = 0
+ 
+         @Comment("Amount of ticks until the ball can intercept interaction by the same player again.")
+         var interactionCoolDownPerPlayerTicks: Int = 7
+@@ -85,28 +85,28 @@
+ 
+     class SoccerBallRenderMeta {
+         @Comment("Size of the rendered ball. These days you can set an arbitrary size. In older Minecraft versions, this version only supported 1.0 (STANDARD) and 0.5 (SMALL). ")
+-        var scale: Double = 1.0
++        var scale: Double = 0.5
+ 
+         @Comment("The item rendering the ball.")
+         var item: Item = Item().also {
+             it.typeName = "PLAYER_HEAD,397"
+             it.durability = "3"
+             it.skinBase64 =
+-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHBzOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzhlNGE3MGI3YmJjZDdhOGMzMjJkNTIyNTIwNDkxYTI3ZWE2YjgzZDYwZWNmOTYxZDJiNGVmYmJmOWY2MDVkIn19fQ=="
++                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmE1MmQ1NzlhZmUyZmRmN2I4ZWNmYTc0NmNkMDE2MTUwZDk2YmViNzUwMDliYjI3MzNhZGUxNWQ0ODdjNDJhMSJ9fX0="
+         }
+ 
+         @Comment("Should the ball rotate?")
+-        var rotating: Boolean = true
++        var rotating: Boolean = false
+ 
+         @Comment("Allows to move the ball up and down on the y-axe to make the ball appear more in the air or closer to the ground.")
+-        var offSetY: Double = -1.0
++        var offSetY: Double = -0.2
+     }
+ 
+     init {
+         val soundMetaKick = SoundMeta()
+         soundMetaKick.name = "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,ENTITY_ZOMBIE_ATTACK_DOOR_WOOD,ZOMBIE_WOOD"
+         soundMetaKick.volume = 10.0
+-        soundMetaKick.pitch = 1.5
++        soundMetaKick.pitch = 2.0
+         soundEffects[BallActionType.ONKICK] = soundMetaKick
+     }
+ }
+Index: src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt
+--- a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(revision dffec243f3b474302c1e88f579d674be957a8762)
++++ b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(date 1748683446749)
+@@ -1,5 +1,8 @@
+ package com.github.shynixn.blockball.entity
+ 
++import com.github.shynixn.mcutils.common.item.Item
++import com.github.shynixn.mcutils.common.serializeItem
++import com.github.shynixn.mcutils.packet.impl.service.ItemServiceImpl
+ import com.github.shynixn.mcutils.sign.SignMeta
+ 
+ class ArenaMeta {
+@@ -34,6 +37,13 @@
+         blueTeamMeta.displayName = "&9Team Blue"
+         redTeamMeta.displayName = "&cTeam Red"
+         refereeTeamMeta.displayName = "&fTeam Referee"
++        val hockey = arrayOfNulls<Item?>(36)
++        for (i in 0 until 9) {
++            hockey[i] = Item("minecraft:iron_hoe,292")
++        }
++        val itemService = ItemServiceImpl()
++        redTeamMeta.inventory = hockey.map { e -> itemService.serializeItem(e) }.toTypedArray()
++        blueTeamMeta.inventory = hockey.map { e -> itemService.serializeItem(e) }.toTypedArray()
+     }
+ 
+     /**
+Index: docs/wiki/docs/README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docs/wiki/docs/README.md b/docs/wiki/docs/README.md
+--- a/docs/wiki/docs/README.md	(revision dffec243f3b474302c1e88f579d674be957a8762)
++++ b/docs/wiki/docs/README.md	(date 1748683335899)
+@@ -2,8 +2,6 @@
+ 
+ BlockBall is a spigot plugin to play soccer/football games in Minecraft.
+ 
+-Are you looking for the 6.x.x wiki? You can access it via [the WayBackMachine](https://web.archive.org/web/20240811125048/https://shynixn.github.io/BlockBall/build/html/index.html).
+-
+ ## Features
+ 
+ * Adds a new playable soccer/football lobby game or standalone minigame
+@@ -12,7 +10,3 @@
+ * PlaceHolderApi Support
+ * Multiple games per server
+ * Player Stats collecting (Patreon Only)
+-
+-## Installation
+-
+-<iframe width="560" height="315" src="https://www.youtube.com/embed/VPBYYQUaRCs?si=oJf9aM7RWhpXWJ_y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Index: src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt
+--- a/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(revision dffec243f3b474302c1e88f579d674be957a8762)
++++ b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(date 1748683368388)
+@@ -20,7 +20,7 @@
+     var keepHealthEnabled: Boolean = true
+ 
+     @Comment("If set to true, the goal size is allowed to by very tiny. If set to false, the goal size has to be a minimum size.")
+-    var ignoreGoalSize: Boolean = false
++    var ignoreGoalSize: Boolean = true
+ 
+     @Comment("When players queue for a game in gameType=MINIGAME, this is the timeout in seconds how long they can wait.")
+     var queueTimeOutSec: Int = 30
