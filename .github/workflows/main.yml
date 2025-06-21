@@ -142,8 +142,9 @@ jobs:
         run: |
           cp ./patch/main.patch ./blockball/main.patch 
           cp ./patch/rename.ps1 ./blockball/rename.ps1
-          cp -rf ./patch/arena7.png ./blockball/docs/wiki/docs/assets/arena7.png
-          cp -rf ./patch/arena8.png ./blockball/docs/wiki/docs/assets/arena8.png
+          cp -rf ./patch/field.png ./blockball/docs/wiki/docs/assets/arena7.png
+          cp -rf ./patch/red_area.png ./blockball/docs/wiki/docs/assets/arena8.png
+          cp -rf ./patch/blue_area.png ./blockball/docs/wiki/docs/assets/blue_area.png
           cd blockball
           dos2unix main.patch 
           git apply main.patch 
