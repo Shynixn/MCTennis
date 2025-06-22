@@ -1,5 +1,83 @@
 Subject: [PATCH] Tennis changes.
 ---
+Index: src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt
+--- a/src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
++++ b/src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt	(date 1750586206675)
+@@ -7,11 +7,11 @@
+     @Comment("Are double jumps enabled or disabled?")
+     var enabled: Boolean = true
+     @Comment("Cooldown in seconds between double jumps.")
+-    var cooldown: Int = 2
++    var cooldown: Int = 1
+     @Comment("The vertical velocity modifier.")
+-    var verticalStrength: Double = 1.0
++    var verticalStrength: Double = 0.4
+     @Comment("The horizontal velocity modifier.")
+-    var horizontalStrength: Double = 2.0
++    var horizontalStrength: Double = 1.2
+    @Comment("The sound effect being played. The names are separated by comma to support different Minecraft versions. An empty name disables the sound.")
+     val soundEffect: SoundMeta = SoundMeta().also {
+         it.name = "ENTITY_WIND_CHARGE_WIND_BURST,ENTITY_GHAST_SHOOT,GHAST_FIREBALL"
+Index: src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt
+--- a/src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
++++ b/src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt	(date 1750586227105)
+@@ -6,8 +6,8 @@
+ import org.bukkit.GameMode
+ 
+ class LobbyMeta {
+-    @Comment("The max amount of goals a team can score before the match ends and the game is reset.")
+-    var maxScore: Int = 10
++    @Comment("The max amount of sets a team can score before the match ends and the game is reset.")
++    var maxScore: Int = 3
+ 
+     @Comment("If set to true, the team choice when joining may get ignored if the other team has not got enough players.")
+     var onlyAllowEventTeams: Boolean = false
+Index: src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt
+--- a/src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
++++ b/src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt	(date 1750583432418)
+@@ -26,18 +26,6 @@
+         firstPeriod.duration = 150
+         firstPeriod.respawnEnabled = true
+ 
+-        val breakPeriod = MatchTimeMeta()
+-        breakPeriod.duration = 10
+-        breakPeriod.playAbleBall = false
+-        breakPeriod.respawnEnabled = false
+-        breakPeriod.startMessageTitle = ""
+-        breakPeriod.startMessageSubTitle = "&0&l[&f&lBreak&0&l]&7"
+-
+-        val secondPeriod = MatchTimeMeta()
+-        secondPeriod.duration = 150
+-        secondPeriod.respawnEnabled = true
+-        secondPeriod.switchGoals = true
+-
+         val coolDownPeriod = MatchTimeMeta()
+         coolDownPeriod.duration = 10
+         coolDownPeriod.playAbleBall = false
+@@ -45,8 +33,6 @@
+ 
+         matchTimes = arrayListOf(
+             firstPeriod,
+-            breakPeriod,
+-            secondPeriod,
+             coolDownPeriod
+         )
+     }
 Index: src/main/resources/lang/en_us.yml
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -7,7 +85,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/resources/lang/en_us.yml b/src/main/resources/lang/en_us.yml
 --- a/src/main/resources/lang/en_us.yml	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/resources/lang/en_us.yml	(date 1750525157256)
++++ b/src/main/resources/lang/en_us.yml	(date 1750582590313)
 @@ -107,14 +107,14 @@
    text: "&0&l[&f&lBlockBall&0&l]&7 The BlockBall axe has been added to your inventory."
  scoreRed:
@@ -35,6 +113,23 @@ diff --git a/src/main/resources/lang/en_us.yml b/src/main/resources/lang/en_us.y
 +bounceSecondHologram:
 +  type: "CHAT"
 +  text: "&l2nd Bounce"
+Index: src/main/resources/bossbar/blockball_bossbar.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/bossbar/blockball_bossbar.yml b/src/main/resources/bossbar/blockball_bossbar.yml
+--- a/src/main/resources/bossbar/blockball_bossbar.yml	(revision afd3754457145c3b19b5a4835ae4830504023a95)
++++ b/src/main/resources/bossbar/blockball_bossbar.yml	(date 1750583725948)
+@@ -10,7 +10,7 @@
+ # The Minecraft ticks how often this bossbar is updated to the player. (1 tick = 50ms)
+ refreshTicks: 60
+ # Displayed Message. Supports placeholders.
+-message: "%blockball_game_redDisplayName% %blockball_game_redScore% : &9%blockball_game_blueScore% %blockball_game_blueDisplayName%"
++message: "%blockball_game_redDisplayName% %blockball_game_redSetScore% : &9%blockball_game_blueSetScore% %blockball_game_blueDisplayName%"
+ # Color of the bossBar. Supports placeholders. Possibles values: PINK,BLUE,RED,GREEN,YELLOW,PURPLE,WHITE.
+ color: "WHITE"
+ # Progress of the BossBar in the range 0.0 to 1.0. Supports placeholders and should be a text value.
 Index: src/main/resources/scoreboard/blockball_scoreboard.yml
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -42,7 +137,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/resources/scoreboard/blockball_scoreboard.yml b/src/main/resources/scoreboard/blockball_scoreboard.yml
 --- a/src/main/resources/scoreboard/blockball_scoreboard.yml	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/resources/scoreboard/blockball_scoreboard.yml	(date 1750525045995)
++++ b/src/main/resources/scoreboard/blockball_scoreboard.yml	(date 1750582590331)
 @@ -19,9 +19,7 @@
    - "&6You:"
    - "%blockball_player_teamDisplayName%"
@@ -63,7 +158,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt b/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt
 --- a/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt	(date 1750523706082)
++++ b/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt	(date 1750582590255)
 @@ -180,7 +180,7 @@
          module.addService<BallListener> { BallListener(module.getService(), module.getService()) }
          module.addService<DoubleJumpListener> { DoubleJumpListener(module.getService(), module.getService()) }
@@ -80,7 +175,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt b/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt
 --- a/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt	(date 1750523364360)
++++ b/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt	(date 1750582590264)
 @@ -269,4 +269,8 @@
   override var shyBossBarUpdatedMessage = LanguageItem("&0&l[&f&lBlockBall&0&l]&7 Updated the bossbar.")
  
@@ -97,7 +192,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt b/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt
 --- a/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt	(date 1750524680832)
++++ b/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt	(date 1750582590275)
 @@ -60,6 +60,28 @@
          var indexKey = "[index]"
          var gameKey = "[game]"
@@ -134,7 +229,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt
 --- a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(date 1750521312481)
++++ b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(date 1750587531732)
 @@ -1,5 +1,8 @@
  package com.github.shynixn.blockball.entity
  
@@ -144,13 +239,25 @@ diff --git a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt b/sr
  import com.github.shynixn.mcutils.sign.SignMeta
  
  class ArenaMeta {
-@@ -34,6 +37,13 @@
+@@ -34,6 +37,25 @@
          blueTeamMeta.displayName = "&9Team Blue"
          redTeamMeta.displayName = "&cTeam Red"
          refereeTeamMeta.displayName = "&fTeam Referee"
 +        val hockey = arrayOfNulls<Item?>(36)
-+        for (i in 0 until 9) {
-+            hockey[i] = Item("minecraft:iron_shovel,256")
++        for (i in 0 until 3) {
++            hockey[i] = Item("minecraft:wooden_shovel,256").also {
++                it.displayName = "&6Short Range"
++            }
++        }
++        for (i in 3 until 6) {
++            hockey[i] = Item("minecraft:iron_shovel,256").also {
++                it.displayName = "&fMid Range"
++            }
++        }
++        for (i in 6 until 9) {
++            hockey[i] = Item("minecraft:diamond_shovel,256").also {
++                it.displayName = "&bLong Range"
++            }
 +        }
 +        val itemService = ItemServiceImpl()
 +        redTeamMeta.inventory = hockey.map { e -> itemService.serializeItem(e) }.toTypedArray()
@@ -165,16 +272,38 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt
 --- a/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(date 1750521312489)
-@@ -20,7 +20,7 @@
++++ b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(date 1750587866620)
+@@ -8,10 +8,10 @@
+     var damageEnabled: Boolean = false
+ 
+     @Comment("Should players be teleported back to their spawnpoint in the game when someone scores a goal?")
+-    var backTeleport: Boolean = false
++    var backTeleport: Boolean = true
+ 
+     @Comment("The amount of seconds until the players are teleported back to their spawnpoint when someone scores a goal.")
+-    var backTeleportDelay: Int = 2
++    var backTeleportDelay: Int = 3
+ 
+     @Comment("Should players keep their inventory when they join a game?")
+     var keepInventoryEnabled: Boolean = false
+@@ -19,15 +19,12 @@
+     @Comment("Should players keep their current health when they join a game?")
      var keepHealthEnabled: Boolean = true
  
-     @Comment("If set to true, the goal size is allowed to by very tiny. If set to false, the goal size has to be a minimum size.")
+-    @Comment("If set to true, the goal size is allowed to by very tiny. If set to false, the goal size has to be a minimum size.")
 -    var ignoreGoalSize: Boolean = false
-+    var ignoreGoalSize: Boolean = true
- 
+-
      @Comment("When players queue for a game in gameType=MINIGAME, this is the timeout in seconds how long they can wait.")
      var queueTimeOutSec: Int = 30
+ 
+     @Comment("The ball spawn delay in ticks when the game initially starts or when a new period is entered.")
+-    var gameStartBallSpawnDelayTicks: Int = 2
++    var gameStartBallSpawnDelayTicks: Int = 40
+ 
+     @Comment("The ball spawn delay in ticks when spawning after a goal has been scored.")
+-    var goalScoredBallSpawnDelayTicks: Int = 1
++    var goalScoredBallSpawnDelayTicks: Int = 80
+ }
 Index: src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -182,7 +311,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt b/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt
 --- a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt	(date 1750521312540)
++++ b/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt	(date 1750584512476)
 @@ -263,7 +263,7 @@
      }
  
@@ -208,9 +337,9 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/Blo
          } else if (locationType == LocationType.REFEREE_LOBBY) {
              arena.meta.refereeTeamMeta.lobbySpawnpoint = player.location.toVector3d()
 +        } else if (locationType == LocationType.RED_BALL) {
-+            arena.meta.redTeamMeta.ballSpawnPoint = player.location.toVector3d()
++            arena.meta.redTeamMeta.ballSpawnPoint = player.location.toVector3d().add(0.0, 1.0, 0.0)
 +        } else if (locationType == LocationType.BLUE_BALL) {
-+            arena.meta.blueTeamMeta.ballSpawnPoint = player.location.toVector3d()
++            arena.meta.blueTeamMeta.ballSpawnPoint = player.location.toVector3d().add(0.0, 1.0, 0.0)
          }
  
          arenaRepository.save(arena)
@@ -300,8 +429,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt
 --- a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt	(date 1750524788086)
-@@ -40,6 +40,7 @@
++++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt	(date 1750588045825)
+@@ -40,12 +40,20 @@
      private val playerDataRepository: PlayerDataRepository<PlayerInformation>,
      private val itemService: ItemService
  ) : SoccerGame {
@@ -309,7 +438,20 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
  
      /**
       * Generated game id.
-@@ -61,6 +62,11 @@
+      */
+     override val id: String = UUID.randomUUID().toString().replace("-", "").substring(0, 8)
+ 
++    override var redSetScore: Int = 0
++
++    /**
++     * Blue Score.
++     */
++    override var blueSetScore: Int = 0
++
+     /**
+      * Is the ball spawning?
+      */
+@@ -61,6 +69,11 @@
       */
      var ballEnabled: Boolean = true
  
@@ -321,16 +463,16 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
      /**
       * Storage.
       */
-@@ -373,7 +379,7 @@
+@@ -373,7 +386,7 @@
          }
  
          if (teamMeta.spawnpoint == null) {
 -            player.teleport(arena.ballSpawnPoint!!.toLocation())
-+            player.teleport(getBallSpawnpointFromServingTeam())
++            player.teleport(teamMeta.ballSpawnPoint!!.toLocation())
          } else {
              player.teleport(teamMeta.spawnpoint!!.toLocation())
          }
-@@ -388,7 +394,7 @@
+@@ -388,7 +401,7 @@
              if (ballSpawnCounter <= 0) {
                  destroyBall()
                  ball = soccerBallFactory.createSoccerBallForGame(
@@ -339,7 +481,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
                  )
                  ballSpawning = false
                  ballSpawnCounter = 0
-@@ -430,6 +436,8 @@
+@@ -430,6 +443,8 @@
       * is handled inside of the method.
       */
      override fun notifyBallInGoal(team: Team) {
@@ -348,35 +490,75 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
          if (ballSpawning) {
              return
          }
-@@ -607,19 +615,19 @@
+@@ -448,7 +463,14 @@
+             executeGoalCommands(teamOfGoal)
+             relocatePlayersAndBall()
+ 
+-            if (blueScore >= arena.meta.lobbyMeta.maxScore) {
++            if (blueScore > 3 && blueScore - redScore >= 2) {
++                blueSetScore++
++                redScore = 0
++                blueScore = 0
++                servingTeam = getOppositeTeam(servingTeam)
++            }
++
++            if (blueSetScore >= arena.meta.lobbyMeta.maxScore) {
+                 onMatchEnd(Team.BLUE)
+                 onWin(Team.BLUE)
+             }
+@@ -462,7 +484,14 @@
+             executeGoalCommands(teamOfGoal)
+             relocatePlayersAndBall()
+ 
+-            if (redScore >= arena.meta.lobbyMeta.maxScore) {
++            if (redScore > 3 && redScore - blueScore >= 2) {
++                redSetScore++
++                redScore = 0
++                blueScore = 0
++                servingTeam = getOppositeTeam(servingTeam)
++            }
++
++            if (redSetScore >= arena.meta.lobbyMeta.maxScore) {
+                 onMatchEnd(Team.RED)
+                 onWin(Team.RED)
+             }
+@@ -607,19 +636,19 @@
              var redTeamSpawnpoint = arena.meta.redTeamMeta.spawnpoint
  
              if (redTeamSpawnpoint == null) {
 -                redTeamSpawnpoint = arena.ballSpawnPoint!!
-+                redTeamSpawnpoint = getBallSpawnpointFromServingTeam().toVector3d()
++                redTeamSpawnpoint = arena.meta.redTeamMeta.ballSpawnPoint!!
              }
  
              var blueTeamSpawnpoint = arena.meta.blueTeamMeta.spawnpoint
  
              if (blueTeamSpawnpoint == null) {
 -                blueTeamSpawnpoint = arena.ballSpawnPoint!!
-+                blueTeamSpawnpoint = getBallSpawnpointFromServingTeam().toVector3d()
++                blueTeamSpawnpoint = arena.meta.blueTeamMeta.ballSpawnPoint!!
              }
  
              var refereeSpawnpoint = arena.meta.refereeTeamMeta.spawnpoint
  
              if (refereeSpawnpoint == null) {
 -                refereeSpawnpoint = arena.ballSpawnPoint!!
-+                refereeSpawnpoint = getBallSpawnpointFromServingTeam().toVector3d()
++                refereeSpawnpoint = arena.meta.blueTeamMeta.ballSpawnPoint!!
              }
  
              for (i in ingamePlayersStorage) {
-@@ -772,4 +780,12 @@
+@@ -772,4 +801,20 @@
              i++
          }
      }
 +
-+    override fun getBallSpawnpointFromServingTeam(): Location{
++    private fun getOppositeTeam(team: Team): Team {
++        if (team == Team.RED) {
++            return Team.BLUE
++        }
++
++        return Team.RED
++    }
++
++    override fun getBallSpawnpointFromServingTeam(): Location {
 +        if (servingTeam == Team.BLUE) {
 +            return arena.meta.blueTeamMeta.ballSpawnPoint!!.toLocation()
 +        }
@@ -391,7 +573,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt
 --- a/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt	(date 1750521312600)
++++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt	(date 1750582590228)
 @@ -54,7 +54,7 @@
              status = GameState.JOINABLE
          }
@@ -408,7 +590,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt b/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt
 --- a/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt	(date 1750523895818)
++++ b/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt	(date 1750582590143)
 @@ -1,8 +1,7 @@
  package com.github.shynixn.blockball.impl.listener
  
@@ -647,8 +829,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt
 --- a/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt	(date 1750521312608)
-@@ -99,7 +99,7 @@
++++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt	(date 1750583919216)
+@@ -99,11 +99,11 @@
              status = GameState.JOINABLE
          }
  
@@ -657,6 +839,26 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.
              return
          }
  
+-        if (arena.meta.hubLobbyMeta.resetArenaOnEmpty && ingamePlayersStorage.isEmpty() && (redScore > 0 || blueScore > 0)) {
++        if (arena.meta.hubLobbyMeta.resetArenaOnEmpty && ingamePlayersStorage.isEmpty() && (redScore > 0 || blueScore > 0 || redSetScore > 0 || blueSetScore > 0)) {
+             setGameClosing()
+         }
+ 
+@@ -303,12 +303,12 @@
+      */
+     private fun timeAlmostUp() {
+         when {
+-            redScore == blueScore -> {
++            redSetScore == blueSetScore -> {
+                 onMatchEnd(null)
+                 onDraw()
+             }
+ 
+-            redScore > blueScore -> {
++            redSetScore > blueSetScore -> {
+                 onMatchEnd(Team.RED)
+                 onWin(Team.RED)
+             }
 Index: src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -664,7 +866,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt
 --- a/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt	(date 1750521312616)
++++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt	(date 1750582590245)
 @@ -96,7 +96,7 @@
              status = GameState.JOINABLE
          }
@@ -674,6 +876,39 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameIm
              return
          }
  
+Index: docs/wiki/docs/placeholders.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docs/wiki/docs/placeholders.md b/docs/wiki/docs/placeholders.md
+--- a/docs/wiki/docs/placeholders.md	(revision afd3754457145c3b19b5a4835ae4830504023a95)
++++ b/docs/wiki/docs/placeholders.md	(date 1750583773843)
+@@ -15,12 +15,15 @@
+ | %blockball_game_displayName%        | DisplayName of the game                                                                                       |
+ | %blockball_game_maxPlayers%         | Max amount of players who can join this game                                                                  |
+ | %blockball_game_players%            | Current amount of players in this game                                                                        |
++| %blockball_game_tennisScore%        | A tennis formated score text of the game                                                                      |
+ | %blockball_game_redDisplayName%     | Name of team red                                                                                              |
+ | %blockball_game_redScore%           | Score of the red team                                                                                         |
++| %blockball_game_redSetScore%        | Set score of the red team                                                                                     |
+ | %blockball_game_redPlayers%         | Amount of players who are currently in the red team                                                           |
+ | %blockball_game_redMaxPlayers%      | Max amount of players who can join the red team                                                               |
+ | %blockball_game_blueDisplayName%    | Name of team blue                                                                                             |
+ | %blockball_game_blueScore%          | Score of the blue team                                                                                        |
++| %blockball_game_blueSetScore%       | Set score of the blue team                                                                                    | 
+ | %blockball_game_bluePlayers%        | Amount of players who are currently in the blue team                                                          |
+ | %blockball_game_blueMaxPlayers%     | Max amount of players who can join the blue team                                                              |
+ | %blockball_game_time%               | Remaining time until the match ends                                                                           |
+@@ -68,7 +71,7 @@
+ | %blockball_player_totalGoalsPerGameFull% | Ratio between amount of games a player has fully played and scored total goals    |
+ 
+ !!! note "LeaderBoard"
+-    Replace **top_1** with **top_2** or **top_3** etc. to build a leaderboard.
++Replace **top_1** with **top_2** or **top_3** etc. to build a leaderboard.
+ 
+ | LeaderBoard Placeholders (Patreon Only)                 | Description                                                                                  |
+ |---------------------------------------------------------|----------------------------------------------------------------------------------------------|
 Index: src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -681,7 +916,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt b/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt
 --- a/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt	(date 1750524778230)
++++ b/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt	(date 1750583718061)
 @@ -7,7 +7,6 @@
  import com.github.shynixn.blockball.contract.StatsService
  import com.github.shynixn.blockball.entity.LeaderBoardStats
@@ -712,7 +947,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.
  
      GAME_BLUE_PLAYER_MAXAMOUNT(
          "%blockball_game_blueMaxPlayers_[game]%",
-@@ -136,6 +139,34 @@
+@@ -136,6 +139,50 @@
              null
          }
      }),
@@ -744,10 +979,26 @@ diff --git a/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.
 +            null
 +        }
 +    }),
++
++    GAME_TENNIS_BLUE_SET_SCORE("%blockball_game_blueSetScore_[game]%", { _, game, _ ->
++        if (game != null) {
++            game.blueSetScore.toString()
++        } else {
++            null
++        }
++    }),
++
++    GAME_TENNIS_RED_SET_SCORE("%blockball_game_redSetScore_[game]%", { _, game, _ ->
++        if (game != null) {
++            game.redSetScore.toString()
++        } else {
++            null
++        }
++    }),
  
      // Player PlaceHolders
  
-@@ -215,10 +246,10 @@
+@@ -215,10 +262,10 @@
      PLAYER_STATS_TOPGOALSCURRENT("%blockball_game_topGoalsCurrentPlayerName_[game]%", { _, game, _ ->
          if (!com.github.shynixn.blockball.BlockBallDependencyInjectionModule.areLegacyVersionsIncluded) {
              BlockBallPlugin.patreonOnly
@@ -760,6 +1011,23 @@ diff --git a/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.
              ""
          }
      }),
+Index: docs/wiki/docs/README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docs/wiki/docs/README.md b/docs/wiki/docs/README.md
+--- a/docs/wiki/docs/README.md	(revision afd3754457145c3b19b5a4835ae4830504023a95)
++++ b/docs/wiki/docs/README.md	(date 1750584039862)
+@@ -2,8 +2,6 @@
+ 
+ BlockBall is a spigot plugin to play soccer/football games in Minecraft.
+ 
+-Are you looking for the 6.x.x wiki? You can access it via [the WayBackMachine](https://web.archive.org/web/20240811125048/https://shynixn.github.io/BlockBall/build/html/index.html).
+-
+ ## Features
+ 
+ * Adds a new playable soccer/football lobby game or standalone minigame
 Index: src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -767,7 +1035,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt b/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt
 --- a/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt	(date 1750521312523)
++++ b/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt	(date 1750582590089)
 @@ -2,6 +2,6 @@
  
  enum class SelectionType {
@@ -784,7 +1052,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/BallHitboxEntity.kt b/src/main/java/com/github/shynixn/blockball/impl/BallHitboxEntity.kt
 --- a/src/main/java/com/github/shynixn/blockball/impl/BallHitboxEntity.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/BallHitboxEntity.kt	(date 1750521312578)
++++ b/src/main/java/com/github/shynixn/blockball/impl/BallHitboxEntity.kt	(date 1750586746991)
 @@ -58,7 +58,7 @@
       * Motion of the ball.
       * Apply gravity at spawn to start with physic calculations.
@@ -794,12 +1062,37 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/BallHitboxEntity.kt
  
      /**
       * Request a teleport at next tick.
-@@ -236,7 +236,12 @@
+@@ -170,13 +170,22 @@
+ 
+         val prevEyeLoc = player.eyeLocation.clone()
+         this.skipCounter = meta.hitbox.interactionCoolDownTicks
++        game?.bounceCounter = 0
++
++        val finalMultiplier = if (player.inventory.heldItemSlot < 3) {
++            baseMultiplier * 0.8
++        } else if (player.inventory.heldItemSlot < 6) {
++            baseMultiplier
++        } else {
++            baseMultiplier * 1.2
++        }
+ 
+         if (meta.hitbox.leftClickRightClickDelayTicks == 0) {
+-            executeKickPass(player, prevEyeLoc, baseMultiplier, isPass)
++            executeKickPass(player, prevEyeLoc, finalMultiplier, isPass)
+         } else {
+             plugin.launch {
+                 delay(meta.hitbox.leftClickRightClickDelayTicks.ticks)
+-                executeKickPass(player, prevEyeLoc, baseMultiplier, isPass)
++                executeKickPass(player, prevEyeLoc, finalMultiplier, isPass)
+             }
+         }
+     }
+@@ -236,7 +245,12 @@
              if (rayTraceEvent.blockDirection == BlockDirection.UP) {
                  this.stuckCounter = 0
                  this.cachedLength = this.motion.length()
 -                calculateBallOnGround(players, targetPosition)
-+                this.motion.y = this.motion.y * -0.9
++                this.motion.y *= -1 * meta.groundBounce
 +                val rollingResistance = 1.0 - this.meta.rollingResistance
 +                this.motion = this.motion.multiply(rollingResistance)
 +                this.isOnGround = true
@@ -815,7 +1108,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt
 --- a/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt	(date 1750522019748)
++++ b/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt	(date 1750582590156)
 @@ -228,21 +228,25 @@
                  language.gameTypeRefereeOnlyForPatreons.text
              )
@@ -894,7 +1187,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/service/HubGameForcefieldServiceImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/service/HubGameForcefieldServiceImpl.kt
 --- a/src/main/java/com/github/shynixn/blockball/impl/service/HubGameForcefieldServiceImpl.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/service/HubGameForcefieldServiceImpl.kt	(date 1750522095416)
++++ b/src/main/java/com/github/shynixn/blockball/impl/service/HubGameForcefieldServiceImpl.kt	(date 1750585210601)
 @@ -7,6 +7,7 @@
  import com.github.shynixn.blockball.entity.InteractionCache
  import com.github.shynixn.blockball.enumeration.GameState
@@ -911,7 +1204,35 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/service/HubGameForc
  
  class HubGameForcefieldServiceImpl(
      private val gameService: GameService,
-@@ -45,8 +45,14 @@
+@@ -38,6 +38,27 @@
+         val gameInternal = gameService.getByPlayer(player)
+ 
+         if (gameInternal != null) {
++            val storage = gameInternal.ingamePlayersStorage[player] ?: return
++
++            if (storage.team == Team.REFEREE) {
++                return
++            }
++
++            val (teamMeta, oppositeTeamMeta) = if (storage.team == Team.BLUE) {
++                Pair(gameInternal.arena.meta.blueTeamMeta, gameInternal.arena.meta.redTeamMeta)
++            } else {
++                Pair(gameInternal.arena.meta.redTeamMeta, gameInternal.arena.meta.blueTeamMeta)
++            }
++
++            if (oppositeTeamMeta.area.isLocationIn2dSelection(location.toVector3d())){
++                val knockBack =
++                    teamMeta.area.center!!.toLocation().toVector().subtract(player.location.toVector())
++                        .normalize().multiply(2.0)
++                player.location.direction = knockBack
++                player.velocity = knockBack
++                player.allowFlight = true
++            }
++
+             if (gameInternal.arena.gameType == GameType.HUBGAME) {
+                 if (!gameInternal.arena.isLocationIn2dSelection(location.toVector3d())) {
+                     gameInternal.leave(player)
+@@ -45,8 +66,14 @@
                  }
              } else if ((gameInternal.arena.gameType == GameType.MINIGAME || gameInternal.arena.gameType == GameType.REFEREEGAME) && gameInternal.arena.meta.minigameMeta.forceFieldEnabled) {
                  if (gameInternal.status == GameState.RUNNING && !gameInternal.arena.isLocationIn2dSelection(location.toVector3d())) {
@@ -927,7 +1248,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/service/HubGameForc
                              .normalize().multiply(2.0)
                      player.location.direction = knockBack
                      player.velocity = knockBack
-@@ -106,7 +112,7 @@
+@@ -106,7 +133,7 @@
                                          ) + "\n"
                                          it.clickEvent = ClickEvent(
                                              ClickEventType.RUN_COMMAND,
@@ -936,7 +1257,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/service/HubGameForc
                                          )
                                      },
                                      TextComponent().also {
-@@ -117,7 +123,7 @@
+@@ -117,7 +144,7 @@
                                          )
                                          it.clickEvent = ClickEvent(
                                              ClickEventType.RUN_COMMAND,
@@ -952,7 +1273,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/docs/wiki/docs/game.md b/docs/wiki/docs/game.md
 --- a/docs/wiki/docs/game.md	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/docs/wiki/docs/game.md	(date 1750521886959)
++++ b/docs/wiki/docs/game.md	(date 1750582589958)
 @@ -56,7 +56,7 @@
  /blockball select game1 field
  ```
@@ -1013,7 +1334,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt b/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt
 --- a/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt	(date 1750521312516)
++++ b/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt	(date 1750582590053)
 @@ -5,7 +5,8 @@
      RED_SPAWNPOINT,
      BLUE_SPAWNPOINT,
@@ -1031,7 +1352,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/resources/config.yml b/src/main/resources/config.yml
 --- a/src/main/resources/config.yml	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/resources/config.yml	(date 1750521312624)
++++ b/src/main/resources/config.yml	(date 1750582590340)
 @@ -12,18 +12,15 @@
  # Command settings
  ############################
@@ -1059,8 +1380,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt b/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt
 --- a/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt	(date 1750524565995)
-@@ -145,4 +145,10 @@
++++ b/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt	(date 1750582770289)
+@@ -145,4 +145,17 @@
       * Respawns the ball and sets it to the given location.
       */
      fun setBallToLocation(location: Location)
@@ -1068,6 +1389,13 @@ diff --git a/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt b
 +    var bounceCounter : Int
 +
 +    var servingTeam : Team
++
++    var redSetScore: Int
++
++    /**
++     * Blue Score.
++     */
++    var blueSetScore: Int
 +
 +    fun getBallSpawnpointFromServingTeam() : Location
  }
@@ -1078,7 +1406,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/resources/plugin.yml b/src/main/resources/plugin.yml
 --- a/src/main/resources/plugin.yml	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/resources/plugin.yml	(date 1750521312633)
++++ b/src/main/resources/plugin.yml	(date 1750582590351)
 @@ -1,4 +1,4 @@
 -name: BlockBall
 +name: MCTennis
@@ -1092,7 +1420,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt b/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt
 --- a/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt	(date 1750521312495)
++++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt	(date 1750582590017)
 @@ -31,9 +31,6 @@
      @Comment("Corner 2 of the playable field.")
      override var corner2: Vector3d? = null
@@ -1110,7 +1438,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt
 --- a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(date 1750524323499)
++++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(date 1750587843516)
 @@ -13,13 +13,13 @@
      var hitbox: SoccerBallHitBoxMeta = SoccerBallHitBoxMeta()
  
@@ -1128,7 +1456,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt
  
      @Comment("The horizontal speed gain after touching the ball.")
      var horizontalTouchModifier: Double = 1.0
-@@ -28,10 +28,10 @@
+@@ -28,10 +28,13 @@
      var verticalTouchModifier: Double = 1.0
  
      @Comment("The horizontal and vertical speed gain after left clicking the ball.")
@@ -1138,10 +1466,13 @@ diff --git a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt
      @Comment("Allows to override the shotVelocity with a vertical modifier if it is any other value than 1.0.")
 -    var shotPassYVelocityOverwrite: Double = 1.0
 +    var shotPassYVelocityOverwrite: Double = 1.3
++
++    @Comment("Allows to set how bouncy the ball is. e.g. setting 0.9 lets the ball keep 90% of its original motion.")
++    var groundBounce : Double = 0.6
  
      @Comment("The horizontal and vertical speed gain after right clicking the ball.")
      var passVelocity: Double = 1.2
-@@ -59,16 +59,16 @@
+@@ -59,13 +62,13 @@
          var leftClickEnabled: Boolean = true
  
          @Comment("Is rightClicking the ball enabled?")
@@ -1156,12 +1487,8 @@ diff --git a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt
 +        var touchEnabled: Boolean = false
  
          @Comment("Allows to move the hitbox up and down on the y-axe to make the ball appear more in the air or closer to the ground.")
--        var offSetY: Double = -0.3
-+        var offSetY: Double = 0.3
- 
-         @Comment("Amount of ticks until the ball can intercept interaction again.")
-         var interactionCoolDownTicks: Int = 20
-@@ -85,21 +85,21 @@
+         var offSetY: Double = -0.3
+@@ -85,21 +88,21 @@
  
      class SoccerBallRenderMeta {
          @Comment("Size of the rendered ball. These days you can set an arbitrary size. In older Minecraft versions, this version only supported 1.0 (STANDARD) and 0.5 (SMALL). ")
@@ -1193,7 +1520,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt
 --- a/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt	(date 1750521312509)
++++ b/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt	(date 1750582590043)
 @@ -28,9 +28,11 @@
      @Comment("Minimum amount of players in this team to keep the game running.")
      var minPlayingPlayers: Int = 0
@@ -1216,7 +1543,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt b/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt
 --- a/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt	(revision afd3754457145c3b19b5a4835ae4830504023a95)
-+++ b/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt	(date 1750523364359)
++++ b/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt	(date 1750582589970)
 @@ -197,4 +197,8 @@
    var reloadMessage: LanguageItem
  
