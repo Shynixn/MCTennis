@@ -94,6 +94,17 @@ jobs:
           asset_name: MCTennis-Premium.jar
           asset_content_type: application/jar
 
+      - name: Upload Premium Folia Release to Github
+        if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /home/runner/work/MCTennis/MCTennis/blockball/build/libs/mctennis-root-${{ env.RELEASE_VERSION }}-premium-folia.jar
+          asset_name: MCTennis-Premium-Folia.jar
+          asset_content_type: application/jar
+
       - name: Upload Legacy Bukkit Release to Github
         if: "contains(github.event.head_commit.message, '--release') && contains(github.ref, 'main')"
         uses: actions/upload-release-asset@v1
