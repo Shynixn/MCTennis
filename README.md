@@ -14,7 +14,7 @@ MCTennis is a spigot plugin to play tennis games in Minecraft.
 
 * Uses blocks as balls in minecraft
 * Games are completely customizable
-* Version support 1.8.R3 - 1.21.R5
+* Version support 1.8.R3 - 1.21.R6
 * Bukkit and Folia compatible
 * Check out the [MCTennis-Spigot-Page](https://www.spigotmc.org/resources/113074/) to get more information.
 
