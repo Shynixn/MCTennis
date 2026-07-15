@@ -1,5 +1,19 @@
 # Changelog
 
+## Release 7.42.0
+
+### Changes
+
+* Shynixn/BlockBall#753 Added new logging settings to the config.yml. It is highly recommended to delete the config.yml to let it be recreated.
+* Shynixn/BlockBall#753 You can now configure the log level of MCTennis for the main server console and MCTennis-only log file found in the /plugins/MCTennis/logs folder.
+* Shynixn/BlockBall#753 Log levels can be switched without server shutdown and applied via the /mctennis reload command. This is useful for cases where you want to actively investigate something using DEBUG mode.
+
+### Bugs/Issues
+
+* Shynixn/BlockBall#752 Fixed html color codes did not work in standard chat messages.
+
+---
+
 ## Release 7.41.1
 
 ### Changes
