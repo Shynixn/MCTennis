@@ -4,8 +4,8 @@ Index: docs/wiki/docs/cloud.md
 ===================================================================
 diff --git a/docs/wiki/docs/cloud.md b/docs/wiki/docs/cloud.md
 deleted file mode 100644
---- a/docs/wiki/docs/cloud.md	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ /dev/null	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
+--- a/docs/wiki/docs/cloud.md	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ /dev/null	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
 @@ -1,191 +0,0 @@
 -# BlockBall Hub - Cloud Integration (BETA)
 -
@@ -202,8 +202,8 @@ Index: src/main/resources/ball/curve_soccer_ball.yml
 ===================================================================
 diff --git a/src/main/resources/ball/curve_soccer_ball.yml b/src/main/resources/ball/curve_soccer_ball.yml
 deleted file mode 100644
---- a/src/main/resources/ball/curve_soccer_ball.yml	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ /dev/null	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
+--- a/src/main/resources/ball/curve_soccer_ball.yml	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ /dev/null	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
 @@ -1,237 +0,0 @@
 -# ###############
 -# 
@@ -443,20 +443,20 @@ deleted file mode 100644
 -  # The particle/sound effect name to play when this interaction is successfully triggered.
 -  effectName: ball_kick
 \ No newline at end of file
-Index: src/main/resources/ball/hand_ball.yml
+Index: src/main/resources/ball/soccer_ball.yml
 ===================================================================
-diff --git a/src/main/resources/ball/hand_ball.yml b/src/main/resources/ball/hand_ball.yml
+diff --git a/src/main/resources/ball/soccer_ball.yml b/src/main/resources/ball/soccer_ball.yml
 deleted file mode 100644
---- a/src/main/resources/ball/hand_ball.yml	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ /dev/null	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-@@ -1,172 +0,0 @@
+--- a/src/main/resources/ball/soccer_ball.yml	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ /dev/null	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
+@@ -1,127 +0,0 @@
 -# ###############
 -# 
 -# Configuration profile for a physical ball instance in the BlockBall engine.
 -# 
 -# ###############
 -# Unique identifier for this ball configuration template used within the plugin system.
--name: hand_ball
+-name: soccer_ball
 -# Visual settings defining how the ball looks, its scale, and layout offsets.
 -render:
 -  # The global scale modifier transforming the physical scale of the rendered model entity.
@@ -511,125 +511,80 @@ deleted file mode 100644
 -  fetchPlayerPositionsIntervalTicks: 2
 -# Gameplay modifiers determining how players interact with the ball via hotbars and clicks.
 -interactions:
--  - # The input trigger required to execute this action. Available types:
--    #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
--    #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
--    #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
--    triggerType: LEFT_CLICK
--    # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
--    conditionHotBarRangeStart: 0
--    # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
--    conditionHotBarRangeEnd: 4
--    # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
--    conditionGrabbedBySelf: false
--    # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
--    executionType: SHOOT
--    # The instantaneous horizontal impulse vector applied to the ball.
--    horizontalImpulse: 0.3
--    # The instantaneous vertical impulse vector applied to the ball.
--    verticalImpulse: 0.4
--    # The initial rotational spin impulse applied around the Y-axis upon interaction.
--    # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
--    spinImpulse: 0.0
--    # The particle/sound effect name to play when this interaction is successfully triggered.
--    effectName: ''
--  - # The input trigger required to execute this action. Available types:
--    #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
--    #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
--    #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
--    triggerType: LEFT_CLICK
--    # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
--    conditionHotBarRangeStart: 5
--    # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
--    conditionHotBarRangeEnd: 8
--    # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
--    conditionGrabbedBySelf: false
--    # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
--    executionType: GRAB
--    # The instantaneous horizontal impulse vector applied to the ball.
--    horizontalImpulse: 0.0
--    # The instantaneous vertical impulse vector applied to the ball.
--    verticalImpulse: 0.0
--    # The initial rotational spin impulse applied around the Y-axis upon interaction.
--    # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
--    spinImpulse: 0.0
--    # The particle/sound effect name to play when this interaction is successfully triggered.
--    effectName: ''
--  - # The input trigger required to execute this action. Available types:
--    #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
--    #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
--    #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
--    triggerType: LEFT_CLICK
--    # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
--    conditionHotBarRangeStart: 0
--    # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
--    conditionHotBarRangeEnd: 2
--    # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
--    conditionGrabbedBySelf: true
--    # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
--    executionType: SHOOT
--    # The instantaneous horizontal impulse vector applied to the ball.
--    horizontalImpulse: 1.3
--    # The instantaneous vertical impulse vector applied to the ball.
--    verticalImpulse: 0.6
--    # The initial rotational spin impulse applied around the Y-axis upon interaction.
--    # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
--    spinImpulse: -2.0
--    # The particle/sound effect name to play when this interaction is successfully triggered.
--    effectName: ball_kick
--  - # The input trigger required to execute this action. Available types:
--    #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
--    #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
--    #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
--    triggerType: LEFT_CLICK
--    # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
--    conditionHotBarRangeStart: 3
--    # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
--    conditionHotBarRangeEnd: 5
--    # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
--    conditionGrabbedBySelf: true
--    # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
--    executionType: SHOOT
--    # The instantaneous horizontal impulse vector applied to the ball.
--    horizontalImpulse: 1.3
--    # The instantaneous vertical impulse vector applied to the ball.
--    verticalImpulse: 0.6
--    # The initial rotational spin impulse applied around the Y-axis upon interaction.
--    # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
--    spinImpulse: 0.0
--    # The particle/sound effect name to play when this interaction is successfully triggered.
--    effectName: ball_kick
--  - # The input trigger required to execute this action. Available types:
--    #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
--    #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
--    #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
--    triggerType: LEFT_CLICK
--    # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
--    conditionHotBarRangeStart: 6
--    # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
--    conditionHotBarRangeEnd: 8
--    # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
--    conditionGrabbedBySelf: true
--    # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
--    executionType: SHOOT
--    # The instantaneous horizontal impulse vector applied to the ball.
--    horizontalImpulse: 1.3
--    # The instantaneous vertical impulse vector applied to the ball.
--    verticalImpulse: 0.6
--    # The initial rotational spin impulse applied around the Y-axis upon interaction.
--    # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
--    spinImpulse: 2.0
--    # The particle/sound effect name to play when this interaction is successfully triggered.
--    effectName: ball_kick
--
+-- # The input trigger required to execute this action. Available types:
+-  #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
+-  #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
+-  #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
+-  triggerType: COLLIDE
+-  # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
+-  conditionHotBarRangeStart: 0
+-  # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
+-  conditionHotBarRangeEnd: 8
+-  # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
+-  conditionGrabbedBySelf: false
+-  # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
+-  executionType: SHOOT
+-  # The instantaneous horizontal impulse vector applied to the ball.
+-  horizontalImpulse: 1.0
+-  # The instantaneous vertical impulse vector applied to the ball.
+-  verticalImpulse: 0.2
+-  # The initial rotational spin impulse applied around the Y-axis upon interaction.
+-  # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
+-  spinImpulse: 0.0
+-  # The particle/sound effect name to play when this interaction is successfully triggered.
+-  effectName: ''
+-- # The input trigger required to execute this action. Available types:
+-  #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
+-  #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
+-  #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
+-  triggerType: LEFT_CLICK
+-  # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
+-  conditionHotBarRangeStart: 0
+-  # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
+-  conditionHotBarRangeEnd: 8
+-  # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
+-  conditionGrabbedBySelf: false
+-  # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
+-  executionType: SHOOT
+-  # The instantaneous horizontal impulse vector applied to the ball.
+-  horizontalImpulse: 1.0
+-  # The instantaneous vertical impulse vector applied to the ball.
+-  verticalImpulse: 0.6
+-  # The initial rotational spin impulse applied around the Y-axis upon interaction.
+-  # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
+-  spinImpulse: 0.0
+-  # The particle/sound effect name to play when this interaction is successfully triggered.
+-  effectName: ball_kick
+-- # The input trigger required to execute this action. Available types:
+-  #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
+-  #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
+-  #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
+-  triggerType: SPRINT_LEFT_CLICK
+-  # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
+-  conditionHotBarRangeStart: 0
+-  # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
+-  conditionHotBarRangeEnd: 8
+-  # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
+-  conditionGrabbedBySelf: false
+-  # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
+-  executionType: SHOOT
+-  # The instantaneous horizontal impulse vector applied to the ball.
+-  horizontalImpulse: 1.0
+-  # The instantaneous vertical impulse vector applied to the ball.
+-  verticalImpulse: 1.0
+-  # The initial rotational spin impulse applied around the Y-axis upon interaction.
+-  # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
+-  spinImpulse: 0.0
+-  # The particle/sound effect name to play when this interaction is successfully triggered.
+-  effectName: ball_kick
 Index: docs/wiki/docs/README.md
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/docs/wiki/docs/README.md b/docs/wiki/docs/README.md
---- a/docs/wiki/docs/README.md	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/docs/wiki/docs/README.md	(date 1782158594437)
+--- a/docs/wiki/docs/README.md	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/docs/wiki/docs/README.md	(date 1784141512700)
 @@ -28,11 +28,6 @@
  * **Team Management**: Automatic team balancing and custom team configurations
  * **Flexible Permissions**: Granular control over player access
@@ -648,8 +603,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt	(date 1782158811061)
+--- a/src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/entity/LobbyMeta.kt	(date 1784141512787)
 @@ -5,8 +5,8 @@
  import org.bukkit.GameMode
  
@@ -667,8 +622,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt	(date 1782158811054)
+--- a/src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/entity/DoubleJumpMeta.kt	(date 1784141512776)
 @@ -7,13 +7,13 @@
      var enabled: Boolean = true
  
@@ -692,8 +647,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt	(date 1782158862453)
+--- a/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/entity/TeamMeta.kt	(date 1784141512836)
 @@ -24,9 +24,11 @@
      @Comment("Minimum amount of players in this team to keep the game running.")
      var minPlayingPlayers: Int = 0
@@ -715,8 +670,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/docs/wiki/docs/ball.md b/docs/wiki/docs/ball.md
---- a/docs/wiki/docs/ball.md	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/docs/wiki/docs/ball.md	(date 1782505685641)
+--- a/docs/wiki/docs/ball.md	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/docs/wiki/docs/ball.md	(date 1784141512642)
 @@ -10,13 +10,7 @@
  
  ```yaml
@@ -1218,8 +1173,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/docs/wiki/docs/game.md b/docs/wiki/docs/game.md
---- a/docs/wiki/docs/game.md	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/docs/wiki/docs/game.md	(date 1782158594408)
+--- a/docs/wiki/docs/game.md	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/docs/wiki/docs/game.md	(date 1784141512677)
 @@ -80,42 +80,46 @@
  ![Playing Field Selection](./assets/arena7.png)
  
@@ -1295,8 +1250,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt b/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt	(date 1782497188949)
+--- a/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt	(date 1784141512810)
 @@ -34,18 +34,12 @@
      @Comment("Corner 2 of the playable field.")
      override var corner2: Vector3d? = null
@@ -1317,211 +1272,21 @@ diff --git a/src/main/java/com/github/shynixn/blockball/entity/SoccerArena.kt b/
      @Comment("All configurable meta data of this arena.")
      var meta: ArenaMeta = ArenaMeta()
  }
-Index: src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt
+Index: src/main/resources/ball/hand_ball.yml
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
-diff --git a/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt b/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt
---- a/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt	(date 1782496884431)
-@@ -68,9 +68,9 @@
- 
-  override var axeReceivedMessage = LanguageItem("&0&l[&f&lBlockBall&0&l]&7 The BlockBall axe has been added to your inventory.")
- 
-- override var scoreRed = LanguageItem("&c%blockball_game_redScore% : &9%blockball_game_blueScore%")
-+ override var scoreRed = LanguageItem("&c%blockball_game_tennisScore%")
- 
-- override var scoreBlue = LanguageItem("&9%blockball_game_blueScore% : &c%blockball_game_redScore%")
-+ override var scoreBlue = LanguageItem("&9%blockball_game_tennisScore%")
- 
-  override var winRed = LanguageItem("%blockball_game_redDisplayName%")
- 
-@@ -332,6 +332,10 @@
- 
-  override var shyBossBarBooleanNotFoundMessage = LanguageItem("&0&l[&f&lBlockBall&0&l]&7&c Only true and false are allowed as values.")
- 
-+ override var bounceOutHologram = LanguageItem("&lOut")
-+
-+ override var bounceSecondHologram = LanguageItem("&l2nd Bounce")
-+
-  override var shyCommandSignsPlayerNotFoundMessage = LanguageItem("&0&l[&f&lBlockBall&0&l]&7 &cPlayer %blockball_param_1% not found.")
- 
-  override var shyCommandSignsNoPermissionCommand = LanguageItem("&0&l[&f&lBlockBall&0&l]&7 &cYou do not have permission to execute this command.")
-Index: src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt b/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt
---- a/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt	(date 1782158811008)
-@@ -194,4 +194,17 @@
-      * Sets the next substate of the game. The substate is used to determine the next action of the game.
-      */
-     fun setNextGameSubState(subState: GameSubState, timeFromNowMilliSeconds: Long = 0)
-+
-+    var bounceCounter : Int
-+
-+    var servingTeam : Team
-+
-+    var redSetScore: Int
-+
-+    /**
-+     * Blue Score.
-+     */
-+    var blueSetScore: Int
-+
-+    fun getBallSpawnpointFromServingTeam() : Location
- }
-Index: src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt b/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt
---- a/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt	(date 1782500461984)
-@@ -21,7 +21,6 @@
- import com.github.shynixn.mcutils.common.ConfigurationService
- import com.github.shynixn.mcutils.common.ConfigurationServiceImpl
- import com.github.shynixn.mcutils.common.CoroutineHandler
--import com.github.shynixn.mcutils.common.Version
- import com.github.shynixn.mcutils.common.chat.ChatMessageService
- import com.github.shynixn.mcutils.common.command.CommandService
- import com.github.shynixn.mcutils.common.command.CommandServiceImpl
-@@ -92,9 +91,7 @@
-                     "ball",
-                     plugin.dataFolder.toPath().resolve("ball"),
-                     listOf(
--                        "ball/soccer_ball.yml" to "soccer_ball.yml",
--                        "ball/curve_soccer_ball.yml" to "curve_soccer_ball.yml",
--                        "ball/hand_ball.yml" to "hand_ball.yml"
-+                        "ball/tennis_ball.yml" to "tennis_ball.yml"
-                     ),
-                     listOf(),
-                     object : TypeReference<SoccerBallMeta>() {}
-@@ -225,6 +222,8 @@
-                 module.getService(),
-                 module.getService(),
-                 module.getService(),
-+                module.getService(),
-+                module.getService()
-             )
-         }
-         module.addService<ForceFieldListener> {
-Index: src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt b/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt
---- a/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt	(date 1782159638279)
-@@ -86,6 +86,28 @@
-         var indexKey = "[index]"
-         var gameKey = "[game]"
-         val patreonOnly = "PatreonOnly"
-+
-+        fun getScore(points: Int): String {
-+            return when (points) {
-+                0 -> {
-+                    "00"
-+                }
-+
-+                1 -> {
-+                    "15"
-+                }
-+
-+                2 -> {
-+                    "30"
-+                }
-+
-+                3 -> {
-+                    "40"
-+                }
-+
-+                else -> throw RuntimeException("Score $points cannot be converted! ")
-+            }
-+        }
-     }
- 
-     /**
-Index: src/main/java/com/github/shynixn/blockball/impl/SoccerBallImpl.kt
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerBallImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/SoccerBallImpl.kt
---- a/src/main/java/com/github/shynixn/blockball/impl/SoccerBallImpl.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerBallImpl.kt	(date 1782501437914)
-@@ -48,6 +48,7 @@
-     override val hitBoxEntityId: Int,
-     override val renderEntityId: Int
- ) : SoccerBall {
-+    private var noGravity = true
- 
-     companion object {
-         /**
-@@ -209,6 +210,7 @@
-         this.motion = velocity.clone()
-         this.spinY = spin.y
-         this.isOnGround = false
-+        this.noGravity = false
-     }
- 
-     /**
-@@ -303,6 +305,8 @@
-             return
-         }
- 
-+        noGravity = false
-+
-         if (interactionMeta.executionType == BallExecuteActionType.SHOOT) {
-             // Reset grabbing state.
-             cancelGrab()
-@@ -621,6 +625,10 @@
-      * rest thresholds.
-      */
-     private fun calculatePhysics(deltaMs: Int) {
-+        if (noGravity) {
-+            return
-+        }
-+
-         val tickScale = (deltaMs / 50.0).coerceAtMost(2.0)
-         val ballMass = meta.physics.mass.coerceAtLeast(0.01)
- 
-Index: docs/wiki/mkdocs.yml
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/docs/wiki/mkdocs.yml b/docs/wiki/mkdocs.yml
---- a/docs/wiki/mkdocs.yml	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/docs/wiki/mkdocs.yml	(date 1782158594450)
-@@ -17,7 +17,6 @@
-       - Referee (Patreon): referee.md
-       - Managing Clubs (Patreon): club.md
-       - Club vs Club Games (Patreon): club-games.md
--      - Website and Cloud (Patreon): cloud.md
- theme:
-   name: material
-   features:
-Index: src/main/resources/ball/soccer_ball.yml
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/src/main/resources/ball/soccer_ball.yml b/src/main/resources/ball/tennis_ball.yml
-rename from src/main/resources/ball/soccer_ball.yml
+diff --git a/src/main/resources/ball/hand_ball.yml b/src/main/resources/ball/tennis_ball.yml
+rename from src/main/resources/ball/hand_ball.yml
 rename to src/main/resources/ball/tennis_ball.yml
---- a/src/main/resources/ball/soccer_ball.yml	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/resources/ball/tennis_ball.yml	(date 1782505393090)
+--- a/src/main/resources/ball/hand_ball.yml	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/resources/ball/tennis_ball.yml	(date 1784141513082)
 @@ -4,25 +4,25 @@
  # 
  # ###############
  # Unique identifier for this ball configuration template used within the plugin system.
--name: soccer_ball
+-name: hand_ball
 +name: tennis_ball
  # Visual settings defining how the ball looks, its scale, and layout offsets.
  render:
@@ -1569,151 +1334,311 @@ rename to src/main/resources/ball/tennis_ball.yml
    # Velocity dampening coefficient applied per tick while rolling along the ground (Surface Friction).
    rollingFriction: 0.1
    # The rate at which the ball's rotational spin decays per tick (0.0 to 1.0). 0.0 means no spin loss.
-@@ -59,69 +59,69 @@
-   fetchPlayerPositionsIntervalTicks: 2
- # Gameplay modifiers determining how players interact with the ball via hotbars and clicks.
- interactions:
--- # The input trigger required to execute this action. Available types:
--  #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
--  #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
--  #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
--  triggerType: COLLIDE
--  # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
--  conditionHotBarRangeStart: 0
--  # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
--  conditionHotBarRangeEnd: 8
--  # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
--  conditionGrabbedBySelf: false
--  # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
--  executionType: SHOOT
--  # The instantaneous horizontal impulse vector applied to the ball.
--  horizontalImpulse: 1.0
--  # The instantaneous vertical impulse vector applied to the ball.
--  verticalImpulse: 0.2
--  # The initial rotational spin impulse applied around the Y-axis upon interaction.
--  # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
--  spinImpulse: 0.0
--  # The particle/sound effect name to play when this interaction is successfully triggered.
--  effectName: ''
--- # The input trigger required to execute this action. Available types:
--  #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
--  #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
--  #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
--  triggerType: LEFT_CLICK
--  # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
--  conditionHotBarRangeStart: 0
--  # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
--  conditionHotBarRangeEnd: 8
--  # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
--  conditionGrabbedBySelf: false
--  # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
--  executionType: SHOOT
--  # The instantaneous horizontal impulse vector applied to the ball.
--  horizontalImpulse: 1.0
--  # The instantaneous vertical impulse vector applied to the ball.
--  verticalImpulse: 0.6
--  # The initial rotational spin impulse applied around the Y-axis upon interaction.
--  # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
--  spinImpulse: 0.0
--  # The particle/sound effect name to play when this interaction is successfully triggered.
--  effectName: ball_kick
--- # The input trigger required to execute this action. Available types:
--  #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
--  #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
--  #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
--  triggerType: SPRINT_LEFT_CLICK
--  # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
--  conditionHotBarRangeStart: 0
--  # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
--  conditionHotBarRangeEnd: 8
--  # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
--  conditionGrabbedBySelf: false
--  # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
--  executionType: SHOOT
--  # The instantaneous horizontal impulse vector applied to the ball.
--  horizontalImpulse: 1.0
--  # The instantaneous vertical impulse vector applied to the ball.
--  verticalImpulse: 1.0
--  # The initial rotational spin impulse applied around the Y-axis upon interaction.
--  # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
--  spinImpulse: 0.0
--  # The particle/sound effect name to play when this interaction is successfully triggered.
--  effectName: ball_kick
-+  - # The input trigger required to execute this action. Available types:
-+    #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
-+    #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
-+    #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
-+    triggerType: LEFT_CLICK
-+    # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
-+    conditionHotBarRangeStart: 0
-+    # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
+@@ -67,63 +67,19 @@
+     # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
+     conditionHotBarRangeStart: 0
+     # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
+-    conditionHotBarRangeEnd: 4
 +    conditionHotBarRangeEnd: 2
-+    # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
-+    conditionGrabbedBySelf: false
-+    # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
-+    executionType: SHOOT
-+    # The instantaneous horizontal impulse vector applied to the ball.
+     # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
+     conditionGrabbedBySelf: false
+     # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
+     executionType: SHOOT
+     # The instantaneous horizontal impulse vector applied to the ball.
+-    horizontalImpulse: 0.3
+-    # The instantaneous vertical impulse vector applied to the ball.
+-    verticalImpulse: 0.4
+-    # The initial rotational spin impulse applied around the Y-axis upon interaction.
+-    # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
+-    spinImpulse: 0.0
+-    # The particle/sound effect name to play when this interaction is successfully triggered.
+-    effectName: ''
+-  - # The input trigger required to execute this action. Available types:
+-    #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
+-    #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
+-    #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
+-    triggerType: LEFT_CLICK
+-    # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
+-    conditionHotBarRangeStart: 5
+-    # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
+-    conditionHotBarRangeEnd: 8
+-    # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
+-    conditionGrabbedBySelf: false
+-    # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
+-    executionType: GRAB
+-    # The instantaneous horizontal impulse vector applied to the ball.
+-    horizontalImpulse: 0.0
 +    horizontalImpulse: 0.2
-+    # The instantaneous vertical impulse vector applied to the ball.
+     # The instantaneous vertical impulse vector applied to the ball.
+-    verticalImpulse: 0.0
 +    verticalImpulse: 0.2
-+    # The initial rotational spin impulse applied around the Y-axis upon interaction.
-+    # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
-+    spinImpulse: 0.0
-+    # The particle/sound effect name to play when this interaction is successfully triggered.
-+    effectName: ball_kick
-+  - # The input trigger required to execute this action. Available types:
-+    #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
-+    #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
-+    #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
-+    triggerType: LEFT_CLICK
-+    # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
-+    conditionHotBarRangeStart: 3
-+    # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
-+    conditionHotBarRangeEnd: 5
-+    # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
+     # The initial rotational spin impulse applied around the Y-axis upon interaction.
+     # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
+     spinImpulse: 0.0
+     # The particle/sound effect name to play when this interaction is successfully triggered.
+-    effectName: ''
+-  - # The input trigger required to execute this action. Available types:
+-    #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
+-    #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
+-    #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
+-    triggerType: LEFT_CLICK
+-    # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
+-    conditionHotBarRangeStart: 0
+-    # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
+-    conditionHotBarRangeEnd: 2
+-    # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
+-    conditionGrabbedBySelf: true
+-    # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
+-    executionType: SHOOT
+-    # The instantaneous horizontal impulse vector applied to the ball.
+-    horizontalImpulse: 1.3
+-    # The instantaneous vertical impulse vector applied to the ball.
+-    verticalImpulse: 0.6
+-    # The initial rotational spin impulse applied around the Y-axis upon interaction.
+-    # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
+-    spinImpulse: -2.0
+-    # The particle/sound effect name to play when this interaction is successfully triggered.
+     effectName: ball_kick
+   - # The input trigger required to execute this action. Available types:
+     #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
+@@ -135,13 +91,13 @@
+     # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
+     conditionHotBarRangeEnd: 5
+     # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
+-    conditionGrabbedBySelf: true
 +    conditionGrabbedBySelf: false
-+    # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
-+    executionType: SHOOT
-+    # The instantaneous horizontal impulse vector applied to the ball.
+     # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
+     executionType: SHOOT
+     # The instantaneous horizontal impulse vector applied to the ball.
+-    horizontalImpulse: 1.3
 +    horizontalImpulse: 0.35
-+    # The instantaneous vertical impulse vector applied to the ball.
+     # The instantaneous vertical impulse vector applied to the ball.
+-    verticalImpulse: 0.6
 +    verticalImpulse: 0.2
-+    # The initial rotational spin impulse applied around the Y-axis upon interaction.
-+    # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
-+    spinImpulse: 0.0
-+    # The particle/sound effect name to play when this interaction is successfully triggered.
-+    effectName: ball_kick
-+  - # The input trigger required to execute this action. Available types:
-+    #  - Clicks: LEFT_CLICK, JUMP_LEFT_CLICK, SNEAK_LEFT_CLICK, SPRINT_LEFT_CLICK
-+    #  - Right Clicks: RIGHT_CLICK, JUMP_RIGHT_CLICK, SNEAK_RIGHT_CLICK, SPRINT_RIGHT_CLICK
-+    #  - Collisions: COLLIDE, JUMP_COLLIDE, SNEAK_COLLIDE, SPRINT_COLLIDE
-+    triggerType: LEFT_CLICK
-+    # The starting index (0-8) of the player's hotbar range allowed to trigger this action.
-+    conditionHotBarRangeStart: 6
-+    # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
-+    conditionHotBarRangeEnd: 8
-+    # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
+     # The initial rotational spin impulse applied around the Y-axis upon interaction.
+     # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
+     spinImpulse: 0.0
+@@ -157,16 +113,15 @@
+     # The ending index (0-8) of the player's hotbar range allowed to trigger this action.
+     conditionHotBarRangeEnd: 8
+     # If set to true then this action is only executed when the ball is grabbed by the player performing the trigger action.
+-    conditionGrabbedBySelf: true
 +    conditionGrabbedBySelf: false
-+    # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
-+    executionType: SHOOT
-+    # The instantaneous horizontal impulse vector applied to the ball.
+     # The mechanical action applied to the ball upon a successful trigger. Available types: SHOOT, GRAB
+     executionType: SHOOT
+     # The instantaneous horizontal impulse vector applied to the ball.
+-    horizontalImpulse: 1.3
 +    horizontalImpulse: 0.5
-+    # The instantaneous vertical impulse vector applied to the ball.
+     # The instantaneous vertical impulse vector applied to the ball.
+-    verticalImpulse: 0.6
 +    verticalImpulse: 0.2
-+    # The initial rotational spin impulse applied around the Y-axis upon interaction.
-+    # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
+     # The initial rotational spin impulse applied around the Y-axis upon interaction.
+     # Negative values create left-curving spin (slice); positive values create right-curving spin (hook).
+-    spinImpulse: 2.0
 +    spinImpulse: 0.0
-+    # The particle/sound effect name to play when this interaction is successfully triggered.
+     # The particle/sound effect name to play when this interaction is successfully triggered.
+-    effectName: ball_kick
+-
 +    effectName: ball_kick
 \ No newline at end of file
+Index: src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt b/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt
+--- a/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/BlockBallLanguageImpl.kt	(date 1784141877530)
+@@ -68,9 +68,9 @@
+ 
+  override var axeReceivedMessage = LanguageItem("&0&l[&f&lBlockBall&0&l]&7 The BlockBall axe has been added to your inventory.")
+ 
+- override var scoreRed = LanguageItem("&c%blockball_game_redScore% : &9%blockball_game_blueScore%")
++ override var scoreRed = LanguageItem("&c%blockball_game_tennisScore%")
+ 
+- override var scoreBlue = LanguageItem("&9%blockball_game_blueScore% : &c%blockball_game_redScore%")
++ override var scoreBlue = LanguageItem("&9%blockball_game_tennisScore%")
+ 
+  override var winRed = LanguageItem("%blockball_game_redDisplayName%")
+ 
+@@ -332,6 +332,10 @@
+ 
+  override var shyBossBarBooleanNotFoundMessage = LanguageItem("&0&l[&f&lBlockBall&0&l]&7&c Only true and false are allowed as values.")
+ 
++ override var bounceOutHologram = LanguageItem("&lOut")
++
++ override var bounceSecondHologram = LanguageItem("&l2nd Bounce")
++
+  override var shyCommandSignsPlayerNotFoundMessage = LanguageItem("&0&l[&f&lBlockBall&0&l]&7 &cPlayer %blockball_param_1% not found.")
+ 
+  override var shyCommandSignsNoPermissionCommand = LanguageItem("&0&l[&f&lBlockBall&0&l]&7 &cYou do not have permission to execute this command.")
+Index: src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt b/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt
+--- a/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/contract/SoccerGame.kt	(date 1784141512739)
+@@ -194,4 +194,17 @@
+      * Sets the next substate of the game. The substate is used to determine the next action of the game.
+      */
+     fun setNextGameSubState(subState: GameSubState, timeFromNowMilliSeconds: Long = 0)
++
++    var bounceCounter : Int
++
++    var servingTeam : Team
++
++    var redSetScore: Int
++
++    /**
++     * Blue Score.
++     */
++    var blueSetScore: Int
++
++    fun getBallSpawnpointFromServingTeam() : Location
+ }
+Index: src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt b/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt
+--- a/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/BlockBallDependencyInjectionModule.kt	(date 1784141513040)
+@@ -21,7 +21,6 @@
+ import com.github.shynixn.mcutils.common.ConfigurationService
+ import com.github.shynixn.mcutils.common.ConfigurationServiceImpl
+ import com.github.shynixn.mcutils.common.CoroutineHandler
+-import com.github.shynixn.mcutils.common.Version
+ import com.github.shynixn.mcutils.common.chat.ChatMessageService
+ import com.github.shynixn.mcutils.common.command.CommandService
+ import com.github.shynixn.mcutils.common.command.CommandServiceImpl
+@@ -92,9 +91,7 @@
+                     "ball",
+                     plugin.dataFolder.toPath().resolve("ball"),
+                     listOf(
+-                        "ball/soccer_ball.yml" to "soccer_ball.yml",
+-                        "ball/curve_soccer_ball.yml" to "curve_soccer_ball.yml",
+-                        "ball/hand_ball.yml" to "hand_ball.yml"
++                        "ball/tennis_ball.yml" to "tennis_ball.yml"
+                     ),
+                     listOf(),
+                     object : TypeReference<SoccerBallMeta>() {}
+@@ -225,6 +222,8 @@
+                 module.getService(),
+                 module.getService(),
+                 module.getService(),
++                module.getService(),
++                module.getService()
+             )
+         }
+         module.addService<ForceFieldListener> {
+Index: src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt b/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt
+--- a/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/BlockBallPlugin.kt	(date 1784141798372)
+@@ -84,6 +84,28 @@
+         var indexKey = "[index]"
+         var gameKey = "[game]"
+         val patreonOnly = "PatreonOnly"
++
++        fun getScore(points: Int): String {
++            return when (points) {
++                0 -> {
++                    "00"
++                }
++
++                1 -> {
++                    "15"
++                }
++
++                2 -> {
++                    "30"
++                }
++
++                3 -> {
++                    "40"
++                }
++
++                else -> throw RuntimeException("Score $points cannot be converted! ")
++            }
++        }
+     }
+ 
+     /**
+Index: src/main/java/com/github/shynixn/blockball/impl/SoccerBallImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerBallImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/SoccerBallImpl.kt
+--- a/src/main/java/com/github/shynixn/blockball/impl/SoccerBallImpl.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerBallImpl.kt	(date 1784141512973)
+@@ -48,6 +48,7 @@
+     override val hitBoxEntityId: Int,
+     override val renderEntityId: Int
+ ) : SoccerBall {
++    private var noGravity = true
+ 
+     companion object {
+         /**
+@@ -209,6 +210,7 @@
+         this.motion = velocity.clone()
+         this.spinY = spin.y
+         this.isOnGround = false
++        this.noGravity = false
+     }
+ 
+     /**
+@@ -303,6 +305,8 @@
+             return
+         }
+ 
++        noGravity = false
++
+         if (interactionMeta.executionType == BallExecuteActionType.SHOOT) {
+             // Reset grabbing state.
+             cancelGrab()
+@@ -621,6 +625,10 @@
+      * rest thresholds.
+      */
+     private fun calculatePhysics(deltaMs: Int) {
++        if (noGravity) {
++            return
++        }
++
+         val tickScale = (deltaMs / 50.0).coerceAtMost(2.0)
+         val ballMass = meta.physics.mass.coerceAtLeast(0.01)
+ 
+Index: docs/wiki/mkdocs.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docs/wiki/mkdocs.yml b/docs/wiki/mkdocs.yml
+--- a/docs/wiki/mkdocs.yml	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/docs/wiki/mkdocs.yml	(date 1784141512710)
+@@ -17,7 +17,6 @@
+       - Referee (Patreon): referee.md
+       - Managing Clubs (Patreon): club.md
+       - Club vs Club Games (Patreon): club-games.md
+-      - Website and Cloud (Patreon): cloud.md
+ theme:
+   name: material
+   features:
 Index: src/main/resources/scoreboard/blockball_scoreboard.yml
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/resources/scoreboard/blockball_scoreboard.yml b/src/main/resources/scoreboard/blockball_scoreboard.yml
---- a/src/main/resources/scoreboard/blockball_scoreboard.yml	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/resources/scoreboard/blockball_scoreboard.yml	(date 1782159638314)
+--- a/src/main/resources/scoreboard/blockball_scoreboard.yml	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/resources/scoreboard/blockball_scoreboard.yml	(date 1784141513130)
 @@ -22,9 +22,7 @@
    - "&6You:"
    - "%blockball_player_teamDisplayName%"
@@ -1735,8 +1660,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/docs/wiki/docs/placeholders.md b/docs/wiki/docs/placeholders.md
---- a/docs/wiki/docs/placeholders.md	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/docs/wiki/docs/placeholders.md	(date 1782158594426)
+--- a/docs/wiki/docs/placeholders.md	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/docs/wiki/docs/placeholders.md	(date 1784141512690)
 @@ -59,17 +59,20 @@
  
  ### Team Information
@@ -1775,8 +1700,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(date 1782158811038)
+--- a/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/entity/ArenaMeta.kt	(date 1784141512750)
 @@ -2,6 +2,9 @@
  
  import com.github.shynixn.blockball.entity.cloud.CloudMeta
@@ -1818,8 +1743,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(date 1782158811046)
+--- a/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/entity/CustomizationMeta.kt	(date 1784141512764)
 @@ -8,10 +8,10 @@
      var damageEnabled: Boolean = false
  
@@ -1839,8 +1764,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt	(date 1782158811069)
+--- a/src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/entity/MinigameLobbyMeta.kt	(date 1784141512799)
 @@ -26,18 +26,6 @@
          firstPeriod.duration = 150
          firstPeriod.respawnEnabled = true
@@ -1875,8 +1800,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt
---- a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(date 1782158862426)
+--- a/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/entity/SoccerBallMeta.kt	(date 1784141512822)
 @@ -115,7 +115,7 @@
              it.typeName = "PLAYER_HEAD,397"
              it.durability = "3"
@@ -1892,13 +1817,9 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/resources/config.yml b/src/main/resources/config.yml
---- a/src/main/resources/config.yml	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/resources/config.yml	(date 1782159638321)
-@@ -15,11 +15,9 @@
-   blockball:
-     aliases:
-       - "soccer"
--      - "football"
+--- a/src/main/resources/config.yml	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/resources/config.yml	(date 1784141931529)
+@@ -17,11 +17,9 @@
    blockballscoreboard:
      aliases:
        - "soccerscoreboard"
@@ -1906,14 +1827,18 @@ diff --git a/src/main/resources/config.yml b/src/main/resources/config.yml
    blockballbossbar:
      aliases:
        - "soccerbossbar"
+-      - "footballbossbar"
+   blockballsign:
+     aliases:
+       - "soccersign"
 Index: src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt b/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt
---- a/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt	(date 1782502417322)
+--- a/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/impl/listener/GameListener.kt	(date 1784141512943)
 @@ -1,14 +1,8 @@
 -@file:Suppress("DEPRECATION")
 -
@@ -2160,8 +2085,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt
---- a/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt	(date 1782159331034)
+--- a/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/impl/service/GameServiceImpl.kt	(date 1784141644080)
 @@ -4,9 +4,7 @@
  import com.github.shynixn.blockball.contract.*
  import com.github.shynixn.blockball.entity.PlayerInformation
@@ -2224,7 +2149,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/service/GameService
 -        if (arena.outerField.corner1 == null || arena.outerField.corner2 == null) {
 -            arena.outerField.corner1 = arena.corner1!!.copy()
 -            arena.outerField.corner2 = arena.corner2!!.copy()
--            plugin.logger.log(Level.INFO, "Auto-set outer field for arena ${arena.name}.")
+-            plugin.log.info("Auto-set outer field for arena ${arena.name}.")
 -        }
 -
 -        // If players set a too small arena height for outer field detection, automatically fix it.
@@ -2269,8 +2194,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/resources/bossbar/blockball_bossbar.yml b/src/main/resources/bossbar/blockball_bossbar.yml
---- a/src/main/resources/bossbar/blockball_bossbar.yml	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/resources/bossbar/blockball_bossbar.yml	(date 1782159638286)
+--- a/src/main/resources/bossbar/blockball_bossbar.yml	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/resources/bossbar/blockball_bossbar.yml	(date 1784141513103)
 @@ -10,7 +10,7 @@
  # The Minecraft ticks how often this bossbar is updated to the player. (1 tick = 50ms)
  refreshTicks: 60
@@ -2286,9 +2211,9 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt b/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt
---- a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt	(date 1782158976367)
-@@ -831,13 +831,14 @@
+--- a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/BlockBallCommandExecutor.kt	(date 1784141579008)
+@@ -830,13 +830,14 @@
          source.name = name
          source.displayName = displayName
          source.enabled = false
@@ -2308,7 +2233,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/Blo
  
          arenaRepository.save(source)
          sender.sendLanguageMessage(language.gameCreatedMessage, name)
-@@ -1195,9 +1196,7 @@
+@@ -1194,9 +1195,7 @@
              player.location.toVector3d()
          }
  
@@ -2319,7 +2244,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/Blo
              arena.meta.lobbyMeta.leaveSpawnpoint = playerLocation
          } else if (locationType == LocationType.BLUE_SPAWNPOINT) {
              arena.meta.blueTeamMeta.spawnpoint = playerLocation
-@@ -1211,10 +1210,10 @@
+@@ -1210,10 +1209,10 @@
              arena.meta.blueTeamMeta.lobbySpawnpoint = playerLocation
          } else if (locationType == LocationType.REFEREE_LOBBY) {
              arena.meta.refereeTeamMeta.lobbySpawnpoint = playerLocation
@@ -2334,7 +2259,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/Blo
          }
  
          arenaRepository.save(arena)
-@@ -1225,8 +1224,7 @@
+@@ -1224,8 +1223,7 @@
          val selectionLeft = selectionService.getLeftClickLocation(player)
          val selectionRight = selectionService.getRightClickLocation(player)
  
@@ -2344,7 +2269,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/Blo
              if (selectionLeft == null) {
                  player.sendLanguageMessage(language.noLeftClickSelectionMessage)
                  return
-@@ -1239,30 +1237,15 @@
+@@ -1238,30 +1236,15 @@
              if (selectionType == SelectionType.FIELD) {
                  arena.corner2 = convertToOutercorner2(selectionLeft.toVector3d(), selectionRight.toVector3d())
                  arena.corner1 = convertToOutercorner1(selectionLeft.toVector3d(), selectionRight.toVector3d())
@@ -2381,7 +2306,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/commandexecutor/Blo
                      convertToOutercorner1(selectionLeft.toVector3d(), selectionRight.toVector3d())
              }
          }
-@@ -1358,30 +1341,39 @@
+@@ -1356,30 +1339,39 @@
                          )
                      )
                  }
@@ -2435,8 +2360,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/resources/lang/en_us.yml b/src/main/resources/lang/en_us.yml
---- a/src/main/resources/lang/en_us.yml	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/resources/lang/en_us.yml	(date 1782159638307)
+--- a/src/main/resources/lang/en_us.yml	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/resources/lang/en_us.yml	(date 1784141513122)
 @@ -107,14 +107,14 @@
    text: "&0&l[&f&lBlockBall&0&l]&7 The BlockBall axe has been added to your inventory."
  scoreRed:
@@ -2473,25 +2398,9 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt
---- a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt	(date 1782505203639)
-@@ -17,6 +17,7 @@
- import com.github.shynixn.mccoroutine.folia.ticks
- import com.github.shynixn.mcutils.common.ChatColor
- import com.github.shynixn.mcutils.common.CoroutineHandler
-+import com.github.shynixn.mcutils.common.Vector3d
- import com.github.shynixn.mcutils.common.chat.ChatMessageService
- import com.github.shynixn.mcutils.common.command.CommandMeta
- import com.github.shynixn.mcutils.common.command.CommandService
-@@ -25,7 +26,6 @@
- import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
- import com.github.shynixn.mcutils.common.toLocation
- import com.github.shynixn.mcutils.common.toVector3d
--import com.github.shynixn.mcutils.common.Vector3d
- import com.github.shynixn.mcutils.database.api.PlayerDataRepository
- import com.github.shynixn.shyguild.entity.Guild
- import kotlinx.coroutines.delay
-@@ -35,6 +35,7 @@
+--- a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt	(date 1784141798318)
+@@ -32,6 +32,7 @@
  import org.bukkit.block.BlockFace
  import org.bukkit.entity.Player
  import org.bukkit.plugin.Plugin
@@ -2499,7 +2408,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
  import java.time.Instant
  import java.time.format.DateTimeFormatter
  import java.time.temporal.ChronoUnit
-@@ -61,6 +62,7 @@
+@@ -56,6 +57,7 @@
      private val server: Server,
      val forceFieldService: ForceFieldService
  ) : SoccerGame {
@@ -2507,7 +2416,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
      protected var startDateUtc = Instant.now()
  
      /**
-@@ -105,6 +107,13 @@
+@@ -100,6 +102,13 @@
       */
      override val id: String = UUID.randomUUID().toString().replace("-", "").substring(0, 8)
  
@@ -2521,7 +2430,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
      /**
       * Red club in club mode.
       */
-@@ -120,6 +129,11 @@
+@@ -115,6 +124,11 @@
       */
      var ballEnabled: Boolean = true
  
@@ -2533,15 +2442,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
      /**
       * Storage.
       */
-@@ -146,7 +160,6 @@
-     override var ball: SoccerBall? = null
- 
- 
--
-     /**
-      * Contains players which are in cooldown by doublejump.
-      */
-@@ -163,37 +176,35 @@
+@@ -157,37 +171,35 @@
       */
      override var interactedWithBall: MutableList<Player> = ArrayList()
      override var mirroredGoals: Boolean = false
@@ -2605,7 +2506,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
      }
  
      override fun areClubsPlaying(): Boolean {
-@@ -510,7 +521,7 @@
+@@ -522,7 +534,7 @@
          }
  
          val spawnPoint = if (teamMeta.spawnpoint == null) {
@@ -2614,7 +2515,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
          } else {
              teamMeta.spawnpoint!!.toLocation()
          }
-@@ -555,244 +566,37 @@
+@@ -569,244 +581,37 @@
              GameSubState.BALL_RESPAWNED -> {
                  if (ballEnabled) {
                      destroyBall()
@@ -2646,12 +2547,9 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -                val teamSide = if (arena.meta.redTeamMeta.outArea.isLocationIn2dSelection(ballLocation)) {
 -                    if (mirroredGoals) {
 -                        Team.BLUE
-+                    val ballSpawnPoint = if (servingTeam == Team.RED) {
-+                        arena.meta.redTeamMeta.ballSpawnPoint
-                     } else {
+-                    } else {
 -                        Team.RED
-+                        arena.meta.blueTeamMeta.ballSpawnPoint
-                     }
+-                    }
 -                } else if (arena.meta.blueTeamMeta.outArea.isLocationIn2dSelection(ballLocation)) {
 -                    if (mirroredGoals) {
 -                        Team.RED
@@ -2712,7 +2610,9 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -                            }
 -                        }
 -                        setNextGameSubState(GameSubState.BALL_OUT_CORNER_KICK_PERFORM, delaySeconds * 1000L)
--                    } else {
++                    val ballSpawnPoint = if (servingTeam == Team.RED) {
++                        arena.meta.redTeamMeta.ballSpawnPoint
+                     } else {
 -                        // Goal kick: attacker last touched → defending team kicks from their goal area.
 -                        // When goals are mirrored the defending team physically stands at the opposite goal,
 -                        // so we read the keeper spawnpoint from the mirrored team's meta.
@@ -2740,9 +2640,8 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -                        setNextGameSubState(GameSubState.BALL_OUT_GOAL_KICK_PERFORM, delaySeconds * 1000L)
 -                    }
 -                }
--
--                return
--            }
++                        arena.meta.blueTeamMeta.ballSpawnPoint
++                    }
 +                    ball = soccerBallService.spawn(arena.ballName, ballSpawnPoint!!.toLocation())
 +                    val hashCode = ball!!.hashCode()
 +                    val spawnLocation = ball!!.getLocation()
@@ -2750,6 +2649,11 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 +                        delay(9000)
 +                        if (ball != null && ball!!.hashCode() == hashCode) {
 +                            val newLocation = ball!!.getLocation()
+ 
+-                return
+-            }
++                            if (newLocation.blockX == spawnLocation.blockX && newLocation.blockY == spawnLocation.blockY && newLocation.blockZ == spawnLocation.blockZ) {
++                                val firstPlayer = ingamePlayersStorage.keys.firstOrNull()
  
 -            GameSubState.BALL_OUT_THROW_IN_PERFORM -> {
 -                val throwInLocation = subStateLocationParam!!
@@ -2779,7 +2683,14 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -                            throwInPlayer,
 -                            language.throwInPerformMessage,
 -                        )
--                    }
++                                if (firstPlayer != null) {
++                                    ball!!.setVelocity(Vector(0.0, 0.1, 0.0))
++                                    interactedWithBall.clear()
++                                    interactedWithBall.add(firstPlayer)
++                                }
++                            }
++                        }
+                     }
 -                    ball?.lockedPlayer = throwInPlayer // Important, the ball might be null here
 -                    ball?.isInteractable = true
 -                    delay(timeoutDelay)
@@ -2791,16 +2702,19 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -                setNextGameSubState(GameSubState.FREE)
 -                return
 -            }
-+                            if (newLocation.blockX == spawnLocation.blockX && newLocation.blockY == spawnLocation.blockY && newLocation.blockZ == spawnLocation.blockZ) {
-+                                val firstPlayer = ingamePlayersStorage.keys.firstOrNull()
- 
+-
 -            GameSubState.BALL_OUT_CORNER_KICK_PERFORM -> {
 -                val cornerLocation = subStateLocationParam!!
 -                val cornerPlayer = subStatePlayerParam!!
 -                coroutineHandler.execute(coroutineHandler.fetchEntityDispatcher(cornerPlayer)) {
 -                    cornerPlayer.teleportCompat(plugin, cornerLocation)
 -                }
--                destroyBall()
++                    setNextGameSubState(GameSubState.FREE)
++                }
++            }
++
++            GameSubState.BALL_DESTROYED -> {
+                 destroyBall()
 -                val ballSpawnPoint = cornerLocation.toVector3d().addRelativeFront(1.0).toLocation()
 -                ball = soccerBallService.spawn(arena.ballName, ballSpawnPoint)
 -                ball!!.isInteractable = false
@@ -2819,14 +2733,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -                    }
 -                    if (getPlayers().contains(cornerPlayer)) {
 -                        chatMessageService.sendLanguageMessage(cornerPlayer, language.cornerKickPerformMessage)
-+                                if (firstPlayer != null) {
-+                                    ball!!.setVelocity(Vector(0.0, 0.1, 0.0))
-+                                    interactedWithBall.clear()
-+                                    interactedWithBall.add(firstPlayer)
-+                                }
-+                            }
-+                        }
-                     }
+-                    }
 -                    ball?.lockedPlayer = cornerPlayer
 -                    ball?.isInteractable = true
 -                    delay(timeoutDelay)
@@ -2835,7 +2742,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -                        ball?.lockedPlayer = null
 -                    }
 -                }
--                setNextGameSubState(GameSubState.FREE)
+                 setNextGameSubState(GameSubState.FREE)
 -                return
 -            }
 -
@@ -2845,12 +2752,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -                coroutineHandler.execute(coroutineHandler.fetchEntityDispatcher(goalKickPlayer)) {
 -                    goalKickPlayer.teleportCompat(plugin, goalKickLocation)
 -                }
-+                    setNextGameSubState(GameSubState.FREE)
-+                }
-+            }
-+
-+            GameSubState.BALL_DESTROYED -> {
-                 destroyBall()
+-                destroyBall()
 -                val ballSpawnPoint = goalKickLocation.toVector3d().addRelativeFront(1.0).toLocation()
 -                ball = soccerBallService.spawn(arena.ballName, ballSpawnPoint)
 -                ball!!.isInteractable = false
@@ -2878,12 +2780,12 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -                        ball?.lockedPlayer = null
 -                    }
 -                }
-                 setNextGameSubState(GameSubState.FREE)
+-                setNextGameSubState(GameSubState.FREE)
 -                return
              }
  
              else -> {
-@@ -846,7 +650,14 @@
+@@ -860,7 +665,14 @@
              executeGoalCommands(teamOfGoal)
              relocatePlayersAndBall()
  
@@ -2899,7 +2801,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
                  onMatchEnd(Team.BLUE)
                  onWin(Team.BLUE)
              }
-@@ -860,7 +671,14 @@
+@@ -874,7 +686,14 @@
              executeGoalCommands(teamOfGoal)
              relocatePlayersAndBall()
  
@@ -2915,7 +2817,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
                  onMatchEnd(Team.RED)
                  onWin(Team.RED)
              }
-@@ -999,19 +817,19 @@
+@@ -1013,19 +832,19 @@
              var redTeamSpawnpoint = arena.meta.redTeamMeta.spawnpoint
  
              if (redTeamSpawnpoint == null) {
@@ -2938,7 +2840,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
              }
  
              for (i in ingamePlayersStorage) {
-@@ -1115,91 +933,6 @@
+@@ -1135,106 +954,6 @@
          }
      }
  
@@ -2946,18 +2848,24 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -     * Projects [ballLocation] onto the boundary of the inner playing field in the given [exitDirection].
 -     * This gives the sideline position where a throw-in should be taken.
 -     * If the exit direction cannot be determined (DOWN), the ball spawn point is used as fallback.
+-     *
+-     * Coordinate convention (from [Selection.getRelativeBlockDirectionToLocation]):
+-     * - EAST  = maxX (corner1.x)
+-     * - WEST  = minX (corner2.x)
+-     * - SOUTH = maxZ (corner1.z)
+-     * - NORTH = minZ (corner2.z)
 -     */
 -    private fun findThrowInLocation(ballLocation: Vector3d, exitDirection: BlockFace): Location {
--        val c1 = arena.corner1!!   // higher X (WEST edge) / higher Z (NORTH edge)
--        val c2 = arena.corner2!!   // lower  X (EAST edge) / lower  Z (SOUTH edge)
+-        val c1 = arena.corner1!!   // max corner (maxX, maxZ) — East / South
+-        val c2 = arena.corner2!!   // min corner (minX, minZ) — West / North
 -        val world = org.bukkit.Bukkit.getWorld(arena.ballSpawnPoint!!.world!!)
 -        val y = arena.ballSpawnPoint!!.y
 -
 -        val location = when (exitDirection) {
--            BlockFace.WEST -> Location(world, c1.x, y, ballLocation.z.coerceIn(c2.z, c1.z))
--            BlockFace.EAST -> Location(world, c2.x, y, ballLocation.z.coerceIn(c2.z, c1.z))
--            BlockFace.NORTH -> Location(world, ballLocation.x.coerceIn(c2.x, c1.x), y, c1.z)
--            BlockFace.SOUTH -> Location(world, ballLocation.x.coerceIn(c2.x, c1.x), y, c2.z)
+-            BlockFace.WEST -> Location(world, c2.x, y, ballLocation.z.coerceIn(c2.z, c1.z))
+-            BlockFace.EAST -> Location(world, c1.x, y, ballLocation.z.coerceIn(c2.z, c1.z))
+-            BlockFace.NORTH -> Location(world, ballLocation.x.coerceIn(c2.x, c1.x), y, c2.z)
+-            BlockFace.SOUTH -> Location(world, ballLocation.x.coerceIn(c2.x, c1.x), y, c1.z)
 -            else -> arena.ballSpawnPoint!!.toLocation()
 -        }
 -
@@ -2973,10 +2881,19 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -    /**
 -     * Returns the corner of the playing field nearest to [ballLocation] on the given [exitDirection] goal-line.
 -     * The player facing direction is set toward the arena center.
+-     *
+-     * Coordinate convention (from [Selection.getRelativeBlockDirectionToLocation]):
+-     * - EAST  = maxX (corner1.x)
+-     * - WEST  = minX (corner2.x)
+-     * - SOUTH = maxZ (corner1.z)
+-     * - NORTH = minZ (corner2.z)
+-     *
+-     * Note: corner kicks are only triggered for goal-line exits (EAST/WEST), so the
+-     * NORTH/SOUTH branches serve as a safe fallback.
 -     */
 -    private fun findCornerKickLocation(ballLocation: Vector3d, exitDirection: BlockFace): Location {
--        val c1 = arena.corner1!!
--        val c2 = arena.corner2!!
+-        val c1 = arena.corner1!!   // max corner (maxX, maxZ) — East / South
+-        val c2 = arena.corner2!!   // min corner (minX, minZ) — West / North
 -        val world = org.bukkit.Bukkit.getWorld(arena.ballSpawnPoint!!.world!!)
 -        val y = arena.ballSpawnPoint!!.y
 -        val centerX = (c1.x + c2.x) / 2.0
@@ -2985,22 +2902,22 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 -        val location = when (exitDirection) {
 -            BlockFace.NORTH -> {
 -                val cornerX = if (ballLocation.x >= centerX) c1.x else c2.x
--                Location(world, cornerX, y, c1.z)
+-                Location(world, cornerX, y, c2.z)
 -            }
 -
 -            BlockFace.SOUTH -> {
 -                val cornerX = if (ballLocation.x >= centerX) c1.x else c2.x
--                Location(world, cornerX, y, c2.z)
+-                Location(world, cornerX, y, c1.z)
 -            }
 -
 -            BlockFace.WEST -> {
 -                val cornerZ = if (ballLocation.z >= centerZ) c1.z else c2.z
--                Location(world, c1.x, y, cornerZ)
+-                Location(world, c2.x, y, cornerZ)
 -            }
 -
 -            BlockFace.EAST -> {
 -                val cornerZ = if (ballLocation.z >= centerZ) c1.z else c2.z
--                Location(world, c2.x, y, cornerZ)
+-                Location(world, c1.x, y, cornerZ)
 -            }
 -
 -            else -> arena.ballSpawnPoint!!.toLocation()
@@ -3030,7 +2947,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
      /**
       * Finds the nearest player in the given [team] to the given [position].
       * Used for goal kicks: the defending team's nearest player performs it.
-@@ -1258,4 +991,20 @@
+@@ -1293,4 +1012,20 @@
          subStateEndTimeStamp = System.currentTimeMillis() + timeFromNowMilliSeconds
          subStateNext = subState
      }
@@ -3051,15 +2968,16 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerGameImpl.kt b
 +        return arena.meta.redTeamMeta.ballSpawnPoint!!.toLocation()
 +    }
  }
+\ No newline at end of file
 Index: src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt
---- a/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt	(date 1782501965212)
-@@ -53,7 +53,7 @@
+--- a/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.kt	(date 1784141798349)
+@@ -54,7 +54,7 @@
  ),
      SoccerHubGame {
      private val lastJoinPrompt = ConcurrentHashMap<Player, Long>()
@@ -3068,7 +2986,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.k
          it.on3dInside = { player ->
              if (!ingamePlayersStorage.containsKey(player)) {
                  onPlayerEnterHubGameForceField(player)
-@@ -74,7 +74,7 @@
+@@ -75,7 +75,7 @@
       * Handles the game actions per tick.
       */
      override fun handle(hasSecondPassed: Boolean) {
@@ -3077,7 +2995,7 @@ diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerHubGameImpl.k
              return
          }
  
-@@ -129,7 +129,8 @@
+@@ -130,7 +130,8 @@
          subStatePlayerParam = null
          subStateLocationParam = null
          isDisposed = true
@@ -3093,8 +3011,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt b/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt
---- a/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt	(date 1782496884430)
+--- a/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/contract/BlockBallLanguage.kt	(date 1784141877529)
 @@ -262,4 +262,8 @@
    var goalKickReadyMessage: LanguageItem
  
@@ -3110,8 +3028,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt
---- a/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt	(date 1782160978477)
+--- a/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerRefereeGameImpl.kt	(date 1784141513027)
 @@ -93,7 +93,7 @@
       * Tick handle.
       */
@@ -3142,8 +3060,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt b/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt
---- a/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt	(date 1782158862489)
+--- a/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/enumeration/PlaceHolder.kt	(date 1784141512899)
 @@ -183,6 +183,50 @@
          }
      }),
@@ -3243,8 +3161,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt b/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt
---- a/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt	(date 1782501965220)
+--- a/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/impl/SoccerMiniGameImpl.kt	(date 1784141798361)
 @@ -57,7 +57,7 @@
  ), SoccerMiniGame {
      private var currentQueueTime = arena.meta.customizingMeta.queueTimeOutSec
@@ -3294,8 +3212,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt b/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt
---- a/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt	(date 1782158862461)
+--- a/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/enumeration/LocationType.kt	(date 1784141512855)
 @@ -5,7 +5,8 @@
      RED_SPAWNPOINT,
      BLUE_SPAWNPOINT,
@@ -3312,8 +3230,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt b/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt
---- a/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt	(revision d67ad2b7beb79b9ab2b13e90b3d93469c2bae2a3)
-+++ b/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt	(date 1782158878791)
+--- a/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt	(revision a41272f1d0110f2e43ed8378080353f6e343141b)
++++ b/src/main/java/com/github/shynixn/blockball/enumeration/SelectionType.kt	(date 1784141512908)
 @@ -2,9 +2,6 @@
  
  enum class SelectionType {
