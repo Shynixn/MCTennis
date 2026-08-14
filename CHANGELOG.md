@@ -1,5 +1,20 @@
 # Changelog
 
+## Release 7.44.1
+
+### Changes
+
+* Shynixn/BlockBall#757 Added a new property to the ball file called dribblingWhileGrabbedEnabled, which plays a dribble animation while a player is moving while grabbing a ball if enabled. This allows to setup games similar to BasketBall.
+* Shynixn/BlockBall#757 Improved display of the ball in inventory while grabbing a ball.
+* Shynixn/BlockBall#755 Changed the ball wiki page to reflect the new changes.
+* Shynixn/BlockBall#755 Readded camera-based steering to the engine. You can now configure per interaction type if the player can control the pitch and spin of the ball by moving their camera after shooting it.
+
+### Bugs/Issues
+
+* Shynixn/BlockBall#760 Fixed ball glitches in Minecraft version 1.8.8 - 1.13.0
+
+---
+
 ## Release 7.42.0
 
 ### Changes
