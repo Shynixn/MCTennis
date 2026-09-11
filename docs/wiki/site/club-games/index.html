@@ -1001,10 +1001,13 @@
 </tbody>
 </table>
 <h2 id="joining-a-club-game">Joining a Club Game</h2>
-<p>To enter a club arena, use the club join command instead of the regular join:</p>
-<div class="highlight"><pre><span></span><code>/mctennis<span class="w"> </span>club<span class="w"> </span>join<span class="w"> </span>&lt;arena&gt;
+<p>To start a club arena, use the club join command instead of the regular join:</p>
+<div class="highlight"><pre><span></span><code>/mctennis<span class="w"> </span>club<span class="w"> </span>join<span class="w"> </span>&lt;arena&gt;<span class="w"> </span>&lt;club&gt;
 </code></pre></div>
 <p><strong>Starting a club game</strong> requires <code>mctennis.club.start.&lt;arena&gt;</code>. The first club member with that permission who joins opens the game session. After that, all other club members who have <code>mctennis.club.join.&lt;arena&gt;</code> can join normally with the same command — no start permission needed for them.</p>
+<p>If you want to join as a referee in a club game, simply use <code>referee</code> instead of the name of the club.</p>
+<div class="highlight"><pre><span></span><code>/mctennis<span class="w"> </span>club<span class="w"> </span>join<span class="w"> </span>&lt;arena&gt;<span class="w"> </span>referee
+</code></pre></div>
 <hr />
 <h2 id="setting-up-club-arenas-step-by-step">Setting Up Club Arenas (Step by Step)</h2>
 <h3 id="step-1-decide-on-your-arena-layout">Step 1: Decide on your arena layout</h3>
@@ -1029,43 +1032,43 @@ club-arena →  club only    (mctennis.club.join.club-arena)
 <li><strong>All roles</strong> (<code>owner</code>, <code>coach</code>, <code>captain</code>, <code>player</code>) need <code>mctennis.club.join.&lt;arena&gt;</code> so every club member can join.</li>
 <li><strong>Trusted roles</strong> (<code>owner</code>, <code>coach</code>, <code>captain</code>) additionally need <code>mctennis.club.start.&lt;arena&gt;</code> so they can open a game session.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mctennis_club&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"mctennis_club"</span>
 <span class="nt">maxPlayers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
-<span class="nt">defaultRole</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;player&quot;</span>
+<span class="nt">defaultRole</span><span class="p">:</span><span class="w"> </span><span class="s">"player"</span>
 <span class="nt">roles</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;owner&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"owner"</span>
 <span class="w">    </span><span class="nt">allowPermissions</span><span class="p">:</span>
 <span class="w">      </span><span class="c1"># ... club management permissions ...</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.join.club-arena&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.start.club-arena&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.join.club-arena"</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.start.club-arena"</span>
 <span class="w">    </span><span class="nt">denyPermissions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;coach&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"coach"</span>
 <span class="w">    </span><span class="nt">allowPermissions</span><span class="p">:</span>
 <span class="w">      </span><span class="c1"># ... club management permissions ...</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.join.club-arena&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.start.club-arena&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.join.club-arena"</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.start.club-arena"</span>
 <span class="w">    </span><span class="nt">denyPermissions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;captain&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"captain"</span>
 <span class="w">    </span><span class="nt">allowPermissions</span><span class="p">:</span>
 <span class="w">      </span><span class="c1"># ... club management permissions ...</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.join.club-arena&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.start.club-arena&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.join.club-arena"</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.start.club-arena"</span>
 <span class="w">    </span><span class="nt">denyPermissions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;player&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"player"</span>
 <span class="w">    </span><span class="nt">allowPermissions</span><span class="p">:</span>
 <span class="w">      </span><span class="c1"># ... club management permissions ...</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.join.club-arena&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.join.club-arena"</span>
 <span class="w">      </span><span class="c1"># no mctennis.club.start — regular players cannot open a game session</span>
 <span class="w">    </span><span class="nt">denyPermissions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </code></pre></div>
 <p>For <strong>multiple club arenas</strong>, add one line per arena to each role:</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.join.club-arena&quot;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.join.club-arena-2&quot;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.start.club-arena&quot;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mctennis.club.start.club-arena-2&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.join.club-arena"</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.join.club-arena-2"</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.start.club-arena"</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"mctennis.club.start.club-arena-2"</span>
 </code></pre></div>
 <p>After editing the file, reload with:</p>
 <div class="highlight"><pre><span></span><code>/mctennisclub<span class="w"> </span>reload
