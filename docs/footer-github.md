@@ -1,7 +1,7 @@
 
 ### MCTennis (Premium)
 
-* For Minecraft 1.8.9 - 26.2
+* For Minecraft 1.8.9 - 26.3
 * Bedrock GeyserMC resource pack (skin for bedrock servers)
 * Stats tracking (Amount of Goals, WinRate, etc.)
 * Supports Folia
@@ -10,5 +10,5 @@
 
 ### MCTennis (Free)
 
-* For Minecraft 26.2 (the free version only supports the latest Minecraft version)
+* For Minecraft 26.3 (the free version only supports the latest Minecraft version)
 * Download: [MCTennis.jar](https://github.com/Shynixn/MCTennis/releases/download/<version>/MCTennis.jar)
